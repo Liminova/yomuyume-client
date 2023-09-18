@@ -2,17 +2,16 @@
     "root": true,
     "parser": "vue-eslint-parser",
     "parserOptions": {
-        "parser": "@typescript-eslint/parser"
+        "parser": "@typescript-eslint/parser",
+        "sourceType": "module"
     },
     "extends": [
-        "plugin:vue/recommended",
-        "plugin:prettier-vue/recommended",
-        "eslint:recommended",
+        "plugin:vue/vue3-recommended",
         "@vue/typescript/recommended",
-        "prettier"
+        "plugin:cadence/recommended"
     ],
     "plugins": [
-        "@typescript-eslint"
+        "cadence"
     ],
     "rules": {
         "vue/no-multiple-template-root": "off"
