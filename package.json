@@ -4,7 +4,7 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"lint:json": "prettier --write --parser json --use-tabs --tab-width 4 **/*.json",
+		"lint:json": "prettier --write --parser json **/*.json",
 		"lint": "pnpm lint:json && eslint --fix --ext .js,.ts,.vue,.json,.cjs ./src",
 		"dev": "vite",
 		"build": "vue-tsc && vite build",
