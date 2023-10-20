@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --topbar-height: 72px;
+}
+
+[data-theme="light"] {
+    --md-sys-color-surface-container-high: var(--md-ref-palette-primary90);
+}
+
+[data-theme="dark"] {
+    --md-sys-color-surface-container-high: var(--md-ref-palette-primary10);
+    --md-sys-color-surface-container-highest: var(--md-ref-palette-primary10);
+
+}
+
+html {
+    background-color: var(--md-sys-color-surface);
+    transition-property: background-color;
+}
+
+* {
+    color: var(--md-sys-color-on-surface);
+    font-family: "Montserrat";
+}
+
+// .vueperslides__arrow,
+// .vueperslides__bullet {
+//     color: var(--md-sys-color-on-primary-container) !important;
+// }
+
+.vueperslides__track {
+    border-radius: 1.5rem;
+}
+
+.vueperslides__arrow {
+    display: none;
+}

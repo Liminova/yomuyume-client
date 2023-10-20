@@ -1,32 +1,27 @@
 <script setup lang="ts">
-import HelloWorld from "./components/HelloWorld.vue";
+import NavDrawerLarge from "./components/NavDrawerLarge/_NavDrawerLarge.vue";
+import NavDrawerSmall from "./components/NavDrawerSmall/_NavDrawerSmall.vue";
+import TopBar from "./components/TopBar/_TopBar.vue";
+import { isNavDrawerLarge } from "./store";
+
+if (window.innerWidth < 1280) {
+	isNavDrawerLarge.value = false;
+}
 </script>
 
 <template>
-	<div>
-		<a href="https://vitejs.dev" target="_blank">
-			<img src="/vite.svg" class="logo" alt="Vite logo" />
-		</a>
-		<a href="https://vuejs.org/" target="_blank">
-			<img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-		</a>
+	<TopBar />
+	<div
+		class="grid min-w-full transition-all"
+		:class="isNavDrawerLarge ? 'lg:grid-cols-[360px_0_1fr]' : 'lg:grid-cols-[0_80px_1fr]'"
+	>
+		<NavDrawerLarge
+			class="fixed left-0 top-[--topbar-height] w-full max-w-[360px] bg-[--md-sys-color-surface] transition-all lg:static lg:top-0 lg:block lg:translate-x-0"
+			:class="isNavDrawerLarge ? 'translate-x-0' : '-translate-x-full'"
+		/>
+		<NavDrawerSmall class="hidden lg:flex" />
+		<div class="flex flex-col px-6 transition-all lg:pl-0">
+			<router-view></router-view>
+		</div>
 	</div>
-	<HelloWorld msg="Vite + Vue" />
 </template>
-
-<style scoped>
-.logo {
-	height: 6em;
-	padding: 1.5em;
-	will-change: filter;
-	transition: filter 300ms;
-}
-
-.logo:hover {
-	filter: drop-shadow(0 0 2em #646cffaa);
-}
-
-.logo.vue:hover {
-	filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
