@@ -8,12 +8,14 @@
     "extends": [
         "plugin:vue/vue3-recommended",
         "@vue/typescript/recommended",
-        "plugin:cadence/recommended"
+        "plugin:cadence/recommended",
+        "plugin:tailwindcss/recommended"
     ],
     "plugins": [
         "cadence"
     ],
     "rules": {
-        "vue/no-multiple-template-root": "off"
+        "import/named": "off",
+        "tailwindcss/no-custom-classname": "off"
     }
 }
