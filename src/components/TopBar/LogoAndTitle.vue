@@ -3,7 +3,7 @@ import { vibrate } from "../../store";
 </script>
 
 <template>
-	<router-link :to="'/'" :on-click="vibrate">
+	<router-link to="/" @click="vibrate">
 		<div class="flex flex-row items-center justify-center gap-2">
 			<div class="h-11 w-11">
 				<picture>

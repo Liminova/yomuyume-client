@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vibrate } from "../../store";
 import { ref } from "vue";
 import "@material/web/ripple/ripple.js";
 
@@ -27,21 +28,48 @@ const activeButtonStyle =
 	"text-[color:var(--md-sys-color-on-primary-container)] bg-[--md-sys-color-primary-container]";
 
 function setDarkMode() {
-	theme.value = "dark";
-	window.document.documentElement.setAttribute("data-theme", "dark");
-	localStorage.setItem("theme", "dark");
+	Promise.all([
+		vibrate(),
+		new Promise((resolve) => {
+			theme.value = "dark";
+			window.document.documentElement.setAttribute("data-theme", "dark");
+			window.document.documentElement.setAttribute("class", "dark");
+			localStorage.setItem("theme", "dark");
+			resolve(undefined);
+		}),
+	]).catch(() => {
+		/** */
+	});
 }
 
 function setLightMode() {
-	theme.value = "light";
-	window.document.documentElement.setAttribute("data-theme", "light");
-	localStorage.setItem("theme", "light");
+	Promise.all([
+		vibrate(),
+		new Promise((resolve) => {
+			theme.value = "light";
+			window.document.documentElement.setAttribute("data-theme", "light");
+			window.document.documentElement.setAttribute("class", "light");
+			localStorage.setItem("theme", "light");
+			resolve(undefined);
+		}),
+	]).catch(() => {
+		/** */
+	});
 }
 
 function setAutoMode() {
-	theme.value = "auto";
-	window.document.documentElement.setAttribute("data-theme", systemTheme);
-	localStorage.removeItem("theme");
+	Promise.all([
+		vibrate(),
+		new Promise((resolve) => {
+			theme.value = "auto";
+			window.document.documentElement.setAttribute("data-theme", systemTheme);
+			window.document.documentElement.setAttribute("class", systemTheme);
+			localStorage.removeItem("theme");
+			resolve(undefined);
+		}),
+	]).catch(() => {
+		/** */
+	});
 }
 </script>
 

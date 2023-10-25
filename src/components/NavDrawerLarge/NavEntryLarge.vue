@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { router, vibrate } from "../../store";
+import { router } from "../../router";
+import { vibrate } from "../../store";
 import { computed } from "vue";
 import "@material/web/ripple/ripple.js";
 
@@ -26,13 +27,13 @@ const style = computed(() => {
 	return router.currentRoute.value.path === props.target ? active : inactive;
 });
 
-//
+/** */
 </script>
 
 <template>
-	<router-link :to="props.target" :on-click="vibrate">
+	<router-link :to="props.target" @click="vibrate">
 		<div
-			class="relative mx-3 flex h-14 flex-row items-center justify-between rounded-full bg-[--md-sys-color-surface-container-low] p-4 transition-all"
+			class="relative mx-3 flex h-14 flex-row items-center justify-between rounded-full p-4 transition-all"
 			:class="style.container"
 		>
 			<md-ripple></md-ripple>

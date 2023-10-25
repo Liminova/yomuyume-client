@@ -25,7 +25,7 @@ watchEffect(() => {
 
 <template>
 	<div
-		class="relative flex h-12 w-12 place-content-center place-items-center items-center justify-center overflow-hidden rounded-full"
+		class="relative mx-4 flex h-12 w-12 place-content-center place-items-center items-center justify-center overflow-hidden rounded-full"
 	>
 		<md-ripple></md-ripple>
 		<input

@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { router, vibrate } from "../../store";
+import { router } from "../../router";
+import { vibrate } from "../../store";
 import { computed } from "vue";
 
 const props = defineProps({
+	name: { type: String, required: true },
 	icon: { type: String, required: true },
 	target: { type: String, required: true },
 });
@@ -22,13 +24,13 @@ const style = computed(() => {
 	return router.currentRoute.value.path === props.target ? active : inactive;
 });
 
-//
+/** */
 </script>
 
 <template>
-	<router-link :to="props.target" :on-click="vibrate">
+	<router-link :to="props.target" @click="vibrate">
 		<div
-			class="relative flex h-14 w-14 flex-col items-center justify-center gap-2 rounded-2xl transition-all"
+			class="group relative flex h-14 w-14 flex-col items-center justify-center gap-2 rounded-2xl transition-all"
 			:class="style.container"
 		>
 			<md-ripple></md-ripple>
@@ -37,6 +39,11 @@ const style = computed(() => {
 					class="fa-light text-xl transition-all"
 					:class="props.icon + ' ' + style.icon"
 				></i>
+			</div>
+			<div
+				class="absolute left-16 scale-0 overflow-hidden whitespace-nowrap rounded-xl bg-[--md-sys-color-surface-container-high] p-2 opacity-0 transition-all group-hover:scale-100 group-hover:opacity-100"
+			>
+				{{ props.name }}
 			</div>
 		</div>
 	</router-link>
