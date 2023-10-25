@@ -6,9 +6,11 @@ import RecentlyAdded from "./pages/RecentlyAdded/_RecentlyAdded.vue";
 import { ref } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
 
+function vibrate(): boolean {
+	navigator.vibrate(8);
+	return true;
 }
 
-const vibrate = () => navigator.vibrate(100);
 const isNavDrawerLarge = ref(true);
 
 export { routes, router, vibrate, isNavDrawerLarge, Routes };
