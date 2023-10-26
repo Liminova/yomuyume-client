@@ -1,7 +1,14 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import "@material/web/ripple/ripple.js";
+import { Routes } from "../../router";
+import { vibrate } from "../../store";
+</script>
 
 <template>
-	<div class="h-12 w-12 overflow-hidden rounded-full">
-		<img src="https://picsum.photos/32/32" class="h-auto w-full" />
-	</div>
+	<router-link :to="Routes.AccountSettings" @click="vibrate">
+		<div class="elevation-1 relative h-12 w-12 rounded-full">
+			<md-ripple></md-ripple>
+			<img src="/placeholder.svg" class="h-auto w-full rounded-full" />
+		</div>
+	</router-link>
 </template>
