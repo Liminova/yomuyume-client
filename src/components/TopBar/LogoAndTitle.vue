@@ -6,10 +6,7 @@ import { vibrate } from "../../store";
 	<router-link to="/" @click="vibrate">
 		<div class="flex flex-row items-center justify-center gap-2">
 			<div class="h-11 w-11">
-				<picture>
-					<source srcset="/yomuyume.avif" class="h-auto w-full" type="image/avif" />
-					<img src="/yomuyume.webp" class="h-auto w-full" />
-				</picture>
+				<img src="/favicon/apple-touch-icon.png" class="h-full w-full" />
 			</div>
 			<div
 				class="hidden text-3xl text-neutral-500 md:block"
