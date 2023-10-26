@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
 import NavDrawerWrapper from "../../components/NavDrawerWrapper.vue";
 import { isNavDrawerLarge } from "../../store";
+import { onMounted } from "vue";
 
 onMounted(() => {
 	if (window.innerWidth < 1280) {
