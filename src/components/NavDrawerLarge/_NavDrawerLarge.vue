@@ -32,7 +32,7 @@ import DividerBar from "../DividerBar.vue";
 			<ThemeToggle />
 		</div>
 		<div
-			class="h-[calc(100vh-var(--top-bar-height))] w-full shrink-[100] bg-slate-800"
+			class="h-[calc(100vh-var(--top-bar-height))] w-full shrink-[100]"
 			@click="vibrate() && (isNavDrawerLarge = false)"
 		></div>
 	</div>
