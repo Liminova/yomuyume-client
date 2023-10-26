@@ -1,0 +1,1 @@
+<template>Search screen</template>
