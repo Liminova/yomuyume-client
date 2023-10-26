@@ -1,15 +1,18 @@
 <script setup lang="ts">
 import NavEntrySmall from "./NavEntrySmall.vue";
 import { Routes } from "../../router";
-import { isNavDrawerLarge } from "../../store";
+import { isNavDrawerLarge, isTopBarVisible } from "../../store";
 import DividerBar from "../DividerBar.vue";
 </script>
 
 <!-- NOTE: DO NOT USE this component in any place other than NavDrawerWrapper.vue -->
 <template>
 	<div
-		class="sticky hidden max-h-[calc(100vh-var(--topbar-height))] flex-col items-center lg:top-[--topbar-height] lg:flex"
-		:class="isNavDrawerLarge ? 'overflow-x-hidden' : ''"
+		class="sticky z-10 hidden max-h-[calc(100vh-var(--topbar-height))] flex-col items-center lg:flex"
+		:class="
+			(isNavDrawerLarge ? 'overflow-x-hidden ' : ' ') +
+			(isTopBarVisible ? 'lg:top-[--topbar-height]' : 'top-0 pt-3')
+		"
 	>
 		<NavEntrySmall name="Home" icon="fa-house" :target="Routes.Home" count="" />
 		<NavEntrySmall
@@ -25,6 +28,5 @@ import DividerBar from "../DividerBar.vue";
 			count="10"
 		/>
 		<DividerBar class="w-10" />
-		<NavEntrySmall name="Account settings" icon="fa-user" :target="Routes.AccountSettings" />
 	</div>
 </template>
