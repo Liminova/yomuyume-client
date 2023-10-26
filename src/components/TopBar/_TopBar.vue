@@ -3,12 +3,13 @@ import LogoAndTitle from "./LogoAndTitle.vue";
 import NavToggleIcon from "./NavToggleIcon.vue";
 import SearchBar from "./SearchBar.vue";
 import UserAvatar from "./UserAvatar.vue";
-import { vibrate } from "../../store";
+import { vibrate, isTopBarVisible } from "../../store";
 </script>
 
 <template>
 	<div
-		class="sticky top-0 z-[2] flex h-[--topbar-height] w-full flex-row items-center justify-between gap-2 bg-[--md-sys-color-surface] pr-4 transition-all"
+		class="sticky top-0 z-[4] flex h-[--topbar-height] w-full flex-row items-center justify-between gap-2 bg-[--md-sys-color-surface] pr-4 transition-all"
+		:class="isTopBarVisible ? 'translate-y-0' : '-translate-y-full'"
 	>
 		<!-- MavToggleButton, LogoTitle -->
 		<div class="flex flex-row items-center justify-start">
