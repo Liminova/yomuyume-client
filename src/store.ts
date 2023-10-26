@@ -6,5 +6,6 @@ function vibrate(): boolean {
 }
 
 const isNavDrawerLarge = ref(true);
+const isTopBarVisible = ref(true);
 
-export { vibrate, isNavDrawerLarge };
+export { vibrate, isNavDrawerLarge, isTopBarVisible };
