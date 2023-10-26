@@ -57,3 +57,11 @@ html {
     font-family: "Roboto", sans-serif;
     -webkit-tap-highlight-color: transparent
 }
+
+.vueperslides__bullets {
+    position: absolute;
+    align-items: flex-start;
+    justify-content: end;
+    top: -2.6rem !important;
+    right: -0.6rem !important;
+}
