@@ -2,17 +2,19 @@
 import NavEntryLarge from "./NavEntryLarge.vue";
 import ThemeToggle from "./ThemeToggle.vue";
 import { Routes } from "../../router";
-import { isNavDrawerLarge } from "../../store";
+import { isNavDrawerLarge, vibrate } from "../../store";
 import DividerBar from "../DividerBar.vue";
 </script>
 
 <!-- NOTE: DO NOT USE this component in any place other than NavDrawerWrapper.vue -->
 <template>
 	<div
-		class="fixed left-0 top-[--topbar-height] z-[1] h-[calc(100vh-var(--topbar-height))] w-full max-w-[360px] overflow-y-auto overflow-x-hidden rounded-br-[3rem] bg-[--md-sys-color-surface] shadow-2xl transition-all lg:sticky lg:block lg:translate-x-0 lg:bg-transparent lg:shadow-none"
+		class="fixed left-0 top-[--topbar-height] z-[3] flex h-[calc(100vh-var(--topbar-height))] w-full flex-row overflow-y-auto overflow-x-hidden transition-all lg:sticky lg:block lg:max-w-[360px] lg:translate-x-0"
 		:class="isNavDrawerLarge ? 'translate-x-0' : '-translate-x-full'"
 	>
-		<div class="flex flex-col justify-between">
+		<div
+			class="flex h-full w-full max-w-[360px] flex-col justify-start rounded-br-[3rem] bg-[--md-sys-color-surface] shadow-2xl transition-all lg:w-full lg:rounded-none lg:shadow-none"
+		>
 			<NavEntryLarge name="Home" icon="fa-house" :target="Routes.Home" count="" />
 			<NavEntryLarge
 				name="Recently added"
@@ -27,13 +29,11 @@ import DividerBar from "../DividerBar.vue";
 				count="10"
 			/>
 			<DividerBar />
-			<NavEntryLarge
-				name="Account settings"
-				icon="fa-user"
-				:target="Routes.AccountSettings"
-			/>
-			<DividerBar />
 			<ThemeToggle />
 		</div>
+		<div
+			class="h-[calc(100vh-var(--top-bar-height))] w-full shrink-[100] bg-slate-800"
+			@click="vibrate() && (isNavDrawerLarge = false)"
+		></div>
 	</div>
 </template>
