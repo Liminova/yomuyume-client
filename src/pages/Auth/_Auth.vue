@@ -23,8 +23,10 @@ if (localStorage.getItem("instance-address") === null) {
 // Instance address ============================================================
 
 const instanceAddr = ref(localStorage.getItem("instance-address")!);
+const instanceAddrChanged = ref(false);
 
 function storeInstanceAddr() {
+	instanceAddrChanged.value = true;
 	localStorage.setItem("instance-address", instanceAddr.value);
 }
 
@@ -32,6 +34,12 @@ const fetchServerInfoState = ref(State.Idle);
 
 async function fetchServerInfo() {
 	// TODO: implement fetch server info api
+
+	if (!instanceAddrChanged.value) {
+		return;
+	}
+
+	instanceAddrChanged.value = false;
 
 	if (instanceAddr.value === "") {
 		fetchServerInfoState.value = State.Idle;
@@ -52,6 +60,7 @@ async function fetchServerInfo() {
 }
 
 (async () => {
+	instanceAddrChanged.value = true;
 	await fetchServerInfo();
 })().catch(() => {
 	fetchServerInfoState.value = State.Error;
