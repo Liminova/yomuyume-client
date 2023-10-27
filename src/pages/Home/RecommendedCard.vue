@@ -33,7 +33,11 @@ function addDots(inputString: string, limit: number): string {
 
 		<!-- Cover -->
 		<div class="h-full sm:min-w-[350px] sm:max-w-xs lg:py-10 lg:pl-10">
-			<img :src="props.coverImageUrl" class="h-full w-full object-cover lg:rounded-2xl" />
+			<img
+				:src="props.coverImageUrl"
+				class="h-full w-full object-cover lg:rounded-2xl"
+				draggable="false"
+			/>
 		</div>
 
 		<!-- Infos for wide screen -->
@@ -41,7 +45,9 @@ function addDots(inputString: string, limit: number): string {
 			class="hidden max-w-3xl flex-col justify-start gap-3 sm:flex sm:max-h-[500px] sm:overflow-y-auto sm:p-10"
 		>
 			<div>
-				<div class="text-3xl font-bold">{{ props.title }}</div>
+				<div class="text-3xl font-bold">
+					{{ props.title }}
+				</div>
 				<div class="text-lg">
 					by <span class="font-bold">{{ props.author }}</span>
 				</div>
@@ -51,9 +57,11 @@ function addDots(inputString: string, limit: number): string {
 				{{ isColored == 1 ? "colored" : "monochrome" }}
 			</div>
 			<div class="flex flex-row flex-wrap gap-2">
-				<md-assist-chip v-for="i in 5" :key="i" :label="i.toString()"></md-assist-chip>
+				<md-assist-chip v-for="i in 5" :key="i" :label="i.toString()" />
 			</div>
-			<div class="">{{ props.description }}</div>
+			<div class="">
+				{{ props.description }}
+			</div>
 		</div>
 
 		<!-- Info for small screen -->
@@ -61,7 +69,9 @@ function addDots(inputString: string, limit: number): string {
 			class="absolute left-0 top-0 flex h-full w-full flex-col items-start justify-end gap-3 bg-[linear-gradient(to_bottom,rgba(248_216_255/0.3),rgba(248_216_255/1))] p-7 dark:bg-[linear-gradient(to_bottom,rgba(116_0_160/0.3),rgba(116_0_160/1))] sm:hidden"
 		>
 			<div>
-				<div class="text-2xl font-bold">{{ props.title }}</div>
+				<div class="text-2xl font-bold">
+					{{ props.title }}
+				</div>
 				<div class="text-lg">
 					by <span class="font-bold">{{ props.author }}</span>
 				</div>
