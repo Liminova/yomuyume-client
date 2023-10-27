@@ -18,7 +18,9 @@ const props = defineProps({
 			class="left-0 top-0 h-[75%] w-full rounded-xl object-cover transition-all"
 		/>
 		<div class="p-4">
-			<div class="mb-2 text-xl">{{ props.title }}</div>
+			<div class="mb-2 text-xl">
+				{{ props.title }}
+			</div>
 			<div>
 				by <span class="font-bold">{{ props.artist }}</span>
 			</div>
