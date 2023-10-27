@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import NavEntrySmall from "./NavEntrySmall.vue";
-import { Routes } from "../../router";
+import Routes from "../../routes";
 import { isNavDrawerLarge, isTopBarVisible } from "../../store";
 import DividerBar from "../DividerBar.vue";
 </script>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import "@material/web/ripple/ripple.js";
-import { Routes } from "../../router";
+import Routes from "../../routes";
 import { vibrate } from "../../store";
 </script>
 

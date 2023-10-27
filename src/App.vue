@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { router } from "./router";
+import router from "./router";
 import { ref } from "vue";
 
 const isBrowserSafari = ref(/^((?!chrome|android).)*safari/iu.test(navigator.userAgent));

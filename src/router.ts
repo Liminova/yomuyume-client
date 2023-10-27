@@ -7,19 +7,8 @@ import Home from "./pages/Home/_Home.vue";
 import Library from "./pages/Library/_Library.vue";
 import RecentlyAdded from "./pages/RecentlyAdded/_RecentlyAdded.vue";
 import Search from "./pages/Search/_Search.vue";
+import Routes from "./routes";
 import { createRouter, createWebHistory } from "vue-router";
-
-enum Routes {
-	Home = "/",
-	RecentlyAdded = "/recently-added",
-	ContinueReading = "/continue-reading",
-	CompletedReads = "/completed-reads",
-	CompletedStories = "/completed-stories",
-	Library = "/library",
-	AccountSettings = "/account-settings",
-	Auth = "/auth",
-	Search = "/search",
-}
 
 /* eslint-disable */
 const routes = [
@@ -40,4 +29,4 @@ const router = createRouter({
 	routes,
 });
 
-export { router, Routes };
+export default router;

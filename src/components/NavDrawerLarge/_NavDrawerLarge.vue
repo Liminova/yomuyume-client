@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import NavEntryLarge from "./NavEntryLarge.vue";
 import ThemeToggle from "./ThemeToggle.vue";
-import { Routes } from "../../router";
+import Routes from "../../routes";
 import { isNavDrawerLarge, vibrate } from "../../store";
 import DividerBar from "../DividerBar.vue";
 </script>
