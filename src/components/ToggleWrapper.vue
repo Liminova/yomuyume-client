@@ -6,16 +6,16 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
-	useHorizontal: {
+	horizontal: {
 		type: Boolean,
 		default: false,
 	},
 });
 
-const combinedShow = `${props.useHorizontal ? "grid-cols-[1fr]" : "grid-rows-[1fr]"} opacity-100`;
+const combinedShow = `${props.horizontal ? "grid-cols-[1fr]" : "grid-rows-[1fr]"} opacity-100`;
 
 const combinedHide = `${
-	props.useHorizontal ? "grid-cols-[0fr]" : "grid-rows-[0fr]"
+	props.horizontal ? "grid-cols-[0fr]" : "grid-rows-[0fr]"
 } overflow-hidden opacity-0`;
 
 // Although the element appears to be hidden, it still inside the DOM
@@ -47,7 +47,7 @@ onMounted(() => {
 		class="grid transition-all"
 		:class="props.show ? combinedShow : combinedHide"
 	>
-		<div :class="props.useHorizontal ? 'min-w-0' : 'min-h-0'">
+		<div :class="props.horizontal ? 'min-w-0' : 'min-h-0'">
 			<slot />
 		</div>
 	</div>
