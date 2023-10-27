@@ -16,16 +16,16 @@ import DividerBar from "../DividerBar.vue";
 	>
 		<NavEntrySmall name="Home" icon="fa-house" :target="Routes.Home" count="" />
 		<NavEntrySmall
-			name="Recently added"
-			icon="fa-stars"
-			:target="Routes.RecentlyAdded"
-			count=""
-		/>
-		<NavEntrySmall
 			name="Continue reading"
 			icon="fa-rectangle-history"
 			:target="Routes.ContinueReading"
 			count="10"
+		/>
+		<NavEntrySmall
+			name="Recently added"
+			icon="fa-stars"
+			:target="Routes.RecentlyAdded"
+			count=""
 		/>
 		<DividerBar class="w-10" />
 	</div>
