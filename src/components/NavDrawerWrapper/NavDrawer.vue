@@ -1,16 +1,17 @@
 <script setup lang="ts">
-import NavEntryLarge from "./NavEntryLarge.vue";
+import NavEntryLarge from "./NavEntry.vue";
 import ThemeToggle from "./ThemeToggle.vue";
 import Routes from "../../routes";
-import { isNavDrawerLarge, vibrate } from "../../store";
+import { isNavDrawerLarge as isNavOpen, vibrate } from "../../store";
 import DividerBar from "../DividerBar.vue";
+import Toggle from "../ToggleWrapper.vue";
 </script>
 
 <!-- NOTE: DO NOT USE this component in any place other than NavDrawerWrapper.vue -->
 <template>
 	<div
-		class="fixed left-0 top-[--topbar-height] z-[3] flex h-[calc(100vh-var(--topbar-height))] w-full flex-row overflow-y-auto overflow-x-hidden transition-all lg:sticky lg:block lg:max-w-[360px] lg:translate-x-0"
-		:class="isNavDrawerLarge ? 'translate-x-0' : '-translate-x-full'"
+		class="fixed left-0 top-[--topbar-height] z-10 flex h-[calc(100vh-var(--topbar-height))] w-full flex-row overflow-y-auto transition-all lg:sticky lg:block lg:max-w-[360px] lg:translate-x-0"
+		:class="isNavOpen ? 'translate-x-0' : '-translate-x-[360px]'"
 	>
 		<div
 			class="flex h-full w-full max-w-[360px] flex-col justify-start rounded-br-[3rem] bg-[--md-sys-color-surface] shadow-2xl transition-all lg:w-full lg:rounded-none lg:shadow-none"
@@ -41,12 +42,15 @@ import DividerBar from "../DividerBar.vue";
 				:target="Routes.CompletedReads"
 				count=""
 			/>
-			<DividerBar />
-			<ThemeToggle />
+			<Toggle :show="isNavOpen">
+				<DividerBar />
+				<ThemeToggle />
+			</Toggle>
 		</div>
 		<div
 			class="h-[calc(100vh-var(--top-bar-height))] w-full shrink-[100]"
-			@click="vibrate() && (isNavDrawerLarge = false)"
+			:class="isNavOpen ? 'block' : 'hidden'"
+			@click="vibrate() && (isNavOpen = false)"
 		></div>
 	</div>
 </template>

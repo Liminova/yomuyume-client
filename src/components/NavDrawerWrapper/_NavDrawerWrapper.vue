@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import NavDrawerLarge from "./NavDrawerLarge/_NavDrawerLarge.vue";
-import NavDrawerSmall from "./NavDrawerSmall/_NavDrawerSmall.vue";
-import TopBar from "./TopBar/_TopBar.vue";
-import { isNavDrawerLarge, isTopBarVisible } from "../store";
+import NavDrawer from "./NavDrawer.vue";
+import TopBar from "../TopBar/_TopBar.vue";
+import { isNavDrawerLarge, isTopBarVisible } from "../../store";
 import { onMounted } from "vue";
+
+// import NavDrawerSmall from "./NavDrawerSmall/_NavDrawerSmall.vue";
 
 const props = defineProps({
 	class: { type: String, default: "" },
@@ -43,10 +44,9 @@ onMounted(() => {
 		<TopBar />
 		<div
 			class="grid min-w-full transition-all"
-			:class="isNavDrawerLarge ? 'lg:grid-cols-[360px_0_1fr]' : 'lg:grid-cols-[0_80px_1fr]'"
+			:class="isNavDrawerLarge ? 'lg:grid-cols-[360px_1fr]' : 'lg:grid-cols-[80px_1fr]'"
 		>
-			<NavDrawerLarge />
-			<NavDrawerSmall />
+			<NavDrawer />
 			<div :class="props.class">
 				<slot />
 			</div>

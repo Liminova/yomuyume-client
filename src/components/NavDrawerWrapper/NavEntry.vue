@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import router from "../../router";
-import { vibrate } from "../../store";
+import { vibrate, isNavDrawerLarge as isNavOpen } from "../../store";
 import { computed } from "vue";
 import "@material/web/ripple/ripple.js";
 
@@ -18,7 +18,7 @@ const inactive = {
 };
 
 const active = {
-	container: "bg-[var(--md-sys-color-primary-container)] scale-[1.01]",
+	container: "bg-[var(--md-sys-color-primary-container)]",
 	icon: "text-[color:var(--md-sys-color-on-primary-container)] fa-solid font-bold",
 	label: "text-[color:var(--md-sys-color-on-primary-container)] font-medium",
 };
@@ -33,20 +33,22 @@ const style = computed(() => {
 <template>
 	<router-link :to="props.target" @click="vibrate">
 		<div
-			class="relative mx-3 flex h-14 flex-row items-center justify-between rounded-full p-4 transition-all"
-			:class="style.container"
+			class="group relative mx-3 grid h-14 items-center gap-3 self-center pl-4 pr-6 transition-all"
+			:class="
+				style.container +
+				(isNavOpen
+					? ' grid-cols-[1.5rem_1fr_1.5rem] rounded-[1.75rem]'
+					: ' grid-cols-[1.5rem_0fr_0fr] rounded-2xl')
+			"
 		>
 			<md-ripple />
-			<div class="flex flex-row items-center justify-start gap-3">
-				<i
-					class="fa-light text-xl transition-all"
-					:class="props.icon + ' ' + style.icon"
-				></i>
-				<div class="whitespace-nowrap text-sm transition-all" :class="style.label">
-					{{ props.name }}
-				</div>
+			<div class="flex h-6 w-6 items-center justify-center">
+				<i class="fa-light text-xl" :class="props.icon + ' ' + style.icon"></i>
 			</div>
-			<div class="mx-2" :class="style.label">
+			<div class="min-w-0 overflow-hidden whitespace-nowrap text-sm" :class="style.label">
+				{{ props.name }}
+			</div>
+			<div class="min-w-0 overflow-hidden" :class="style.label">
 				{{ props.count }}
 			</div>
 		</div>

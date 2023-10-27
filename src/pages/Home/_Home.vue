@@ -2,7 +2,7 @@
 import ItemCard from "./ItemCard.vue";
 import LastItemCard from "./LastItemCard.vue";
 import RecommendedCard from "./RecommendedCard.vue";
-import NavDrawerWrapper from "../../components/NavDrawerWrapper.vue";
+import NavDrawerWrapper from "../../components/NavDrawerWrapper/_NavDrawerWrapper.vue";
 import Routes from "../../routes";
 import { isNavDrawerLarge } from "../../store";
 import { onBeforeMount, onMounted, ref } from "vue";

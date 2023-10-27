@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import NavDrawerWrapper from "../../components/NavDrawerWrapper.vue";
+import NavDrawerWrapper from "../../components/NavDrawerWrapper/_NavDrawerWrapper.vue";
 import { isNavDrawerLarge } from "../../store";
 import { onMounted } from "vue";
 

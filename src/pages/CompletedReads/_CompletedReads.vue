@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import NavDrawerWrapper from "../../components/NavDrawerWrapper.vue";
+import NavDrawerWrapper from "../../components/NavDrawerWrapper/_NavDrawerWrapper.vue";
 </script>
 
 <template>
