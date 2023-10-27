@@ -4,7 +4,6 @@ import RecommendedCard from "./RecommendedCard.vue";
 import NavDrawerWrapper from "../../components/NavDrawerWrapper.vue";
 import { isNavDrawerLarge } from "../../store";
 import { onBeforeMount, onMounted, ref } from "vue";
-
 // @ts-expect-error - vueperslides has no types
 import { VueperSlides, VueperSlide } from "vueperslides";
 import "vueperslides/dist/vueperslides.css";
@@ -78,8 +77,9 @@ onMounted(() => {
 			autoplay
 			:gap="7"
 			:bullets="false"
-			:touchable="false"
+			:touchable="true"
 			:arrows="false"
+			:dragging-distance="70"
 			fixed-height="500px"
 			:visible-slides="1"
 		>
