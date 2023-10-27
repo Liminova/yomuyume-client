@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import ItemCard from "./ItemCard.vue";
+import LastItemCard from "./LastItemCard.vue";
 import RecommendedCard from "./RecommendedCard.vue";
 import NavDrawerWrapper from "../../components/NavDrawerWrapper.vue";
+import Routes from "../../routes";
 import { isNavDrawerLarge } from "../../store";
 import { onBeforeMount, onMounted, ref } from "vue";
 // @ts-expect-error - vueperslides has no types
@@ -71,7 +73,6 @@ onMounted(() => {
 	<NavDrawerWrapper
 		class="mb-6 mt-3 flex w-full flex-col gap-7 px-6 transition-all lg:mt-0 lg:pl-0 lg:pr-3"
 	>
-		<!-- Recommended -->
 		<vueper-slides
 			class="no-shadow recommended-slide"
 			autoplay
@@ -99,7 +100,6 @@ onMounted(() => {
 			</vueper-slide>
 		</vueper-slides>
 
-		<!-- Continue reading -->
 		<div ref="elementWidthRef" class="text-4xl font-bold">Continue reading</div>
 		<vueper-slides
 			:arrows="false"
@@ -110,7 +110,7 @@ onMounted(() => {
 			:slide-ratio="slideRatio"
 			:visible-slides="visibleSlides"
 		>
-			<vueper-slide v-for="i in 10" :key="i" class="h-full w-full">
+			<vueper-slide v-for="i in 9" :key="i" class="h-full w-full">
 				<template #content>
 					<ItemCard
 						cover-image-url="/placeholder.svg"
@@ -119,9 +119,13 @@ onMounted(() => {
 					/>
 				</template>
 			</vueper-slide>
+			<vueper-slide>
+				<template #content>
+					<LastItemCard :to="Routes.ContinueReading" />
+				</template>
+			</vueper-slide>
 		</vueper-slides>
 
-		<!-- Continue reading -->
 		<div ref="elementWidthRef" class="text-4xl font-bold">Newly updated</div>
 		<vueper-slides
 			:arrows="false"
@@ -132,7 +136,7 @@ onMounted(() => {
 			:slide-ratio="slideRatio"
 			:visible-slides="visibleSlides"
 		>
-			<vueper-slide v-for="i in 10" :key="i" class="h-full w-full">
+			<vueper-slide v-for="i in 9" :key="i" class="h-full w-full">
 				<template #content>
 					<ItemCard
 						cover-image-url="/placeholder.svg"
@@ -141,9 +145,14 @@ onMounted(() => {
 					/>
 				</template>
 			</vueper-slide>
+			<vueper-slide>
+				<template #content>
+					<!-- TODO: replace the route -->
+					<LastItemCard to="/" />
+				</template>
+			</vueper-slide>
 		</vueper-slides>
 
-		<!-- Continue reading -->
 		<div ref="elementWidthRef" class="text-4xl font-bold">Recently added</div>
 		<vueper-slides
 			:arrows="false"
@@ -154,13 +163,18 @@ onMounted(() => {
 			:slide-ratio="slideRatio"
 			:visible-slides="visibleSlides"
 		>
-			<vueper-slide v-for="i in 10" :key="i" class="h-full w-full">
+			<vueper-slide v-for="i in 9" :key="i" class="h-full w-full">
 				<template #content>
 					<ItemCard
 						cover-image-url="/placeholder.svg"
 						title="Place anything you like here"
 						artist="Smbdy"
 					/>
+				</template>
+			</vueper-slide>
+			<vueper-slide>
+				<template #content>
+					<LastItemCard :to="Routes.RecentlyAdded" />
 				</template>
 			</vueper-slide>
 		</vueper-slides>
