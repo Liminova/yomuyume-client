@@ -22,10 +22,10 @@ if (localStorage.getItem("instance-address") === null) {
 
 // Instance address ============================================================
 
-const instanceAddress = ref(localStorage.getItem("instance-address")!);
+const instanceAddr = ref(localStorage.getItem("instance-address")!);
 
 function storeInstanceAddr() {
-	localStorage.setItem("instance-address", instanceAddress.value);
+	localStorage.setItem("instance-address", instanceAddr.value);
 }
 
 const fetchServerInfoState = ref(State.Idle);
@@ -33,7 +33,7 @@ const fetchServerInfoState = ref(State.Idle);
 async function fetchServerInfo() {
 	// TODO: implement fetch server info api
 
-	if (instanceAddress.value === "") {
+	if (instanceAddr.value === "") {
 		fetchServerInfoState.value = State.Idle;
 		return;
 	}
@@ -42,7 +42,7 @@ async function fetchServerInfo() {
 
 	setTimeout(() => {
 		// TODO: remove this on production
-		if (instanceAddress.value.includes("FORCE_ERROR")) {
+		if (instanceAddr.value.includes("FORCE_ERROR")) {
 			fetchServerInfoState.value = State.Error;
 			return;
 		}
@@ -117,7 +117,7 @@ async function login() {
 		<div class="flex w-80 flex-col transition-all">
 			<!-- Input: instance address -->
 			<md-outlined-text-field
-				v-model="instanceAddress"
+				v-model="instanceAddr"
 				label="Instance address"
 				class="mb-3"
 				@input="storeInstanceAddr"
