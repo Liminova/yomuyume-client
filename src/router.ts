@@ -22,6 +22,8 @@ const routes = [
 	{ path: Routes.Home, component: Home },
 	{ path: Routes.RecentlyAdded, component: RecentlyAdded },
 	{ path: Routes.ContinueReading, component: ContinueReading },
+	{ path: Routes.Search, component: Search },
+	{ path: Routes.Search, component: Search },
 	{ path: Routes.Library, component: Library },
 	{ path: Routes.AccountSettings, component: AccountSettings },
 	{ path: Routes.Auth, component: Auth },
