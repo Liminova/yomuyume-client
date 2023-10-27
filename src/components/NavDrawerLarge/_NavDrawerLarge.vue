@@ -17,16 +17,28 @@ import DividerBar from "../DividerBar.vue";
 		>
 			<NavEntryLarge name="Home" icon="fa-house" :target="Routes.Home" count="" />
 			<NavEntryLarge
+				name="Continue reading"
+				icon="fa-rectangle-history"
+				:target="Routes.ContinueReading"
+				count="10"
+			/>
+			<NavEntryLarge
 				name="Recently added"
 				icon="fa-stars"
 				:target="Routes.RecentlyAdded"
 				count=""
 			/>
 			<NavEntryLarge
-				name="Continue reading"
-				icon="fa-rectangle-history"
-				:target="Routes.ContinueReading"
-				count="10"
+				name="Completed stories"
+				icon="fa-check"
+				:target="Routes.RecentlyAdded"
+				count=""
+			/>
+			<NavEntryLarge
+				name="Completed reading"
+				icon="fa-check-to-slot"
+				:target="Routes.RecentlyAdded"
+				count=""
 			/>
 			<DividerBar />
 			<ThemeToggle />
