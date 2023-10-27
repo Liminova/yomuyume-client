@@ -76,33 +76,33 @@ function setAutoMode() {
 <template>
 	<div class="mx-3 grid h-10 grid-cols-3 overflow-hidden">
 		<div class="relative rounded-s-full">
-			<md-ripple></md-ripple>
+			<md-ripple />
 			<button
 				class="h-full w-full rounded-s-full border-y-[1px] border-l-[1px] border-solid border-[color:var(--md-sys-color-outline)] text-[color:var(--md-sys-color-on-surface)] transition-all"
 				:class="theme === 'dark' ? activeButtonStyle : ''"
 				@click="setDarkMode"
 			>
-				<i class="fa-moon" :class="theme === 'dark' ? 'fa-solid' : 'fa-light'"></i>
+				<i class="fa-moon" :class="theme === 'dark' ? 'fa-solid' : 'fa-light'" />
 			</button>
 		</div>
 		<div class="relative">
-			<md-ripple></md-ripple>
+			<md-ripple />
 			<button
 				class="h-full w-full border-y-[1px] border-l-[1px] border-solid border-[color:var(--md-sys-color-outline)] text-[color:var(--md-sys-color-on-surface)] transition-all"
 				:class="theme === 'auto' ? activeButtonStyle : ''"
 				@click="setAutoMode"
 			>
-				<i class="fa-bolt-auto" :class="theme === 'auto' ? 'fa-solid' : 'fa-light'"></i>
+				<i class="fa-bolt-auto" :class="theme === 'auto' ? 'fa-solid' : 'fa-light'" />
 			</button>
 		</div>
 		<div class="relative rounded-e-full">
-			<md-ripple></md-ripple>
+			<md-ripple />
 			<button
 				class="h-full w-full rounded-e-full border-[1px] border-solid border-[color:var(--md-sys-color-outline)] text-[color:var(--md-sys-color-on-surface)] transition-all"
 				:class="theme === 'light' ? activeButtonStyle : ''"
 				@click="setLightMode"
 			>
-				<i class="fa-sun" :class="theme === 'light' ? 'fa-solid' : 'fa-light'"></i>
+				<i class="fa-sun" :class="theme === 'light' ? 'fa-solid' : 'fa-light'" />
 			</button>
 		</div>
 	</div>

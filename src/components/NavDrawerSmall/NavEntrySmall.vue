@@ -33,7 +33,7 @@ const style = computed(() => {
 			class="group relative flex h-14 w-14 flex-col items-center justify-center gap-2 rounded-2xl transition-all"
 			:class="style.container"
 		>
-			<md-ripple></md-ripple>
+			<md-ripple />
 			<div class="flex flex-col items-center">
 				<i
 					class="fa-light text-xl transition-all"

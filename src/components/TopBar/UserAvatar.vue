@@ -7,7 +7,7 @@ import { vibrate } from "../../store";
 <template>
 	<router-link :to="Routes.AccountSettings" @click="vibrate">
 		<div class="elevation-1 relative h-12 w-12 rounded-full">
-			<md-ripple></md-ripple>
+			<md-ripple />
 			<img src="/placeholder.svg" class="h-auto w-full rounded-full" />
 		</div>
 	</router-link>

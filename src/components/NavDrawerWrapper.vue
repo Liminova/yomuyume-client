@@ -45,10 +45,10 @@ onMounted(() => {
 			class="grid min-w-full transition-all"
 			:class="isNavDrawerLarge ? 'lg:grid-cols-[360px_0_1fr]' : 'lg:grid-cols-[0_80px_1fr]'"
 		>
-			<NavDrawerLarge></NavDrawerLarge>
+			<NavDrawerLarge />
 			<NavDrawerSmall />
 			<div :class="props.class">
-				<slot></slot>
+				<slot />
 			</div>
 		</div>
 	</div>

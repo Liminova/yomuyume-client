@@ -10,7 +10,7 @@ import "@material/web/ripple/ripple.js";
 		class="elevation-1 relative overflow-hidden rounded-full"
 		@click="vibrate"
 	>
-		<md-ripple></md-ripple>
+		<md-ripple />
 		<div
 			class="w-xs hidden h-12 flex-row items-center justify-between rounded-full bg-[--md-sys-color-surface-container-high] pl-4 pr-3 md:flex"
 		>

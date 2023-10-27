@@ -36,7 +36,7 @@ const style = computed(() => {
 			class="relative mx-3 flex h-14 flex-row items-center justify-between rounded-full p-4 transition-all"
 			:class="style.container"
 		>
-			<md-ripple></md-ripple>
+			<md-ripple />
 			<div class="flex flex-row items-center justify-start gap-3">
 				<i
 					class="fa-light text-xl transition-all"
@@ -46,7 +46,9 @@ const style = computed(() => {
 					{{ props.name }}
 				</div>
 			</div>
-			<div class="mx-2" :class="style.label">{{ props.count }}</div>
+			<div class="mx-2" :class="style.label">
+				{{ props.count }}
+			</div>
 		</div>
 	</router-link>
 </template>
