@@ -10,6 +10,10 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
+	ignoreHiddenClass: {
+		type: Boolean,
+		default: false,
+	},
 });
 
 const combinedShow = `${props.horizontal ? "grid-cols-[1fr]" : "grid-rows-[1fr]"} opacity-100`;
@@ -22,19 +26,17 @@ const combinedHide = `${
 const container = ref<HTMLElement | null>(null);
 
 onMounted(() => {
-	let trials = 0;
-
-	if (props.show) {
+	if (props.show || props.ignoreHiddenClass || container.value === null) {
 		return;
 	}
 
 	const interval = setInterval(() => {
-		if (container.value === null || trials > 10) {
-			trials++;
-		} else {
-			container.value.classList.add("hidden");
-			clearInterval(interval);
+		if (container.value === null) {
+			return;
 		}
+
+		container.value.classList.add("hidden");
+		clearInterval(interval);
 	}, 150);
 });
 
