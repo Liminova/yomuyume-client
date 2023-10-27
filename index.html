@@ -26,6 +26,44 @@
 
 <body>
     <div id="app"></div>
+
+    <noscript>
+        <div style="
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            background-color: #171213;
+        ">
+            <div style="
+                background-color: #3a3334;
+                padding: 1.75rem 2.25rem;
+                border-radius: 0.5rem;
+                box-shadow: 0px 8px 12px 6px rgba(0, 0, 0, 0.15), 0px 4px 4px rgba(0, 0, 0, 0.3);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                gap: 1rem;
+            ">
+                <div style="
+                    font-size: 1.5rem;
+                    font-weight: 600;
+                    font-family: 'Roboto', sans-serif;
+                    color: #fcd8e0;
+                    ">JavaScript is disabled</div>
+                <div style="
+                    font-family: 'Roboto', sans-serif;
+                    color: #fcd8e0;
+                ">Please enable JavaScript to use this app.</div>
+            </div>
+        </div>
+    </noscript>
+
     <script type="module" src="/src/main.ts"></script>
 </body>
 
