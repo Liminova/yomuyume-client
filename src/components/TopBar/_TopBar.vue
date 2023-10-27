@@ -8,7 +8,7 @@ import { vibrate, isTopBarVisible } from "../../store";
 
 <template>
 	<div
-		class="sticky top-0 z-[4] flex h-[--topbar-height] w-full flex-row items-center justify-between gap-2 bg-[--md-sys-color-surface] pr-4 transition-all"
+		class="sticky top-0 z-10 flex h-[--topbar-height] w-full flex-row items-center justify-between gap-2 bg-[--md-sys-color-surface] pr-4 transition-all"
 		:class="isTopBarVisible ? 'translate-y-0' : '-translate-y-full'"
 	>
 		<!-- MavToggleButton, LogoTitle -->
