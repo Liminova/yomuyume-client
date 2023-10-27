@@ -31,13 +31,13 @@ import DividerBar from "../DividerBar.vue";
 			<NavEntryLarge
 				name="Completed stories"
 				icon="fa-check"
-				:target="Routes.RecentlyAdded"
+				:target="Routes.CompletedStories"
 				count=""
 			/>
 			<NavEntryLarge
 				name="Completed reading"
 				icon="fa-check-to-slot"
-				:target="Routes.RecentlyAdded"
+				:target="Routes.CompletedReads"
 				count=""
 			/>
 			<DividerBar />
