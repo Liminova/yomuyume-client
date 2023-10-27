@@ -16,6 +16,7 @@ import DividerBar from "../DividerBar.vue";
 			class="flex h-full w-full max-w-[360px] flex-col justify-start rounded-br-[3rem] bg-[--md-sys-color-surface] shadow-2xl transition-all lg:w-full lg:rounded-none lg:shadow-none"
 		>
 			<NavEntryLarge name="Home" icon="fa-house" :target="Routes.Home" count="" />
+			<NavEntryLarge name="Library" icon="fa-book" :target="Routes.Library" count="" />
 			<NavEntryLarge
 				name="Continue reading"
 				icon="fa-rectangle-history"
