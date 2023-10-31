@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import NavDrawer from "./NavDrawer.vue";
-import TopBar from "../TopBar/_TopBar.vue";
 import { isNavDrawerLarge, isTopBarVisible } from "../../store";
+import TopBar from "../TopBar/_TopBar.vue";
 import { onMounted } from "vue";
 
 // import NavDrawerSmall from "./NavDrawerSmall/_NavDrawerSmall.vue";
