@@ -52,5 +52,8 @@
 		"patchedDependencies": {
 			"eslint-plugin-cadence@0.1.0": "patches/eslint-plugin-cadence@0.1.0.patch"
 		}
+	},
+	"volta": {
+		"node": "21.1.0"
 	}
 }
