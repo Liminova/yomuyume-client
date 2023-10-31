@@ -10,7 +10,7 @@ import Toggle from "../ToggleWrapper.vue";
 <!-- NOTE: DO NOT USE this component in any place other than NavDrawerWrapper.vue -->
 <template>
 	<div
-		class="fixed left-0 top-[--topbar-height] z-10 flex h-[calc(100vh-var(--topbar-height))] w-full flex-row overflow-y-auto transition-all lg:sticky lg:block lg:max-w-[360px] lg:translate-x-0"
+		class="fixed left-0 top-[--topbar-height] z-10 flex h-[calc(100vh-var(--topbar-height))] w-full flex-row transition-all lg:sticky lg:block lg:max-w-[360px] lg:translate-x-0"
 		:class="isNavOpen ? 'translate-x-0' : '-translate-x-[360px]'"
 	>
 		<div
