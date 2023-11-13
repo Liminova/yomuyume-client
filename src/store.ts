@@ -7,9 +7,14 @@ enum State {
 	Error = "Error",
 }
 
-function vibrate(): boolean {
-	navigator.vibrate(8);
-	return true;
+function vibrate(): undefined {
+	const isBrowserSafari = /^((?!chrome|android).)*safari/iu.test(navigator.userAgent);
+
+	if (!isBrowserSafari) {
+		navigator.vibrate(10);
+	}
+
+	return undefined;
 }
 
 const isNavDrawerLarge = ref(true);
