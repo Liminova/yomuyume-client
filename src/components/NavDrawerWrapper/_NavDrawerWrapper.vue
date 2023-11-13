@@ -2,30 +2,22 @@
 import NavDrawer from "./NavDrawer.vue";
 import { isNavDrawerLarge, isTopBarVisible } from "../../store";
 import TopBar from "../TopBar/_TopBar.vue";
+import { debounce } from "debounce";
 import { onMounted } from "vue";
-
-// import NavDrawerSmall from "./NavDrawerSmall/_NavDrawerSmall.vue";
 
 const props = defineProps({
 	class: { type: String, default: "" },
 });
 
-isTopBarVisible.value = true;
 onMounted(() => {
-	let prevScrollPos = window.pageYOffset;
+	let prevScrollPos = -document.body.getBoundingClientRect().top;
 
-	window.onscroll = () => {
+	function toggleTopBar() {
 		if (window.innerWidth >= 1024) {
 			return;
 		}
 
-		const htmlElement = document.querySelector("html");
-
-		if (htmlElement === null) {
-			return;
-		}
-
-		const currentScrollPos = -htmlElement.getBoundingClientRect().top;
+		const currentScrollPos = -document.body.getBoundingClientRect().top;
 
 		if (prevScrollPos > currentScrollPos || currentScrollPos < 100) {
 			isTopBarVisible.value = true;
@@ -35,18 +27,17 @@ onMounted(() => {
 		}
 
 		prevScrollPos = currentScrollPos;
-	};
+	}
+
+	window.onscroll = debounce(toggleTopBar, 100);
 });
 </script>
 
 <template>
-	<div>
+	<div class="flex flex-col">
 		<TopBar />
-		<div
-			class="grid min-w-full transition-all"
-			:class="isNavDrawerLarge ? 'lg:grid-cols-[360px_1fr]' : 'lg:grid-cols-[80px_1fr]'"
-		>
-			<NavDrawer />
+		<NavDrawer />
+		<div class="transition-all" :class="isNavDrawerLarge ? 'lg:ml-[360px]' : 'lg:ml-[80px]'">
 			<div :class="props.class">
 				<slot />
 			</div>

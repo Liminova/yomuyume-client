@@ -9,6 +9,7 @@ const props = defineProps({
 	icon: { type: String, required: true },
 	target: { type: String, required: true },
 	count: { type: String, default: "" },
+	mouseover: { type: Function, required: true },
 });
 
 const inactive = {
@@ -18,7 +19,8 @@ const inactive = {
 };
 
 const active = {
-	container: "bg-[var(--md-sys-color-primary-container)]",
+	// container: "bg-[var(--md-sys-color-primary-container)]",
+	container: "",
 	icon: "text-[color:var(--md-sys-color-on-primary-container)] fa-solid font-bold",
 	label: "text-[color:var(--md-sys-color-on-primary-container)] font-medium",
 };
@@ -27,14 +29,18 @@ const style = computed(() => {
 	return router.currentRoute.value.path === props.target ? active : inactive;
 });
 
+if (window.innerWidth <= 1024) {
+	isNavDrawerLarge.value = true;
+}
+
 /** */
 </script>
 
 <template>
-	<div class="relative">
-		<router-link :to="props.target" class="peer" @click="vibrate">
+	<div class="relative z-0">
+		<router-link :to="props.target" class="peer" @click="vibrate" @mouseover="props.mouseover">
 			<div
-				class="relative mx-3 grid h-14 items-center gap-3 self-center pl-4 pr-6 transition-all"
+				class="relative grid h-14 items-center gap-3 self-center pl-4 pr-6 transition-all"
 				:class="
 					style.container +
 					(isNavDrawerLarge
@@ -42,7 +48,7 @@ const style = computed(() => {
 						: ' grid-cols-[1.5rem_0fr_0fr] rounded-2xl')
 				"
 			>
-				<md-ripple />
+				<md-ripple style="--md-ripple-hover-color: transparent" />
 				<div class="flex h-6 w-6 items-center justify-center">
 					<i class="fa-light text-xl" :class="props.icon + ' ' + style.icon"></i>
 				</div>
@@ -54,8 +60,10 @@ const style = computed(() => {
 				</div>
 			</div>
 		</router-link>
+
+		<!-- Bubble when hover on small nav -->
 		<div
-			class="absolute left-20 top-0 flex h-full scale-90 items-center justify-center opacity-0 transition-all peer-hover:scale-100 peer-hover:opacity-100"
+			class="pointer-events-none absolute left-20 top-0 flex h-full scale-90 items-center justify-center opacity-0 transition-all peer-hover:scale-100 peer-hover:opacity-100"
 			:class="isNavDrawerLarge ? 'hidden' : ''"
 		>
 			<div
