@@ -7,69 +7,43 @@ const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? 
 const localStorageTheme = localStorage.getItem("theme") ?? systemTheme;
 const theme = ref(localStorageTheme);
 
+const activeButtonStyle =
+	"text-[color:var(--md-sys-color-on-primary-container)] bg-[--md-sys-color-primary-container]";
+
+enum Mode {
+	Dark = "dark",
+	Light = "light",
+	Auto = "auto",
+}
+
+// TODO: auto mode doesn't quite work yet
+function setMode(mode: Mode) {
+	vibrate();
+	theme.value = mode;
+	window.document.documentElement.setAttribute("data-theme", mode);
+	window.document.documentElement.setAttribute("class", mode);
+	if (mode === Mode.Auto) {
+		localStorage.removeItem("theme");
+	} else {
+		localStorage.setItem("theme", mode);
+	}
+}
+
 switch (localStorageTheme) {
 	case "dark": {
-		setDarkMode();
+		setMode(Mode.Dark);
 		break;
 	}
 
 	case "light": {
-		setLightMode();
+		setMode(Mode.Light);
 		break;
 	}
 
 	default: {
-		setAutoMode();
+		setMode(Mode.Auto);
 		break;
 	}
-}
-
-const activeButtonStyle =
-	"text-[color:var(--md-sys-color-on-primary-container)] bg-[--md-sys-color-primary-container]";
-
-function setDarkMode() {
-	Promise.all([
-		vibrate(),
-		new Promise((resolve) => {
-			theme.value = "dark";
-			window.document.documentElement.setAttribute("data-theme", "dark");
-			window.document.documentElement.setAttribute("class", "dark");
-			localStorage.setItem("theme", "dark");
-			resolve(undefined);
-		}),
-	]).catch(() => {
-		/** */
-	});
-}
-
-function setLightMode() {
-	Promise.all([
-		vibrate(),
-		new Promise((resolve) => {
-			theme.value = "light";
-			window.document.documentElement.setAttribute("data-theme", "light");
-			window.document.documentElement.setAttribute("class", "light");
-			localStorage.setItem("theme", "light");
-			resolve(undefined);
-		}),
-	]).catch(() => {
-		/** */
-	});
-}
-
-function setAutoMode() {
-	Promise.all([
-		vibrate(),
-		new Promise((resolve) => {
-			theme.value = "auto";
-			window.document.documentElement.setAttribute("data-theme", systemTheme);
-			window.document.documentElement.setAttribute("class", systemTheme);
-			localStorage.removeItem("theme");
-			resolve(undefined);
-		}),
-	]).catch(() => {
-		/** */
-	});
 }
 </script>
 
@@ -80,7 +54,7 @@ function setAutoMode() {
 			<button
 				class="h-full w-full rounded-s-full border-y-[1px] border-l-[1px] border-solid border-[color:var(--md-sys-color-outline)] text-[color:var(--md-sys-color-on-surface)] transition-all"
 				:class="theme === 'dark' ? activeButtonStyle : ''"
-				@click="setDarkMode"
+				@click="setMode(Mode.Dark)"
 			>
 				<i class="fa-moon" :class="theme === 'dark' ? 'fa-solid' : 'fa-light'" />
 			</button>
@@ -90,7 +64,7 @@ function setAutoMode() {
 			<button
 				class="h-full w-full border-y-[1px] border-l-[1px] border-solid border-[color:var(--md-sys-color-outline)] text-[color:var(--md-sys-color-on-surface)] transition-all"
 				:class="theme === 'auto' ? activeButtonStyle : ''"
-				@click="setAutoMode"
+				@click="setMode(Mode.Auto)"
 			>
 				<i class="fa-bolt-auto" :class="theme === 'auto' ? 'fa-solid' : 'fa-light'" />
 			</button>
@@ -100,7 +74,7 @@ function setAutoMode() {
 			<button
 				class="h-full w-full rounded-e-full border-[1px] border-solid border-[color:var(--md-sys-color-outline)] text-[color:var(--md-sys-color-on-surface)] transition-all"
 				:class="theme === 'light' ? activeButtonStyle : ''"
-				@click="setLightMode"
+				@click="setMode(Mode.Light)"
 			>
 				<i class="fa-sun" :class="theme === 'light' ? 'fa-solid' : 'fa-light'" />
 			</button>
