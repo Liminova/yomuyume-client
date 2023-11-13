@@ -13,6 +13,12 @@ dependencies:
   '@material/web':
     specifier: ^1.0.0
     version: 1.0.1
+  debounce:
+    specifier: ^1.2.1
+    version: 1.2.1
+  swiper:
+    specifier: ^11.0.3
+    version: 11.0.3
   tailwindcss:
     specifier: ^3.3.3
     version: 3.3.5(ts-node@10.9.1)
@@ -22,14 +28,14 @@ dependencies:
   vue-router:
     specifier: ^4.2.5
     version: 4.2.5(vue@3.3.7)
-  vueperslides:
-    specifier: ^3.5.1
-    version: 3.5.1(vue@3.3.7)
 
 devDependencies:
   '@commitlint/config-conventional':
     specifier: ^17.7.0
     version: 17.8.1
+  '@types/debounce':
+    specifier: ^1.2.3
+    version: 1.2.3
   '@typescript-eslint/eslint-plugin':
     specifier: ^6.7.0
     version: 6.9.1(@typescript-eslint/parser@6.9.1)(eslint@8.52.0)(typescript@5.2.2)
@@ -663,6 +669,10 @@ packages:
 
   /@tsconfig/node16@1.0.4:
     resolution: {integrity: sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==}
+
+  /@types/debounce@1.2.3:
+    resolution: {integrity: sha512-97mx7gWt4e+kd0wPa1pNEvE4tYGhgBVa4ExWOLcfFohAjF9wERfJ+3qrn7I1e76oHupOvRs4UyYe9xzy0i4TUw==}
+    dev: true
 
   /@types/estree@1.0.4:
     resolution: {integrity: sha512-2JwWnHK9H+wUZNorf2Zr6ves96WHoWDJIftkcxPKsS7Djta6Zu519LarhRNljPXkpsZR2ZMwNCPeW7omW07BJw==}
@@ -1555,6 +1565,10 @@ packages:
   /de-indent@1.0.2:
     resolution: {integrity: sha512-e/1zu3xH5MQryN2zdVaF0OrdNLUbvWxzMbi+iNA6Bky7l1RoP8a2fIbRocyHclXt/arDrrR6lL3TqFD9pMQTsg==}
     dev: true
+
+  /debounce@1.2.1:
+    resolution: {integrity: sha512-XRRe6Glud4rd/ZGQfiV1ruXSfbvfJedlV9Y6zOlP+2K04vBYiJEte6stfFkCP03aMnY5tsipamumUjL14fofug==}
+    dev: false
 
   /debug@2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
@@ -3776,6 +3790,11 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
+  /swiper@11.0.3:
+    resolution: {integrity: sha512-MyV9ooQsriAe2EibeamqewLjgCfSvl2xoyratl6S3ln5BXDL4BzlO6mxcbLMCzQL6Z60b/u0AS/nKrepL0+TAg==}
+    engines: {node: '>= 4.7.0'}
+    dev: false
+
   /synckit@0.8.5:
     resolution: {integrity: sha512-L1dapNV6vu2s/4Sputv8xGsCdAVlb5nRDMFU/E27D44l5U6cw1g0dGd45uLc+OXjNMmF4ntiMdCimzcjFKQI8Q==}
     engines: {node: ^14.18.0 || >=16.0.0}
@@ -4148,14 +4167,6 @@ packages:
       '@vue/server-renderer': 3.3.7(vue@3.3.7)
       '@vue/shared': 3.3.7
       typescript: 5.2.2
-
-  /vueperslides@3.5.1(vue@3.3.7):
-    resolution: {integrity: sha512-g/Lauv1svlSaERzLNeys0oeLmpDFiXkIa+lxg+lJma6m6wXqJKzKKVIi8Kvc95XPnl42n7PYYJyr0+FMV6WZGw==}
-    peerDependencies:
-      vue: ^2.6.14 || ^3.2.0
-    dependencies:
-      vue: 3.3.7(typescript@5.2.2)
-    dev: false
 
   /which-boxed-primitive@1.0.2:
     resolution: {integrity: sha512-bwZdv0AKLpplFY2KZRX6TvyuN7ojjr7lwkg6ml0roIy9YeuSr7JS372qlNW18UQYzgYK9ziGcerWqZOmEn9VNg==}
