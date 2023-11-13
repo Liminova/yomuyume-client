@@ -18,16 +18,15 @@ function addDots(inputString: string, limit: number): string {
 </script>
 
 <template>
-	<!-- bg-[--md-sys-color-secondary-container] -->
 	<div
-		class="relative flex h-full max-w-full flex-row justify-center overflow-hidden rounded-3xl bg-[rgb(248_216_255/0.7)] dark:bg-[rgb(116_0_160/0.7)] sm:static"
+		class="relative flex h-full w-full flex-row justify-center bg-[rgb(248_216_255/0.7)] dark:bg-[rgb(116_0_160/0.7)] sm:static"
 	>
 		<!-- Background -->
-		<div class="absolute left-0 top-0 z-[-1] h-full w-full overflow-hidden rounded-3xl">
+		<div class="absolute left-0 top-0 z-[-1] h-full w-full overflow-hidden">
 			<img
 				src="https://drive.google.com/uc?export=download&id=1MDf4aOzLoZzE0lpIeUXxsdV6ZOYSQibW"
 				draggable="false"
-				class="h-auto w-full scale-150 animate-random-translate object-cover blur-sm"
+				class="h-auto w-full scale-150 object-cover blur-sm"
 			/>
 		</div>
 
@@ -85,5 +84,4 @@ function addDots(inputString: string, limit: number): string {
 			</div>
 		</div>
 	</div>
-	<!-- </div> -->
 </template>
