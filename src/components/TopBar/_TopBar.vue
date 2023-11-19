@@ -4,6 +4,15 @@ import NavToggleIcon from "./NavToggleIcon.vue";
 import SearchBar from "./SearchBar.vue";
 import UserAvatar from "./UserAvatar.vue";
 import { vibrate, isTopBarVisible } from "../../utils/store";
+import navigateToSearch from "../../utils/navigateToSearch";
+
+window.addEventListener("keydown", (e) => {
+	if (e.ctrlKey && e.key === "k") {
+		e.preventDefault();
+		navigateToSearch();
+	}
+});
+
 </script>
 
 <template>

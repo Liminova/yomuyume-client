@@ -19,9 +19,9 @@ import "@material/web/ripple/ripple.js";
 					class="fa-regular fa-magnifying-glass text-xl text-[color:var(--md-sys-color-on-surface-variant)]"
 				></i>
 				<div
-					class="bg-transparent pr-24 text-[color:var(--md-sys-color-on-surface-variant)]"
+					class="bg-transparent pr-24 text-[color:var(--md-sys-color-primary-fixed-dim)]"
 				>
-					Search
+					Ctrl + K
 				</div>
 			</div>
 		</div>
