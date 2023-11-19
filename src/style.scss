@@ -14,6 +14,7 @@
     --md-sys-elevation-level5: 0px 8px 12px 6px rgba(0, 0, 0, 0.15), 0px 4px 4px rgba(0, 0, 0, 0.3);
 
 }
+
 [data-theme="light"] {
     --md-sys-elevation-level1: 0px 1px 2px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
     --md-sys-elevation-level2: 0px 1px 2px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15);
@@ -27,21 +28,51 @@
         box-shadow: var(--md-sys-elevation-level1);
         background-color: var(--md-sys-color-surface-container-low);
     }
+
     .elevation-2 {
         box-shadow: var(--md-sys-elevation-level2);
         background-color: var(--md-sys-color-surface-container);
     }
+
     .elevation-3 {
         box-shadow: var(--md-sys-elevation-level3);
         background-color: var(--md-sys-color-surface-container-high);
     }
+
     .elevation-4 {
         box-shadow: var(--md-sys-elevation-level4);
         background-color: var(--md-sys-color-surface-container-high);
     }
+
     .elevation-5 {
         box-shadow: var(--md-sys-elevation-level5);
         background-color: var(--md-sys-color-surface-container-highest);
+    }
+
+    .truncate-base {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+    }
+
+    .truncate-2 {
+        @apply truncate-base;
+        -webkit-line-clamp: 2;
+    }
+
+    .truncate-3 {
+        @apply truncate-base;
+        -webkit-line-clamp: 3;
+    }
+
+    .truncate-4 {
+        @apply truncate-base;
+        -webkit-line-clamp: 4;
+    }
+
+    .truncate-5 {
+        @apply truncate-base;
+        -webkit-line-clamp: 5;
     }
 }
 
@@ -55,13 +86,30 @@ html {
 * {
     color: var(--md-sys-color-on-surface);
     font-family: "Roboto", sans-serif;
-    -webkit-tap-highlight-color: transparent
 }
 
-.vueperslides__bullets {
-    position: absolute;
-    align-items: flex-start;
-    justify-content: end;
-    top: -2.6rem !important;
-    right: -0.6rem !important;
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+.v-enter-active,
+.v-leave-active {
+    transition-property: opacity;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
+img {
+    width: 100%;
+    height: auto;
+    vertical-align: middle;
+    font-style: italic;
+    background-repeat: no-repeat;
+    background-size: cover;
+    shape-margin: 1rem;
 }
