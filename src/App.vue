@@ -26,7 +26,5 @@ if (localStorage.getItem("instance-address") === null || !cookies.session) {
 </script>
 
 <template>
-	<div>
-		<router-view />
-	</div>
+	<router-view />
 </template>
