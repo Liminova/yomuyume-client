@@ -3,7 +3,7 @@ import LogoAndTitle from "./LogoAndTitle.vue";
 import NavToggleIcon from "./NavToggleIcon.vue";
 import SearchBar from "./SearchBar.vue";
 import UserAvatar from "./UserAvatar.vue";
-import { vibrate, isTopBarVisible } from "../../store";
+import { vibrate, isTopBarVisible } from "../../utils/store";
 </script>
 
 <template>

@@ -3,7 +3,7 @@ import "@material/web/textfield/outlined-text-field.js";
 import "@material/web/button/filled-tonal-button.js";
 import "@material/web/progress/linear-progress.js";
 import Toggle from "../../components/ToggleWrapper.vue";
-import { State } from "../../store";
+import { State } from "../../utils/store";
 import { ref } from "vue";
 
 // Theme =======================================================================

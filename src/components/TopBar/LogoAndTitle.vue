@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { vibrate } from "../../store";
+import { vibrate } from "../../utils/store";
 </script>
 
 <template>

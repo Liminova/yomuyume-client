@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import router from "../../router";
-import { vibrate, isNavDrawerLarge } from "../../store";
+import router from "../../utils/router";
+import { vibrate, isNavDrawerLarge } from "../../utils/store";
 import { computed } from "vue";
 import "@material/web/ripple/ripple.js";
 

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import NavEntry from "./NavEntry.vue";
 import ThemeToggle from "./ThemeToggle.vue";
-import router from "../../router";
-import Routes from "../../routes";
-import { isNavDrawerLarge as isNavOpen, vibrate } from "../../store";
+import router from "../../utils/router";
+import Routes from "../../utils/routes";
+import { isNavDrawerLarge as isNavOpen, vibrate } from "../../utils/store";
 import DividerBar from "../DividerBar.vue";
 import Toggle from "../ToggleWrapper.vue";
 import { ref } from "vue";
