@@ -1,26 +1,5 @@
 <script setup lang="ts">
-import { isNavDrawerLarge } from "../../store";
-import { ref, watchEffect } from "vue";
-
-const topBar = ref<HTMLElement | null>(null);
-const middleBar = ref<HTMLElement | null>(null);
-const bottomBar = ref<HTMLElement | null>(null);
-
-watchEffect(() => {
-	if (!topBar.value || !middleBar.value || !bottomBar.value) {
-		return;
-	}
-
-	if (isNavDrawerLarge.value) {
-		topBar.value.style.transform = "translateX(-2px)";
-		middleBar.value.style.transform = "translateX(4px)";
-		bottomBar.value.style.transform = "translateX(-2px)";
-	} else {
-		topBar.value.style.transform = "translateX(0)";
-		middleBar.value.style.transform = "translateX(0)";
-		bottomBar.value.style.transform = "translateX(0)";
-	}
-});
+import { isNavDrawerLarge } from "../../utils/store";
 </script>
 
 <template>
@@ -38,14 +17,17 @@ watchEffect(() => {
 			<div
 				ref="topBar"
 				class="h-[1px] w-5 rounded-full bg-[--md-sys-color-on-surface] transition-all"
+				:class="isNavDrawerLarge ? 'translate-x-[-2px]' : 'translate-x-0 transition-all'"
 			></div>
 			<div
 				ref="middleBar"
 				class="h-[1px] w-5 rounded-full bg-[--md-sys-color-on-surface] transition-all"
+				:class="isNavDrawerLarge ? 'translate-x-[4px]' : 'translate-x-0'"
 			></div>
 			<div
 				ref="bottomBar"
 				class="h-[1px] w-5 rounded-full bg-[--md-sys-color-on-surface] transition-all"
+				:class="isNavDrawerLarge ? 'translate-x-[-2px]' : 'translate-x-0'"
 			></div>
 		</div>
 	</div>
