@@ -10,10 +10,15 @@ const props = defineProps({
 });
 
 onMounted(() => {
+	if (window.innerWidth < 1280) {
+		isNavDrawerLarge.value = false;
+	}
+
 	let prevScrollPos = -document.body.getBoundingClientRect().top;
 
 	function toggleTopBar() {
 		if (window.innerWidth >= 1024) {
+			isTopBarVisible.value = true;
 			return;
 		}
 
