@@ -4,6 +4,7 @@ import ItemCard from "./ItemCard.vue";
 const props = defineProps({
 	carouselHeight: { type: String, required: true },
 	gapPixel: { type: Number, required: true },
+	contentHeightOfCard: { type: Number, required: true },
 });
 
 /** */
@@ -33,11 +34,36 @@ const props = defineProps({
 			},
 		}"
 	>
-		<swiper-slide v-for="i in 9" :key="i" class="flex items-center justify-center">
+		<swiper-slide class="flex items-center justify-center">
 			<ItemCard
 				cover-image-url="/placeholder.svg"
-				title="Place anything you like here"
+				title="Lorem ipsum dolor sit"
 				artist="Smbdy"
+				:content-height-of-card="props.contentHeightOfCard"
+			/>
+		</swiper-slide>
+		<swiper-slide class="flex items-center justify-center">
+			<ItemCard
+				cover-image-url="/placeholder.svg"
+				title="Lorem ipsum dolor sit amet, consectetur"
+				artist="Smbdy"
+				:content-height-of-card="props.contentHeightOfCard"
+			/>
+		</swiper-slide>
+		<swiper-slide class="flex items-center justify-center">
+			<ItemCard
+				cover-image-url="/placeholder.svg"
+				title="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+				artist="Smbdy"
+				:content-height-of-card="props.contentHeightOfCard"
+			/>
+		</swiper-slide>
+		<swiper-slide class="flex items-center justify-center">
+			<ItemCard
+				cover-image-url="/placeholder.svg"
+				title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget"
+				artist="Smbdy"
+				:content-height-of-card="props.contentHeightOfCard"
 			/>
 		</swiper-slide>
 	</swiper-container>

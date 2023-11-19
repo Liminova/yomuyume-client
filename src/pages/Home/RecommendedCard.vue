@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Image from "../../components/ImagePoly.vue";
 import "@material/web/chips/assist-chip.js";
 
 const props = defineProps({
@@ -12,9 +13,7 @@ const props = defineProps({
 	description: { type: String, required: true },
 });
 
-function addDots(inputString: string, limit: number): string {
-	return inputString.length > limit ? `${inputString.substring(0, limit)}...` : inputString;
-}
+/** */
 </script>
 
 <template>
@@ -22,16 +21,20 @@ function addDots(inputString: string, limit: number): string {
 		class="relative flex h-full w-full flex-row justify-center bg-[rgb(248_216_255/0.7)] dark:bg-[rgb(116_0_160/0.7)] sm:static"
 	>
 		<!-- Background -->
-		<div class="absolute left-0 top-0 z-[-1] h-full w-full overflow-hidden">
-			<img
-				src="https://drive.google.com/uc?export=download&id=1MDf4aOzLoZzE0lpIeUXxsdV6ZOYSQibW"
-				draggable="false"
-				class="h-auto w-full scale-150 object-cover blur-sm"
+		<div class="absolute left-0 top-0 z-[-1] hidden h-full w-full overflow-hidden sm:block">
+			<Image
+				src="https://cdn.jsdelivr.net/gh/Delnegend/assets/comic-bg.avif"
+				format="avif"
+				blurhash="T9N,}IWF%Nxu%M%M~q%MM{%M4nM|"
+				:width="520"
+				:height="735"
+				:draggable="false"
+				class="w-full scale-150 object-cover blur-sm"
 			/>
 		</div>
 
 		<!-- Cover -->
-		<div class="h-full sm:min-w-[350px] sm:max-w-xs lg:py-10 lg:pl-10">
+		<div class="h-full w-full sm:min-w-[350px] sm:max-w-xs lg:py-10 lg:pl-10">
 			<img
 				:src="props.coverImageUrl"
 				class="h-full w-full object-cover lg:rounded-2xl"
@@ -41,26 +44,20 @@ function addDots(inputString: string, limit: number): string {
 
 		<!-- Infos for wide screen -->
 		<div
-			class="hidden max-w-3xl flex-col justify-start gap-3 sm:flex sm:max-h-[500px] sm:overflow-y-auto sm:p-10"
+			class="hidden max-w-3xl flex-col justify-start gap-3 overflow-y-auto sm:flex sm:max-h-[500px] sm:p-10"
 		>
 			<div>
-				<div class="text-3xl font-bold">
-					{{ props.title }}
+				<div class="text-lg font-light">{{ props.author }}</div>
+				<div class="truncate-2 mb-1 text-3xl font-bold">{{ props.title }}</div>
+				<div>
+					{{ props.releaseYear }} | {{ props.pages }} pages |
+					{{ isColored == 1 ? "colored" : "monochrome" }}
 				</div>
-				<div class="text-lg">
-					by <span class="font-bold">{{ props.author }}</span>
-				</div>
-			</div>
-			<div>
-				{{ props.releaseYear }} | {{ props.pages }} pages |
-				{{ isColored == 1 ? "colored" : "monochrome" }}
 			</div>
 			<div class="flex flex-row flex-wrap gap-2">
 				<md-assist-chip v-for="i in 5" :key="i" :label="i.toString()" />
 			</div>
-			<div class="">
-				{{ props.description }}
-			</div>
+			<div class="truncate-5 overflow-hidden">{{ props.description }}</div>
 		</div>
 
 		<!-- Info for small screen -->
@@ -68,19 +65,18 @@ function addDots(inputString: string, limit: number): string {
 			class="absolute left-0 top-0 flex h-full w-full flex-col items-start justify-end gap-3 bg-[linear-gradient(to_bottom,rgba(248_216_255/0.3),rgba(248_216_255/1))] p-7 dark:bg-[linear-gradient(to_bottom,rgba(116_0_160/0.3),rgba(116_0_160/1))] sm:hidden"
 		>
 			<div>
-				<div class="text-2xl font-bold">
-					{{ props.title }}
-				</div>
-				<div class="text-lg">
-					by <span class="font-bold">{{ props.author }}</span>
-				</div>
+				<div class="text-lg font-light">{{ props.author }}</div>
+				<div class="truncate-2 text-2xl font-bold">{{ props.title }}</div>
 			</div>
 			<div class="text-sm">
 				{{ props.releaseYear }} | {{ props.pages }} pages |
 				{{ isColored == 1 ? "colored" : "monochrome" }}
 			</div>
-			<div class="overflow-hidden text-ellipsis">
-				{{ addDots(props.description, 150) }}
+			<div
+				class="overflow-hidden text-ellipsis"
+				style="-webkit-line-clamp: 5; display: -webkit-box; -webkit-box-orient: vertical"
+			>
+				{{ props.description }}
 			</div>
 		</div>
 	</div>

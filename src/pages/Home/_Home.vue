@@ -1,27 +1,24 @@
 <script setup lang="ts">
 import HorizontalScrollList from "./HorizontalScrollList.vue";
+import Title from "./LargeTitle.vue";
 import RecommendedCard from "./RecommendedCard.vue";
 import NavDrawerWrapper from "../../components/NavDrawerWrapper/_NavDrawerWrapper.vue";
-import { isNavDrawerLarge } from "../../store";
+import Routes from "../../utils/routes";
 import { debounce } from "debounce";
 import { register } from "swiper/element/bundle";
 import { onMounted, ref } from "vue";
-import "vueperslides/dist/vueperslides.css";
 
 register();
 
 const elementWidthRef = ref<HTMLElement | null>(null);
 
 const gapPixel = 18;
-const xRatio = 1;
-const yRatio = 2;
+const xRatio = 3;
+const yRatio = 4;
+const contentHeightOfCard = 84;
 const carouselHeight = ref("");
 
 onMounted(() => {
-	if (window.innerWidth < 1280) {
-		isNavDrawerLarge.value = false;
-	}
-
 	function changeCarouselHeight() {
 		if (!elementWidthRef.value) {
 			return;
@@ -47,7 +44,7 @@ onMounted(() => {
 		const xAxisOfCard = (elementWidthRef.value.offsetWidth - totalGapPixel) / numberOfCards;
 		const yAxisOfCard = (xAxisOfCard * yRatio) / xRatio;
 
-		carouselHeight.value = `height: ${Math.round(yAxisOfCard)}px`;
+		carouselHeight.value = `height: ${Math.round(yAxisOfCard) + contentHeightOfCard}px`;
 	}
 
 	if (elementWidthRef.value) {
@@ -61,7 +58,7 @@ onMounted(() => {
 <template>
 	<!-- NOTE: changing the size of gap requires changing the width calculation of all below horizontal container -->
 	<NavDrawerWrapper
-		class="mb-6 mt-3 flex w-full select-none flex-col gap-7 px-6 transition-all lg:mt-0 lg:pl-0 lg:pr-3"
+		class="mt-3 flex w-full select-none flex-col gap-7 px-6 transition-all lg:mt-0 lg:pl-0 lg:pr-3"
 	>
 		<swiper-container
 			class="h-[500px] w-full overflow-hidden rounded-3xl"
@@ -82,11 +79,25 @@ onMounted(() => {
 			</swiper-slide>
 		</swiper-container>
 
-		<div ref="elementWidthRef" class="text-4xl font-bold">Continue reading</div>
-		<HorizontalScrollList :carousel-height="carouselHeight" :gap-pixel="gapPixel" />
-		<div class="text-4xl font-bold">Newly updated</div>
-		<HorizontalScrollList :carousel-height="carouselHeight" :gap-pixel="gapPixel" />
-		<div class="text-4xl font-bold">Recently added</div>
-		<HorizontalScrollList :carousel-height="carouselHeight" :gap-pixel="gapPixel" />
+		<Title :path="Routes.ContinueReading">Continue reading</Title>
+		<HorizontalScrollList
+			:carousel-height="carouselHeight"
+			:gap-pixel="gapPixel"
+			:content-height-of-card="contentHeightOfCard"
+		/>
+		<Title :path="Routes.NewlyUpdated">Newly updated</Title>
+		<HorizontalScrollList
+			:carousel-height="carouselHeight"
+			:gap-pixel="gapPixel"
+			:content-height-of-card="contentHeightOfCard"
+		/>
+		<Title :path="Routes.RecentlyAdded">Recently added</Title>
+		<HorizontalScrollList
+			:carousel-height="carouselHeight"
+			:gap-pixel="gapPixel"
+			:content-height-of-card="contentHeightOfCard"
+		/>
+
+		<div ref="elementWidthRef" class="w-full"></div>
 	</NavDrawerWrapper>
 </template>
