@@ -35,16 +35,29 @@ onMounted(() => {
 	}
 
 	window.onscroll = debounce(toggleTopBar, 100);
+	window.onresize = debounce(toggleTopBar, 100);
 });
 </script>
 
 <template>
-	<div class="flex flex-col">
+	<div>
 		<TopBar />
-		<NavDrawer />
-		<div class="transition-all" :class="isNavDrawerLarge ? 'lg:ml-[360px]' : 'lg:ml-[80px]'">
-			<div :class="props.class">
-				<slot />
+		<div
+			class="transition-all lg:grid lg:grid-cols-[0fr_1fr]"
+			:class="isNavDrawerLarge ? 'lg:grid-cols-[360px_1fr]' : 'lg:grid-cols-[80px_1fr]'"
+		>
+			<NavDrawer />
+			<div
+				class="transition-all lg:min-w-[0px]"
+				:class="
+					isNavDrawerLarge
+						? 'lg:max-w-[calc(100vw-360px)]'
+						: 'lg:max-w-[calc(100vw-80px)]'
+				"
+			>
+				<div :class="props.class">
+					<slot />
+				</div>
 			</div>
 		</div>
 	</div>

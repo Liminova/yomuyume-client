@@ -63,7 +63,7 @@ if (window.innerWidth <= 1024) {
 
 		<!-- Bubble when hover on small nav -->
 		<div
-			class="pointer-events-none absolute left-20 top-0 flex h-full scale-90 items-center justify-center opacity-0 transition-all peer-hover:scale-100 peer-hover:opacity-100"
+			class="pointer-events-none absolute left-[68px] top-0 flex h-full scale-90 items-center justify-center opacity-0 transition-all peer-hover:scale-100 peer-hover:opacity-100"
 			:class="isNavDrawerLarge ? 'hidden' : ''"
 		>
 			<div

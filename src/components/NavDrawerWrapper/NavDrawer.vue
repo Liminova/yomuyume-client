@@ -17,17 +17,7 @@ function resetEntryBg() {
 
 	const entryIndex = entryIndexMap.indexOf(router.currentRoute.value.path);
 
-	if (entryIndex === -1) {
-		entryBackground.value.style.opacity = "0";
-		setTimeout(() => {
-			if (entryBackground.value === null) {
-				return;
-			}
-
-			entryBackground.value.style.display = "none";
-		}, 150);
-	}
-
+	entryBackground.value.style.opacity = entryIndex === -1 ? "0" : "1";
 	entryBackground.value.style.transform = `translateY(${56 * entryIndex}px)`;
 }
 
@@ -60,30 +50,26 @@ function moveEntryBg(index: number) {
 <!-- NOTE: DO NOT USE this component in any place other than NavDrawerWrapper.vue -->
 <template>
 	<div
-		class="fixed left-0 top-[--topbar-height] z-10 flex h-[calc(100vh-var(--topbar-height))] w-full flex-row transition-all lg:max-w-[360px] lg:translate-x-0"
+		class="fixed left-0 top-[--topbar-height] z-10 flex h-[calc(100vh-var(--topbar-height))] flex-row transition-all lg:sticky lg:translate-x-0"
 		:class="
-			isNavOpen ? 'translate-x-0 lg:max-w-[360px]' : '-translate-x-[360px] lg:max-w-[80px]'
+			isNavOpen ? 'translate-x-0 w-full lg:w-[360px]' : '-translate-x-[360px] w-0 lg:w-[80px]'
 		"
 	>
+		<!-- Navigation drawer -->
 		<div
-			class="relative flex h-full w-full max-w-[360px] flex-col justify-start rounded-br-[3rem] bg-[--md-sys-color-surface] shadow-2xl transition-all lg:w-full lg:rounded-none lg:shadow-none"
+			class="relative flex h-full w-full max-w-[360px] flex-col justify-start rounded-br-3xl bg-[--md-sys-color-surface] shadow-2xl transition-all lg:rounded-none lg:shadow-none"
 		>
 			<!-- Entries' background -->
 			<div
 				ref="entryBackground"
-				class="absolute left-0 top-0 flex h-14 w-full select-none items-stretch px-3 transition-all"
-				:class="
-					entryIndexMap.indexOf(router.currentRoute.value.path) === -1 ? 'opacity-0' : ''
-				"
+				class="pointer-events-none absolute left-0 top-0 flex h-14 w-full select-none items-stretch px-3 transition-all"
 				:style="{
 					transform:
 						'translateY(' +
 						56 * entryIndexMap.indexOf(router.currentRoute.value.path) +
 						'px)',
-					display:
-						entryIndexMap.indexOf(router.currentRoute.value.path) === -1
-							? 'none'
-							: 'flex',
+					opacity:
+						entryIndexMap.indexOf(router.currentRoute.value.path) === -1 ? '0' : '1',
 				}"
 			>
 				<div
@@ -141,9 +127,8 @@ function moveEntryBg(index: number) {
 
 		<!-- A blank space on the right side of the nav drawer on mobile to close the nav drawer when clicked -->
 		<div
-			class="h-[calc(100vh-var(--top-bar-height))] w-full shrink-[100]"
-			:class="isNavOpen ? 'block' : 'hidden'"
-			@click="vibrate() && (isNavOpen = false)"
+			class="h-[calc(100vh-var(--top-bar-height))] w-full min-w-0 shrink-[1000] transition-all lg:hidden"
+			@click="(isNavOpen = false) && vibrate()"
 		></div>
 	</div>
 </template>

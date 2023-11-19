@@ -66,7 +66,7 @@ switch (localStorageTheme) {
 				:class="theme === 'auto' ? activeButtonStyle : ''"
 				@click="setMode(Mode.Auto)"
 			>
-				<i class="fa-bolt-auto" :class="theme === 'auto' ? 'fa-solid' : 'fa-light'" />
+				<i class="fa-moon-over-sun" :class="theme === 'auto' ? 'fa-solid' : 'fa-light'" />
 			</button>
 		</div>
 		<div class="relative rounded-e-full">
