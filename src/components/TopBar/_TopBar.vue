@@ -1,18 +1,17 @@
 <script setup lang="ts">
+import FilterBar from "./FilterBar.vue";
 import LogoAndTitle from "./LogoAndTitle.vue";
 import NavToggleIcon from "./NavToggleIcon.vue";
-import SearchBar from "./SearchBar.vue";
 import UserAvatar from "./UserAvatar.vue";
-import { vibrate, isTopBarVisible } from "../../utils/store";
-import navigateToSearch from "../../utils/navigateToSearch";
+import navigateToFilter from "../../utils/functions/navigateToFilter";
+import { isTopBarVisible } from "../../utils/variables/store";
 
 window.addEventListener("keydown", (e) => {
 	if (e.ctrlKey && e.key === "k") {
 		e.preventDefault();
-		navigateToSearch();
+		navigateToFilter();
 	}
 });
-
 </script>
 
 <template>
@@ -22,13 +21,13 @@ window.addEventListener("keydown", (e) => {
 	>
 		<!-- MavToggleButton, LogoTitle -->
 		<div class="flex flex-row items-center justify-start">
-			<NavToggleIcon @click="vibrate" />
+			<NavToggleIcon />
 			<LogoAndTitle />
 		</div>
 
-		<!-- Search, Profile -->
+		<!-- Filter, Profile -->
 		<div class="flex flex-row items-center justify-center gap-3">
-			<SearchBar />
+			<FilterBar />
 			<UserAvatar />
 		</div>
 	</div>

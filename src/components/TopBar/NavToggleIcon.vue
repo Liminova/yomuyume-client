@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { isNavDrawerLarge } from "../../utils/store";
+import { isNavDrawerLarge } from "../../utils/variables/store";
 </script>
 
 <template>
