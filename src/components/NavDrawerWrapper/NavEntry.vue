@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import router from "../../utils/router";
-import { vibrate, isNavDrawerLarge } from "../../utils/store";
+import router from "../../utils/variables/router";
+import { isNavDrawerLarge } from "../../utils/variables/store";
 import { computed } from "vue";
 import "@material/web/ripple/ripple.js";
 
@@ -19,7 +19,6 @@ const inactive = {
 };
 
 const active = {
-	// container: "bg-[var(--md-sys-color-primary-container)]",
 	container: "",
 	icon: "text-[color:var(--md-sys-color-on-primary-container)] fa-solid font-bold",
 	label: "text-[color:var(--md-sys-color-on-primary-container)] font-medium",
@@ -32,13 +31,11 @@ const style = computed(() => {
 if (window.innerWidth <= 1024) {
 	isNavDrawerLarge.value = true;
 }
-
-/** */
 </script>
 
 <template>
 	<div class="relative z-0">
-		<router-link :to="props.target" class="peer" @click="vibrate" @mouseover="props.mouseover">
+		<router-link :to="props.target" class="peer" @mouseover="props.mouseover">
 			<div
 				class="relative grid h-14 items-center gap-3 self-center pl-4 pr-6 transition-all"
 				:class="

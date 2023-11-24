@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { vibrate } from "../../utils/store";
+import { vibrate } from "../../utils/variables/store";
 import { ref } from "vue";
 import "@material/web/ripple/ripple.js";
 
@@ -60,10 +60,11 @@ switch (localStorageTheme) {
 			</button>
 		</div>
 		<div class="relative">
-			<md-ripple />
+			<!-- <md-ripple /> -->
 			<button
-				class="h-full w-full border-y-[1px] border-l-[1px] border-solid border-[color:var(--md-sys-color-outline)] text-[color:var(--md-sys-color-on-surface)] transition-all"
+				class="h-full w-full border-y-[1px] border-l-[1px] border-solid border-[color:var(--md-sys-color-outline)] text-[color:var(--md-sys-color-on-surface)] opacity-80 transition-all"
 				:class="theme === 'auto' ? activeButtonStyle : ''"
+				disabled
 				@click="setMode(Mode.Auto)"
 			>
 				<i class="fa-moon-over-sun" :class="theme === 'auto' ? 'fa-solid' : 'fa-light'" />

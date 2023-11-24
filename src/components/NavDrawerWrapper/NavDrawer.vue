@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import NavEntry from "./NavEntry.vue";
 import ThemeToggle from "./ThemeToggle.vue";
-import router from "../../utils/router";
-import Routes from "../../utils/routes";
-import { isNavDrawerLarge as isNavOpen, vibrate } from "../../utils/store";
+import router from "../../utils/variables/router";
+import Routes from "../../utils/variables/routes";
+import { isNavDrawerLarge as isNavOpen } from "../../utils/variables/store";
 import DividerBar from "../DividerBar.vue";
 import Toggle from "../ToggleWrapper.vue";
 import { ref } from "vue";
@@ -26,7 +26,7 @@ const entryIndexMap: Array<string> = [
 	Routes.Home,
 	Routes.Library,
 	Routes.ContinueReading,
-	Routes.RecentlyAdded,
+	Routes.NewlyAdded,
 	Routes.CompletedStories,
 	Routes.CompletedReads,
 ];
@@ -103,7 +103,7 @@ function moveEntryBg(index: number) {
 				<NavEntry
 					name="Recently added"
 					icon="fa-stars"
-					:target="Routes.RecentlyAdded"
+					:target="Routes.NewlyAdded"
 					:mouseover="moveEntryBg(3)"
 				/>
 				<NavEntry
@@ -128,7 +128,7 @@ function moveEntryBg(index: number) {
 		<!-- A blank space on the right side of the nav drawer on mobile to close the nav drawer when clicked -->
 		<div
 			class="h-[calc(100vh-var(--top-bar-height))] w-full min-w-0 shrink-[1000] transition-all lg:hidden"
-			@click="(isNavOpen = false) && vibrate()"
+			@click="isNavOpen = false"
 		></div>
 	</div>
 </template>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import NavDrawer from "./NavDrawer.vue";
-import { isNavDrawerLarge, isTopBarVisible } from "../../utils/store";
+import { isNavDrawerLarge, isTopBarVisible } from "../../utils/variables/store";
 import TopBar from "../TopBar/_TopBar.vue";
 import { debounce } from "debounce";
 import { onMounted } from "vue";
