@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import router from "./utils/router";
+import router from "./utils/variables/router";
 
 const cookies: Record<string, string> = (() => {
 	const cookies: Record<string, string> = {};

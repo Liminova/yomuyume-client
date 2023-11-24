@@ -1,14 +1,14 @@
 enum Routes {
-	AccountSettings = "/account-settings",
+	Settings = "/settings",
 	Auth = "/auth",
 	CompletedReads = "/completed-reads",
 	CompletedStories = "/completed-stories",
 	ContinueReading = "/continue-reading",
 	Home = "/",
 	Library = "/library",
-	NewlyUpdated = "/newly-updated",
-	RecentlyAdded = "/recently-added",
-	Search = "/search",
+	RecentlyUpdated = "/newly-updated",
+	NewlyAdded = "/recently-added",
+	Filter = "/filter",
 }
 
 export default Routes;
