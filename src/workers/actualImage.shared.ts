@@ -2,18 +2,18 @@
 import avifDec from "/avif_dec.js?url";
 // eslint-disable-next-line import/no-absolute-path
 import jxlDec from "/jxl_dec.js?url";
-import MyOffscreenCanvas from "../utils/MyOffscreenCanvas";
-import { saveToCache, getFromCache } from "../utils/cacheOperations";
+import MyOffscreenCanvas from "../utils/classes/MyOffscreenCanvas";
+import { saveToCache, getFromCache } from "../utils/functions/cacheOperations";
+import { MAX_WORKERS } from "../utils/variables/store";
+import dataToBlobURL from "../utils/functions/dataToBlobURL";
 
 interface MyMessageData {
+	src: string;
 	format: string;
-	path: string;
-	maxAge: number;
 }
 
 const queue: Array<{ data: MyMessageData; port: MessagePort }> = [];
 let activeWorkers = 0;
-const MAX_WORKERS = navigator.hardwareConcurrency || 4;
 
 // @ts-expect-error - self is a SharedWorkerGlobalScope
 self.onconnect = (event: MessageEvent<MyMessageData>) => {
@@ -49,11 +49,19 @@ async function processQueue() {
 			return;
 		}
 
+		const { src, format } = job.data;
+
+		if (!src || !format) {
+			activeWorkers--;
+			await processQueue();
+			return;
+		}
+
 		/** Fetch from cache first */
-		const cached = await getFromCache(job.data.path);
+		const cached = await getFromCache(src);
 
 		if (cached !== "") {
-			job.port.postMessage(cached);
+			job.port.postMessage(await dataToBlobURL(cached));
 			activeWorkers--;
 			await processQueue();
 			return;
@@ -61,25 +69,20 @@ async function processQueue() {
 
 		/** Fetch image from network */
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-		const module = await getDecoder(job.data.format);
-		const image = await fetch(job.data.path);
+		const decoder = await getDecoder(format);
+		const fetchedImage = await fetch(src);
 
-		if (!image.ok) {
+		if (!fetchedImage.ok) {
 			return;
 		}
 
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-		const imageData: ImageData = module.decode(await image.arrayBuffer());
+		const decoded: ImageData = decoder.decode(await fetchedImage.arrayBuffer());
 
-		/** Place into canvas */
-		const canvas = new MyOffscreenCanvas(imageData.width, imageData.height).fromImageData(
-			imageData
-		);
+		const canvas = new MyOffscreenCanvas(decoded.width, decoded.height).fromImageData(decoded);
 
-		/** Save to cache */
-		await saveToCache(job.data.path, await canvas.convertToBase64(), job.data.maxAge);
+		await saveToCache(job.data.src, await canvas.convertToBase64());
 
-		/** Send blob url to main thread */
 		job.port.postMessage(await canvas.convertToBlobURL());
 
 		activeWorkers--;

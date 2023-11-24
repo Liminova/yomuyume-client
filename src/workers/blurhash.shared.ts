@@ -1,16 +1,16 @@
-import MyOffscreenCanvas from "../utils/MyOffscreenCanvas";
-import { saveToCache, getFromCache } from "../utils/cacheOperations";
+import MyOffscreenCanvas from "../utils/classes/MyOffscreenCanvas";
+import { saveToCache, getFromCache } from "../utils/functions/cacheOperations";
+import dataToBlobURL from "../utils/functions/dataToBlobURL";
+import { MAX_WORKERS } from "../utils/variables/store";
 
 interface MyMessageData {
+	blurhash: string;
 	width: number;
 	height: number;
-	blurhash: string;
-	maxAge: number;
 }
 
 const queue: Array<{ data: MyMessageData; port: MessagePort }> = [];
 let activeWorkers = 0;
-const MAX_WORKERS = navigator.hardwareConcurrency || 4;
 
 // @ts-expect-error - self is a SharedWorkerGlobalScope
 self.onconnect = (event: MessageEvent<MyMessageData>) => {
@@ -31,23 +31,27 @@ async function processQueue() {
 			return;
 		}
 
-		const { width, height, blurhash, maxAge } = job.data;
+		const { blurhash, width, height } = job.data;
 
-		const cache = await getFromCache(blurhash);
-
-		if (cache !== "") {
-			job.port.postMessage(cache);
+		if (!blurhash || !width || !height) {
 			activeWorkers--;
 			await processQueue();
 			return;
 		}
 
-		const rendered = await new MyOffscreenCanvas(width, height)
-			.fromBlurhash(blurhash)
-			.convertToBase64();
+		const cache = await getFromCache(blurhash);
 
-		await saveToCache(blurhash, rendered, maxAge);
-		job.port.postMessage(rendered);
+		if (cache !== "") {
+			job.port.postMessage(await dataToBlobURL(cache));
+			activeWorkers--;
+			await processQueue();
+			return;
+		}
+
+		const canvas = new MyOffscreenCanvas(width, height).fromBlurhash(blurhash);
+
+		await saveToCache(blurhash, await canvas.convertToBase64());
+		job.port.postMessage(await canvas.convertToBase64());
 
 		activeWorkers--;
 		await processQueue();
