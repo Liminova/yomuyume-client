@@ -17,18 +17,6 @@
     "rules": {
         "import/named": "off",
         "tailwindcss/no-custom-classname": "off",
-        "lines-around-comment": [
-            "error",
-            {
-                "beforeBlockComment": true,
-                "beforeLineComment": true,
-                "allowArrayStart": true,
-                "allowObjectStart": true,
-                "allowClassStart": true,
-                "allowBlockStart": true,
-                "ignorePattern": "has no types"
-            }
-        ],
         "no-restricted-globals": [
             "error",
             {
