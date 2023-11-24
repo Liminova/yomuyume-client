@@ -16,6 +16,9 @@ dependencies:
   debounce:
     specifier: ^1.2.1
     version: 1.2.1
+  fast-average-color:
+    specifier: ^9.4.0
+    version: 9.4.0
   fast-blurhash:
     specifier: ^1.1.2
     version: 1.1.2
@@ -2278,6 +2281,11 @@ packages:
       signal-exit: 3.0.7
       strip-final-newline: 3.0.0
     dev: true
+
+  /fast-average-color@9.4.0:
+    resolution: {integrity: sha512-bvM8vV6YwK07dPbzFz77zJaBcfF6ABVfgNwaxVgXc2G+o0e/tzLCF9WU8Ryp1r0Nkk6JuJNsWCzbb4cLOMlB+Q==}
+    engines: {node: '>= 12'}
+    dev: false
 
   /fast-blurhash@1.1.2:
     resolution: {integrity: sha512-lJVOgYSlahqkRhrKumNx/SGB2F/qS0D1z7xjGYjb5EZJRtlzySGMniZjkQ9h9Rv8sPmM/V9orEgRiMwazDNH6A==}
