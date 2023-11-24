@@ -1,9 +1,9 @@
 import { isAvifSupported, isJxlSupported } from "./isFormatSupported";
 import { MAX_WORKERS } from "../variables/store";
-import type MyImage from "../interfaces/MyImage";
+import type MyImage from "../types/MyImage";
 import type { Ref } from "vue";
 
-interface blurhashQueueType {
+type blurhashQueueType = {
 	data: {
 		blurhash: string;
 		width: number;
@@ -12,7 +12,7 @@ interface blurhashQueueType {
 	renderedDataRef: Ref<string>;
 }
 
-interface imageQueueType {
+type imageQueueType = {
 	data: {
 		src: string;
 		format: string;

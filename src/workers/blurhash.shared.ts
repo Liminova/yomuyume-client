@@ -3,7 +3,7 @@ import { saveToCache, getFromCache } from "../utils/functions/cacheOperations";
 import dataToBlobURL from "../utils/functions/dataToBlobURL";
 import { MAX_WORKERS } from "../utils/variables/store";
 
-interface MyMessageData {
+type MyMessageData = {
 	blurhash: string;
 	width: number;
 	height: number;

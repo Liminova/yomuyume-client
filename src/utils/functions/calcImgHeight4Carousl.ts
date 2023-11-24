@@ -1,6 +1,6 @@
 import { swiperBreakpoints } from "../variables/store";
 import { type Ref } from "vue";
-import type BreakPointType from "../interfaces/BreakPointsType";
+import type BreakPointRecord from "../types/BreakPointsRecord";
 
 /**
  * Gets the number of slides per view and the space between slides from the
@@ -9,7 +9,7 @@ import type BreakPointType from "../interfaces/BreakPointsType";
  * @param breakpoints Swiper breakpoints configuration, default is swiperBreakpoints from src/variables/store.ts
  */
 function getSwiperBreakPointsData(
-	breakpoints: BreakPointType = swiperBreakpoints
+	breakpoints: BreakPointRecord = swiperBreakpoints
 ): [number, number] {
 	const sortedBreakpoints = Object.keys(breakpoints).sort((a, b) => Number(b) - Number(a));
 
@@ -58,7 +58,7 @@ export default function calcImgHeight4Carousl(
 	_gapPixel = -1,
 	imageXratio = 3,
 	imageYratio = 4,
-	breakpoints: BreakPointType = swiperBreakpoints
+	breakpoints: BreakPointRecord = swiperBreakpoints
 ): number {
 	if (!containerRef.value) {
 		return 300;

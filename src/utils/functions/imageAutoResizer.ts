@@ -2,7 +2,7 @@ import calcImgHeight4Carousl from "./calcImgHeight4Carousl";
 import { swiperBreakpoints } from "../variables/store";
 import debounce from "debounce";
 import { Ref } from "vue";
-import type BreakPointType from "../interfaces/BreakPointsType";
+import type BreakPointRecord from "../types/BreakPointsRecord";
 
 /**
  * Resize the height of the images' container to match the desired ratio,
@@ -23,7 +23,7 @@ export default function imageAutoResizer(
 	gapPixel = -1,
 	xRatio = 3,
 	yRatio = 4,
-	breakpoints: BreakPointType = swiperBreakpoints
+	breakpoints: BreakPointRecord = swiperBreakpoints
 ) {
 	if (imagesContainerRef.value === null) {
 		return;

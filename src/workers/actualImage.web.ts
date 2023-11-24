@@ -6,7 +6,7 @@ import { getFromCache, saveToCache } from "../utils/functions/cacheOperations";
 import MyOffscreenCanvas from "../utils/classes/MyOffscreenCanvas";
 import dataToBlobURL from "../utils/functions/dataToBlobURL";
 
-interface MyMessageData {
+type MyMessageData = {
 	src: string;
 	format: string;
 }
