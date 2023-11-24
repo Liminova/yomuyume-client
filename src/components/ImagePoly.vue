@@ -1,75 +1,59 @@
 <script setup lang="ts">
-import { isAvifSupported, isJxlSupported } from "../utils/imageFormatSupport";
-import BlurhashWorker from "../workers/blurhash?sharedworker";
-import PolyfillWorker from "../workers/polyfill?sharedworker";
-import { ref } from "vue";
+import renderImage from "../utils/functions/renderImage";
+import { ref, watchEffect } from "vue";
+import type MyImage from "../utils/types/MyImage";
 
 const props = defineProps({
-	src: { type: String, required: true },
-	format: { type: String, required: true },
-	blurhash: { type: String, required: true },
-	width: { type: Number, required: true },
-	height: { type: Number, required: true },
 	class: { type: String, default: "" },
 	draggable: { type: Boolean, default: false },
+	emitRenderedImgBlobUrl: { type: Boolean, default: false },
+	image: { type: Object as () => MyImage, required: true },
+	imageClass: { type: String, default: "" },
+	lazy: { type: Boolean, default: true },
 });
 
-const blurhashBlob = ref("");
+const emit = defineEmits(["send-message"]);
+const renderedBlurhashBlobURL = ref("");
+const renderedActualImageBlobURL = ref("");
 
-(() => {
-	const worker = new BlurhashWorker();
-
-	worker.port.start();
-
-	// TODO: get max-age from server
-	worker.port.postMessage({
-		blurhash: props.blurhash,
-		width: props.width,
-		height: props.height,
-		maxAge: 1209600,
+if (props.emitRenderedImgBlobUrl) {
+	watchEffect(() => {
+		if (renderedActualImageBlobURL.value) {
+			emit("send-message", renderedActualImageBlobURL.value);
+		}
 	});
-	worker.port.onmessage = (event: MessageEvent<string>) => {
-		blurhashBlob.value = event.data;
-		worker.port.close();
-	};
-})();
+}
 
-const decodedImgBlob = ref("");
-
-(async () => {
-	if (
-		((await isJxlSupported()) && props.format === "jxl") ||
-		((await isAvifSupported()) && props.format === "avif")
-	) {
-		decodedImgBlob.value = props.src;
-		return;
-	}
-
-	const worker = new PolyfillWorker();
-
-	worker.port.start();
-
-	// TODO: get max-age from server
-	worker.port.postMessage({ path: props.src, format: props.format, maxAge: 1209600 });
-	worker.port.onmessage = (event: MessageEvent<string>) => {
-		decodedImgBlob.value = event.data;
-		worker.port.close();
-	};
-})().catch(() => {
+renderImage(props.image, renderedBlurhashBlobURL, renderedActualImageBlobURL).catch(() => {
 	/** */
 });
 </script>
 
 <template>
-	<div class="relative w-full" :class="props.class">
-		<img class="left-0 top-0" :src="blurhashBlob" :draggable="props.draggable" />
-		<Transition>
-			<img
-				v-show="decodedImgBlob"
-				class="absolute left-0 top-0"
-				:src="decodedImgBlob"
-				:draggable="props.draggable"
-			/>
-		</Transition>
+	<div class="relative" :class="props.class">
+		<!-- Blurhash placeholder -->
+		<img
+			:loading="props.lazy ? 'lazy' : 'eager'"
+			class="left-0 top-0"
+			:style="{
+				opacity: renderedBlurhashBlobURL ? 1 : 0,
+			}"
+			:class="props.imageClass"
+			:src="renderedBlurhashBlobURL"
+			:draggable="props.draggable"
+		/>
+
+		<!-- Actual image -->
+		<img
+			:loading="props.lazy ? 'lazy' : 'eager'"
+			class="absolute left-0 top-0"
+			:style="{
+				opacity: renderedActualImageBlobURL ? 1 : 0,
+				transition: 'opacity 0.5s ease',
+			}"
+			:class="props.imageClass"
+			:src="renderedActualImageBlobURL"
+			:draggable="props.draggable"
+		/>
 	</div>
 </template>
