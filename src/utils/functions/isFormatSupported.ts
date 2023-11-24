@@ -14,6 +14,9 @@ function isFormatSupported(format: string, dataUri: string): Promise<boolean> {
 	});
 }
 
+/**
+ * Checks if the browser supports the JPEG XL format.
+ */
 async function isJxlSupported(): Promise<boolean> {
 	if (window.sessionStorage.getItem("isJxlSupported")) {
 		return Promise.resolve(window.sessionStorage.getItem("isJxlSupported") === "true");
@@ -28,6 +31,9 @@ async function isJxlSupported(): Promise<boolean> {
 	return isJxlSupported;
 }
 
+/**
+ * Checks if the browser supports the AVIF format.
+ */
 async function isAvifSupported(): Promise<boolean> {
 	if (window.sessionStorage.getItem("isAvifSupported")) {
 		return Promise.resolve(window.sessionStorage.getItem("isAvifSupported") === "true");
