@@ -14,7 +14,7 @@ export default {
                     '50%': { transform: 'translateX(-10%) translateY(-10%) scale(1.5)' },
                     '75%': { transform: 'translateX(10%) translateY(-10%) scale(1.5)' },
                 },
-            }
+            },
         },
     },
     plugins: [],
