@@ -1,7 +1,5 @@
 import { decodeBlurHash } from "fast-blurhash";
 
-// import * as decodeBlurHash from "blurhash-wasm";
-
 export default class MyOffscreenCanvas extends OffscreenCanvas {
 	fromImageData(imageData: ImageData): this {
 		const ctx = this.getContext("2d");
