@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import type BreakPointRecord from "../types/BreakPointsRecord";
+import type BreakPointRecord from "../interfaces/BreakPointsRecord";
 
 enum State {
 	Idle = "Idle",

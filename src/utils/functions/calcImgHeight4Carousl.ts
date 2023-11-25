@@ -1,6 +1,6 @@
 import { swiperBreakpoints } from "../variables/store";
 import { type Ref } from "vue";
-import type BreakPointRecord from "../types/BreakPointsRecord";
+import type BreakPointRecord from "../interfaces/BreakPointsRecord";
 
 /**
  * Gets the number of slides per view and the space between slides from the

@@ -1,8 +1,8 @@
 import calcImgHeight4Carousl from "./calcImgHeight4Carousl";
 import { swiperBreakpoints } from "../variables/store";
 import debounce from "debounce";
-import { Ref } from "vue";
-import type BreakPointRecord from "../types/BreakPointsRecord";
+import type BreakPointRecord from "../interfaces/BreakPointsRecord";
+import type { Ref } from "vue";
 
 /**
  * Resize the height of the images' container to match the desired ratio,

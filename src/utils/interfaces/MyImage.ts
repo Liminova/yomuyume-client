@@ -1,4 +1,4 @@
-type MyImage = {
+interface MyImage {
 	blurhash: string;
 	format: string;
 	height: number;

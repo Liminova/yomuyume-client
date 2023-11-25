@@ -2,7 +2,7 @@ import MyOffscreenCanvas from "../utils/classes/MyOffscreenCanvas";
 import { saveToCache, getFromCache } from "../utils/functions/cacheOperations";
 import dataToBlobURL from "../utils/functions/dataToBlobURL";
 
-type MyMessageData = {
+interface MyMessageData {
 	blurhash: string;
 	width: number;
 	height: number;

@@ -7,7 +7,7 @@ import { saveToCache, getFromCache } from "../utils/functions/cacheOperations";
 import { MAX_WORKERS } from "../utils/variables/store";
 import dataToBlobURL from "../utils/functions/dataToBlobURL";
 
-type MyMessageData = {
+interface MyMessageData {
 	src: string;
 	format: string;
 }

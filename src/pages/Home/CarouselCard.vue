@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import CardBaseWithCover from "./CardBaseWithCover.vue";
-import type MyImage from "../../utils/types/MyImage";
+import type MyImage from "../../utils/interfaces/MyImage";
 
 const props = defineProps({
 	artist: { type: String, required: true },
