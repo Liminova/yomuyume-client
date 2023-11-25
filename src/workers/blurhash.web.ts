@@ -1,6 +1,6 @@
-import MyOffscreenCanvas from "../utils/classes/MyOffscreenCanvas";
-import { saveToCache, getFromCache } from "../utils/functions/cacheOperations";
-import dataToBlobURL from "../utils/functions/dataToBlobURL";
+import { saveToCache, getFromCache } from "../components/ImagePoly/cacheOperations";
+import MyOffscreenCanvas from "../components/ImagePoly/classes/MyOffscreenCanvas";
+import dataToBlobURL from "../components/ImagePoly/dataToBlobURL";
 
 interface MyMessageData {
 	blurhash: string;

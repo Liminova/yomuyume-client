@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import renderImage from "../utils/functions/renderImage";
+import renderImage from "./renderImage";
 import { ref, watchEffect } from "vue";
-import type MyImage from "../utils/interfaces/MyImage";
+import type MyImage from "../../utils/interfaces/MyImage";
 
 const props = defineProps({
 	class: { type: String, default: "" },

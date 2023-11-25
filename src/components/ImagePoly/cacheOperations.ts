@@ -1,4 +1,4 @@
-import { MAX_AGE } from "../variables/store";
+import { MAX_AGE } from "../../utils/variables/store";
 
 /**
  * Saves data to cache, use it like localStorage.setItem

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Image from "../../components/ImagePoly.vue";
+import Image from "../../components/ImagePoly/_ImagePoly.vue";
 import NavDrawerWrapper from "../../components/NavDrawerWrapper/_NavDrawerWrapper.vue";
 import imageAutoResizer from "../../utils/functions/imageAutoResizer";
 import { CATEGORIES } from "../../utils/variables/MOCK";

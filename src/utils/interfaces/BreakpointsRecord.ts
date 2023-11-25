@@ -1,4 +1,4 @@
-type BreakPointRecord = Record<
+type BreakpointRecord = Record<
 	number,
 	{
 		slidesPerView: number;
@@ -6,4 +6,4 @@ type BreakPointRecord = Record<
 	}
 >;
 
-export default BreakPointRecord;
+export default BreakpointRecord;

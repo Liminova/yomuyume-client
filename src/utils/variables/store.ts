@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import type BreakPointRecord from "../interfaces/BreakPointsRecord";
+import type BreakpointRecord from "../interfaces/BreakpointsRecord";
 
 enum State {
 	Idle = "Idle",
@@ -25,7 +25,7 @@ function vibrate(): undefined {
 const isNavDrawerLarge = ref(true);
 const isTopBarVisible = ref(true);
 
-const swiperBreakpoints: BreakPointRecord = {
+const swiperBreakpoints: BreakpointRecord = {
 	0: {
 		slidesPerView: 2,
 	},

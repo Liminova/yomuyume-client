@@ -2,9 +2,9 @@
 import avifDec from "/avif_dec.js?url";
 // eslint-disable-next-line import/no-absolute-path
 import jxlDec from "/jxl_dec.js?url";
-import { getFromCache, saveToCache } from "../utils/functions/cacheOperations";
-import MyOffscreenCanvas from "../utils/classes/MyOffscreenCanvas";
-import dataToBlobURL from "../utils/functions/dataToBlobURL";
+import { getFromCache, saveToCache } from "../components/ImagePoly/cacheOperations";
+import MyOffscreenCanvas from "../components/ImagePoly/classes/MyOffscreenCanvas";
+import dataToBlobURL from "../components/ImagePoly/dataToBlobURL";
 
 interface MyMessageData {
 	src: string;

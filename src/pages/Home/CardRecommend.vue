@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { recommendsContainerHeight } from "./measurements";
-import Image from "../../components/ImagePoly.vue";
+import Image from "../../components/ImagePoly/_ImagePoly.vue";
 import AverageColorWorker from "../../workers/fastAverageColor?worker";
 import { ref } from "vue";
 import type MyImage from "../../utils/interfaces/MyImage";
