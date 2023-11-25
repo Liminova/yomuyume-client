@@ -1,103 +1,70 @@
 <script setup lang="ts">
-import HorizontalScrollList from "./HorizontalScrollList.vue";
-import Title from "./LargeTitle.vue";
-import RecommendedCard from "./RecommendedCard.vue";
+import CardRecommend from "./CardRecommend.vue";
+import CarouselCard from "./CarouselCard.vue";
+import CarouselWrapper from "./CarouselWrapper.vue";
+import HomeTitle from "./HomeTitle.vue";
+import { coverHeight, recommendsContainerHeight, gapPixel } from "./measurements";
 import NavDrawerWrapper from "../../components/NavDrawerWrapper/_NavDrawerWrapper.vue";
-import Routes from "../../utils/routes";
-import { debounce } from "debounce";
+import imageAutoResizer from "../../utils/functions/imageAutoResizer";
+import { RECOMMENDATIONS, ITEMS } from "../../utils/variables/MOCK";
+import Routes from "../../utils/variables/routes";
 import { register } from "swiper/element/bundle";
 import { onMounted, ref } from "vue";
 
 register();
 
-const elementWidthRef = ref<HTMLElement | null>(null);
-
-const gapPixel = 18;
-const xRatio = 3;
-const yRatio = 4;
-const contentHeightOfCard = 84;
-const carouselHeight = ref("");
+const carouselContainerRef = ref<HTMLElement | null>(null);
 
 onMounted(() => {
-	function changeCarouselHeight() {
-		if (!elementWidthRef.value) {
-			return;
-		}
-
-		const numberOfCards = (() => {
-			switch (true) {
-				case window.innerWidth < 768:
-					return 2;
-				case window.innerWidth < 1024:
-					return 3;
-				case window.innerWidth < 1280:
-					return 4;
-				case window.innerWidth < 1536:
-					return 5;
-				case window.innerWidth < 1792:
-					return 6;
-				default:
-					return 7;
-			}
-		})();
-		const totalGapPixel = (numberOfCards - 1) * gapPixel;
-		const xAxisOfCard = (elementWidthRef.value.offsetWidth - totalGapPixel) / numberOfCards;
-		const yAxisOfCard = (xAxisOfCard * yRatio) / xRatio;
-
-		carouselHeight.value = `height: ${Math.round(yAxisOfCard) + contentHeightOfCard}px`;
-	}
-
-	if (elementWidthRef.value) {
-		const resizeObserver = new ResizeObserver(debounce(changeCarouselHeight, 100));
-
-		resizeObserver.observe(elementWidthRef.value);
-	}
+	imageAutoResizer(carouselContainerRef, coverHeight, undefined, gapPixel, 3, 4);
 });
 </script>
 
 <template>
-	<!-- NOTE: changing the size of gap requires changing the width calculation of all below horizontal container -->
 	<NavDrawerWrapper
 		class="mt-3 flex w-full select-none flex-col gap-7 px-6 transition-all lg:mt-0 lg:pl-0 lg:pr-3"
 	>
 		<swiper-container
-			class="h-[500px] w-full overflow-hidden rounded-3xl"
+			class="w-full overflow-hidden rounded-3xl"
+			:style="{ height: `${recommendsContainerHeight}px` }"
 			:autoplay-delay="5000"
 			:autoplay-disable-on-interaction="false"
 		>
-			<swiper-slide v-for="i in 10" :key="i">
-				<RecommendedCard
-					:title="`Some very long title of a comic ${i}`"
-					author="Some one"
-					:is-completed="1"
-					:pages="100"
-					:is-colored="1"
-					release-year="2023"
-					description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique alias nemo inventore eum rerum quibusdam laudantium a, omnis officia sit placeat obcaecati quia. Cumque dolores quod voluptatem vel adipisci quidem esse, porro provident iste doloribus hic blanditiis earum nostrum corrupti. Omnis corporis, necessitatibus, totam facere quibusdam consequuntur magni perferendis corrupti nulla odio recusandae accusantium praesentium eaque provident."
-					cover-image-url="/placeholder.svg"
+			<swiper-slide v-for="(item, index) in RECOMMENDATIONS" :key="item.itemUUID">
+				<CardRecommend
+					:artist="item.artist"
+					:cover-image="item.coverImage"
+					:description="item.description"
+					:is-completed="item.isCompleted"
+					:random-page="item.randomPage"
+					:tags="item.tags"
+					:title="item.title"
+					:is-first-item="index === 0"
+					:is-last-item="index === RECOMMENDATIONS.length - 1"
 				/>
 			</swiper-slide>
 		</swiper-container>
 
-		<Title :path="Routes.ContinueReading">Continue reading</Title>
-		<HorizontalScrollList
-			:carousel-height="carouselHeight"
-			:gap-pixel="gapPixel"
-			:content-height-of-card="contentHeightOfCard"
-		/>
-		<Title :path="Routes.NewlyUpdated">Newly updated</Title>
-		<HorizontalScrollList
-			:carousel-height="carouselHeight"
-			:gap-pixel="gapPixel"
-			:content-height-of-card="contentHeightOfCard"
-		/>
-		<Title :path="Routes.RecentlyAdded">Recently added</Title>
-		<HorizontalScrollList
-			:carousel-height="carouselHeight"
-			:gap-pixel="gapPixel"
-			:content-height-of-card="contentHeightOfCard"
-		/>
+		<HomeTitle :path="Routes.ContinueReading">Continue reading</HomeTitle>
+		<CarouselWrapper>
+			<CarouselCard
+				v-for="(item, index) in ITEMS"
+				:key="item.itemUUID"
+				:title="item.title"
+				:artist="item.artist"
+				:release-date="item.releaseDate"
+				:cover="item.coverImage"
+				:is-first-item="index === 0"
+				:is-last-item="index === ITEMS.length - 1"
+				:progress="item.pageRead / item.pageCount"
+				:language="item.language"
+			/>
+		</CarouselWrapper>
 
-		<div ref="elementWidthRef" class="w-full"></div>
+		<HomeTitle :path="Routes.RecentlyUpdated">Recently updated</HomeTitle>
+
+		<HomeTitle :path="Routes.NewlyAdded">Newly added</HomeTitle>
+
+		<div ref="carouselContainerRef" class="w-full"></div>
 	</NavDrawerWrapper>
 </template>
