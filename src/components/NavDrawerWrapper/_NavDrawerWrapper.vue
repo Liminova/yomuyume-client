@@ -2,7 +2,7 @@
 import NavDrawer from "./NavDrawer.vue";
 import { isNavDrawerLarge, isTopBarVisible } from "../../utils/variables/store";
 import TopBar from "../TopBar/_TopBar.vue";
-import { debounce } from "debounce";
+import debounce from "debounce";
 import { onMounted } from "vue";
 
 const props = defineProps({
