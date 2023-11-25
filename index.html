@@ -2,69 +2,79 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Yomuyume</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/unilec/fa-pro/css/all.min.css">
-    <link rel="stylesheet" href="/m3/theme.css">
-    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,400;1,900&display=swap" rel="stylesheet">
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Yomuyume</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/unilec/fa-pro/css/all.min.css">
+	<link rel="stylesheet" href="/m3/theme.css">
+	<link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,400;1,900&display=swap" rel="stylesheet">
 
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
-    <link rel="manifest" href="/favicon/manifest.json">
-    <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#a30056">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+	<!-- Favicon -->
+	<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+	<link rel="manifest" href="/favicon/manifest.json">
+	<link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="theme-color" content="#a30056">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="default">
 </head>
 
 <body>
-    <div id="app"></div>
+	<div id="app"></div>
 
-    <noscript>
-        <div style="
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            justify-content: center;
-            align-items: center;
-            display: flex;
-            background-color: #171213;
-        ">
-            <div style="
-                background-color: #3a3334;
-                padding: 1.75rem 2.25rem;
-                border-radius: 0.5rem;
-                box-shadow: 0px 8px 12px 6px rgba(0, 0, 0, 0.15), 0px 4px 4px rgba(0, 0, 0, 0.3);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
-                gap: 1rem;
-            ">
-                <div style="
-                    font-size: 1.5rem;
-                    font-weight: 600;
-                    font-family: 'Roboto', sans-serif;
-                    color: #fcd8e0;
-                    ">JavaScript is disabled</div>
-                <div style="
-                    font-family: 'Roboto', sans-serif;
-                    color: #fcd8e0;
-                ">Please enable JavaScript to use this app.</div>
-            </div>
-        </div>
-    </noscript>
+	<noscript>
+		<div class="wrapper">
+			<div class="container">
+				<div class="title">JavaScript is disabled</div>
+				<div class="content">Please enable JavaScript to use this app.</div>
+			</div>
+		</div>
+	</noscript>
 
-    <script type="module" src="/src/main.ts"></script>
+	<script type="module" src="/src/main.ts"></script>
 </body>
+
+<style>
+	noscript .wrapper {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		justify-content: center;
+		align-items: center;
+		display: flex;
+		background-color: #171213;
+	}
+
+	noscript .container {
+		background-color: #3a3334;
+		padding: 1.75rem 2.25rem;
+		border-radius: 0.5rem;
+		box-shadow: 0px 8px 12px 6px rgba(0, 0, 0, 0.15), 0px 4px 4px rgba(0, 0, 0, 0.3);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	noscript .title {
+		font-size: 1.5rem;
+		font-weight: 600;
+		font-family: 'Roboto', sans-serif;
+		color: #fcd8e0;
+	}
+
+	noscript .content {
+		font-family: 'Roboto', sans-serif;
+		color: #fcd8e0;
+	}
+</style>
 
 </html>
