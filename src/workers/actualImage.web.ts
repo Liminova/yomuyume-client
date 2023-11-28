@@ -6,10 +6,10 @@ import { getFromCache, saveToCache } from "../components/ImagePoly/cacheOperatio
 import MyOffscreenCanvas from "../components/ImagePoly/classes/MyOffscreenCanvas";
 import dataToBlobURL from "../components/ImagePoly/dataToBlobURL";
 
-interface MyMessageData {
+type MyMessageData = {
 	src: string;
 	format: string;
-}
+};
 
 function getImageDecoder(format: string) {
 	switch (format) {

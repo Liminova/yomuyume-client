@@ -1,6 +1,6 @@
 import SharedWorkerRenderer from "./classes/SharedWorkerRenderer";
 import WebWorkerRenderer from "./classes/WebWorkerRenderer";
-import type MyImage from "../../utils/interfaces/MyImage";
+import type MyImage from "../../utils/types/MyImage";
 import type { Ref } from "vue";
 
 /**

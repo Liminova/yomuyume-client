@@ -2,11 +2,11 @@ import { saveToCache, getFromCache } from "../components/ImagePoly/cacheOperatio
 import MyOffscreenCanvas from "../components/ImagePoly/classes/MyOffscreenCanvas";
 import dataToBlobURL from "../components/ImagePoly/dataToBlobURL";
 
-interface MyMessageData {
+type MyMessageData = {
 	blurhash: string;
 	width: number;
 	height: number;
-}
+};
 
 self.onmessage = async (event: MessageEvent<MyMessageData>) => {
 	const { blurhash, width, height } = event.data;

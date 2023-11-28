@@ -1,4 +1,4 @@
-import type MyImage from "../../utils/interfaces/MyImage";
+import type MyImage from "../../utils/types/MyImage";
 
 enum Formats {
 	avif = "avif",

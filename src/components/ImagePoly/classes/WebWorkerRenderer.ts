@@ -1,25 +1,25 @@
 import { MAX_WORKERS } from "../../../utils/variables/store";
 import doNeedPolyfill from "../doNeedPolyfill";
-import type MyImage from "../../../utils/interfaces/MyImage";
+import type MyImage from "../../../utils/types/MyImage";
 import type RendererBase from "./RendererBase";
 import type { Ref } from "vue";
 
-interface blurhashQueueType {
+type blurhashQueueType = {
 	data: {
 		blurhash: string;
 		width: number;
 		height: number;
 	};
 	renderedDataRef: Ref<string>;
-}
+};
 
-interface imageQueueType {
+type imageQueueType = {
 	data: {
 		src: string;
 		format: string;
 	};
 	renderedDataRef: Ref<string>;
-}
+};
 
 export default class WebWorkerRenderer implements RendererBase {
 	blurhashQueue: Array<blurhashQueueType> = [];

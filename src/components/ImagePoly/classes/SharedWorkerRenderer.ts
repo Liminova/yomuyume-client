@@ -1,5 +1,5 @@
 import doNeedPolyfill from "../doNeedPolyfill";
-import type MyImage from "../../../utils/interfaces/MyImage";
+import type MyImage from "../../../utils/types/MyImage";
 import type RendererBase from "./RendererBase";
 import type { Ref } from "vue";
 

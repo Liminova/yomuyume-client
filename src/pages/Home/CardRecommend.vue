@@ -3,7 +3,7 @@ import { recommendsContainerHeight } from "./measurements";
 import Image from "../../components/ImagePoly/_ImagePoly.vue";
 import AverageColorWorker from "../../workers/fastAverageColor?worker";
 import { ref } from "vue";
-import type MyImage from "../../utils/interfaces/MyImage";
+import type MyImage from "../../utils/types/MyImage";
 import "@material/web/chips/assist-chip.js";
 
 const props = defineProps({

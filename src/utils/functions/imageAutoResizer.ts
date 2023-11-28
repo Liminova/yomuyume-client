@@ -1,6 +1,6 @@
 import { swiperBreakpoints } from "../variables/store";
 import debounce from "debounce";
-import type BreakpointRecord from "../interfaces/BreakpointsRecord";
+import type BreakpointRecord from "../types/BreakpointsRecord";
 import type { Ref } from "vue";
 
 /**

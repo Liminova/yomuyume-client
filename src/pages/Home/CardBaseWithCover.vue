@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { coverHeight } from "./measurements";
 import Image from "../../components/ImagePoly/_ImagePoly.vue";
-import type MyImage from "../../utils/interfaces/MyImage";
+import type MyImage from "../../utils/types/MyImage";
 import "@material/web/progress/linear-progress.js";
 
 const props = defineProps({

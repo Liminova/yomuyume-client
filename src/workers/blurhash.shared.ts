@@ -3,11 +3,11 @@ import MyOffscreenCanvas from "../components/ImagePoly/classes/MyOffscreenCanvas
 import dataToBlobURL from "../components/ImagePoly/dataToBlobURL";
 import { MAX_WORKERS } from "../utils/variables/store";
 
-interface MyMessageData {
+type MyMessageData = {
 	blurhash: string;
 	width: number;
 	height: number;
-}
+};
 
 const queue: Array<{ data: MyMessageData; port: MessagePort }> = [];
 let activeWorkers = 0;

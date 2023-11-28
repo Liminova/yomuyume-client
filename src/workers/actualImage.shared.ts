@@ -7,10 +7,10 @@ import { saveToCache, getFromCache } from "../components/ImagePoly/cacheOperatio
 import { MAX_WORKERS } from "../utils/variables/store";
 import dataToBlobURL from "../components/ImagePoly/dataToBlobURL";
 
-interface MyMessageData {
+type MyMessageData = {
 	src: string;
 	format: string;
-}
+};
 
 const queue: Array<{ data: MyMessageData; port: MessagePort }> = [];
 let activeWorkers = 0;
