@@ -30,7 +30,7 @@ export default class WebWorkerRenderer implements RendererBase {
 
 	constructor() {
 		this.blurhashWorkers = Array.from({ length: MAX_WORKERS }, () => ({
-			instance: new Worker(new URL("../../workers/blurhash.web.ts", import.meta.url), {
+			instance: new Worker(new URL("../workers/blurhash.web.ts", import.meta.url), {
 				type: "module",
 				name: "blurhashRenderer",
 			}),
@@ -38,7 +38,7 @@ export default class WebWorkerRenderer implements RendererBase {
 		}));
 
 		this.imageWorkers = Array.from({ length: MAX_WORKERS }, () => ({
-			instance: new Worker(new URL("../../workers/actualImage.web.ts", import.meta.url), {
+			instance: new Worker(new URL("../workers/actualImage.web.ts", import.meta.url), {
 				type: "module",
 				name: "actualImageRenderer",
 			}),

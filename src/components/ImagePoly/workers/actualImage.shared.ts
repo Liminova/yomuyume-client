@@ -1,11 +1,9 @@
-// eslint-disable-next-line import/no-absolute-path
-import avifDec from "/avif_dec.js?url";
-// eslint-disable-next-line import/no-absolute-path
-import jxlDec from "/jxl_dec.js?url";
-import MyOffscreenCanvas from "../components/ImagePoly/classes/MyOffscreenCanvas";
-import { saveToCache, getFromCache } from "../components/ImagePoly/cacheOperations";
-import { MAX_WORKERS } from "../utils/variables/store";
-import dataToBlobURL from "../components/ImagePoly/dataToBlobURL";
+import avifDec from "../../../assets/avif_dec";
+import jxlDec from "../../../assets/jxl_dec";
+import { MAX_WORKERS } from "../../../utils/variables/store";
+import { saveToCache, getFromCache } from "../cacheOperations";
+import MyOffscreenCanvas from "../classes/MyOffscreenCanvas";
+import dataToBlobURL from "../dataToBlobURL";
 
 type MyMessageData = {
 	src: string;
@@ -28,12 +26,10 @@ self.onconnect = (event: MessageEvent<MyMessageData>) => {
 function getDecoder(format: string) {
 	switch (format) {
 		case "jxl":
-			// @ts-expect-error - jxlDec is a function, because we use ?url in the import
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
 			return jxlDec();
 		case "avif":
-			// @ts-expect-error - same as above
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
 			return avifDec();
 		default:
 			throw new Error("Unknown format for worker-polyfill.js");

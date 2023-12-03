@@ -10,7 +10,7 @@ export default class SharedWorkerRenderer implements RendererBase {
 		renderedActualImageRef: Ref<string>
 	) {
 		const blurhashWorker = new SharedWorker(
-			new URL("../../workers/blurhash.shared.ts", import.meta.url),
+			new URL("../workers/blurhash.shared.ts", import.meta.url),
 			{
 				type: "module",
 				name: "blurhashRenderer",
@@ -29,7 +29,7 @@ export default class SharedWorkerRenderer implements RendererBase {
 
 		if (await doNeedPolyfill(image)) {
 			const actualImageWorker = new SharedWorker(
-				new URL("../../workers/actualImage.shared.ts", import.meta.url),
+				new URL("../workers/actualImage.shared.ts", import.meta.url),
 				{
 					type: "module",
 					name: "actualImageRenderer",

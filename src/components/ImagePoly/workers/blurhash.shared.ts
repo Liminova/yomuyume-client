@@ -1,7 +1,7 @@
-import { saveToCache, getFromCache } from "../components/ImagePoly/cacheOperations";
-import MyOffscreenCanvas from "../components/ImagePoly/classes/MyOffscreenCanvas";
-import dataToBlobURL from "../components/ImagePoly/dataToBlobURL";
-import { MAX_WORKERS } from "../utils/variables/store";
+import { MAX_WORKERS } from "../../../utils/variables/store";
+import { saveToCache, getFromCache } from "../cacheOperations";
+import MyOffscreenCanvas from "../classes/MyOffscreenCanvas";
+import dataToBlobURL from "../dataToBlobURL";
 
 type MyMessageData = {
 	blurhash: string;
