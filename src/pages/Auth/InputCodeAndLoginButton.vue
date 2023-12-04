@@ -1,0 +1,62 @@
+<script setup lang="ts">
+import "@material/web/progress/linear-progress.js";
+import "@material/web/button/filled-tonal-button.js";
+import "@material/web/textfield/outlined-text-field.js";
+import { loginCode, sendCodeState, loginState } from "./states";
+import Toggle from "../../components/ToggleWrapper.vue";
+import { State } from "../../utils/variables/store";
+import { ref } from "vue";
+
+const loginErrorMsg = ref("");
+
+async function login() {
+	// TODO: implement login api
+	loginState.value = State.Loading;
+	setTimeout(() => {
+		// TODO: remove this on production
+		if (loginCode.value.includes("FORCE_ERROR")) {
+			loginState.value = State.Error;
+			return;
+		}
+
+		loginState.value = State.Loaded;
+
+		// @ts-expect-error: Property 'click' DOES exist on type 'Element'.
+		document.querySelector(".homeRoute")?.click();
+	}, 1000);
+}
+</script>
+
+<template>
+	<!-- Input code -->
+	<Toggle :show="sendCodeState === State.Loaded">
+		<md-outlined-text-field
+			v-model="loginCode"
+			class="mb-3 w-full"
+			label="Verification code"
+			:disabled="!(sendCodeState === State.Loaded)"
+			@keydown.enter="login"
+		/>
+	</Toggle>
+
+	<!-- Progress -->
+	<Toggle :show="loginState === State.Loading">
+		<md-linear-progress indeterminate class="mb-3 w-full" />
+	</Toggle>
+	<Toggle :show="loginState === State.Error">
+		<div class="mb-3 text-center">Error: {{ loginErrorMsg }}</div>
+	</Toggle>
+
+	<!-- Send code button -->
+	<Toggle :show="sendCodeState === State.Loaded">
+		<md-filled-tonal-button
+			class="w-full"
+			:disabled="sendCodeState !== State.Loaded"
+			@click="login"
+		>
+			Login
+		</md-filled-tonal-button>
+	</Toggle>
+
+	<router-link to="/" class="homeRoute hidden" />
+</template>
