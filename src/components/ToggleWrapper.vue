@@ -1,16 +1,10 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-
 const props = defineProps({
 	show: {
 		type: Boolean,
 		default: false,
 	},
 	horizontal: {
-		type: Boolean,
-		default: false,
-	},
-	ignoreHiddenClass: {
 		type: Boolean,
 		default: false,
 	},
@@ -22,32 +16,14 @@ const combinedHide = `${
 	props.horizontal ? "grid-cols-[0fr]" : "grid-rows-[0fr]"
 } overflow-hidden opacity-0`;
 
-// Although the element appears to be hidden, it still inside the DOM
-const container = ref<HTMLElement | null>(null);
-
-onMounted(() => {
-	if (props.show || props.ignoreHiddenClass || container.value === null) {
-		return;
-	}
-
-	const interval = setInterval(() => {
-		if (container.value === null) {
-			return;
-		}
-
-		container.value.classList.add("hidden");
-		clearInterval(interval);
-	}, 150);
-});
-
 /** */
 </script>
 
 <template>
 	<div
-		ref="container"
 		class="grid transition-all"
 		:class="props.show ? combinedShow : combinedHide"
+		:style="{ pointerEvents: props.show ? 'auto' : 'none' }"
 	>
 		<div :class="props.horizontal ? 'min-w-0' : 'min-h-0'">
 			<slot />
