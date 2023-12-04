@@ -6,11 +6,12 @@ import { CATEGORIES } from "../../utils/variables/MOCK";
 import { onMounted, ref } from "vue";
 
 const imageContainerRef = ref<HTMLElement | null>(null);
-const imageHeight = ref(300);
+const imageHeight = ref(200);
 const numberOfImagePerRow = ref(5);
+const gapPixel = ref(16);
 
 onMounted(() => {
-	imageAutoResizer(imageContainerRef, imageHeight, numberOfImagePerRow, 12, 1, 1);
+	imageAutoResizer(imageContainerRef, imageHeight, numberOfImagePerRow, gapPixel.value, 1, 1);
 });
 
 /** */
@@ -20,9 +21,10 @@ onMounted(() => {
 	<NavDrawerWrapper>
 		<div
 			ref="imageContainerRef"
-			class="mt-3 grid gap-4 px-6 transition-all lg:mt-0 lg:pl-0 lg:pr-3"
+			class="mt-3 grid px-6 transition-all lg:mt-0 lg:pl-0 lg:pr-3"
 			:style="{
 				gridTemplateColumns: `repeat(${numberOfImagePerRow}, 1fr)`,
+				gap: `${gapPixel}px`,
 			}"
 		>
 			<div v-for="category in CATEGORIES" :key="category.category_uuid">
