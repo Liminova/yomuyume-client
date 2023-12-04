@@ -20,6 +20,7 @@ changeTheme(Theme.AUTO);
 
 			<Toggle
 				:show="fetchInstanceInfoState === State.Loaded && authType === AuthType.EmailCode"
+				:style="{ display: `${authType === AuthType.EmailCode ? 'block' : 'none'}` }"
 			>
 				<InputEmailAndSendCodeButton />
 				<InputCodeAndLoginButton />
@@ -30,6 +31,9 @@ changeTheme(Theme.AUTO);
 					fetchInstanceInfoState === State.Loaded &&
 					authType === AuthType.UserEmailPassword
 				"
+				:style="{
+					display: `${authType === AuthType.UserEmailPassword ? 'block' : 'none'}`,
+				}"
 			>
 				<UserEmailPassword />
 			</Toggle>
