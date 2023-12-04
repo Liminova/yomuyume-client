@@ -13,16 +13,16 @@ import { createRouter, createWebHistory } from "vue-router";
 
 /* eslint-disable */
 const routes = [
-	{ path: Routes.Settings, component: Settings },
 	{ path: Routes.Auth, component: Auth },
 	{ path: Routes.CompletedReads, component: CompletedReads },
 	{ path: Routes.CompletedStories, component: CompletedStories },
 	{ path: Routes.ContinueReading, component: ContinueReading },
+	{ path: Routes.Filter, component: Filter },
 	{ path: Routes.Home, component: Home },
 	{ path: Routes.Library, component: Library },
-	{ path: Routes.RecentlyUpdated, component: NewlyUpdated },
 	{ path: Routes.NewlyAdded, component: RecentlyAdded },
-	{ path: Routes.Filter, component: Filter },
+	{ path: Routes.RecentlyUpdated, component: NewlyUpdated },
+	{ path: Routes.Settings, component: Settings },
 ];
 /* eslint-enable */
 
