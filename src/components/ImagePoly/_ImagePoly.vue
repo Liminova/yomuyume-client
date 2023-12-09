@@ -18,7 +18,7 @@ renderImage(props.image, renderedBlurhashBlobURL, renderedActualImageBlobURL);
 </script>
 
 <template>
-	<div class="relative" :class="props.class" v-if="renderedBlurhashBlobURL">
+	<div class="relative" :class="props.class">
 		<!-- Blurhash placeholder -->
 		<img
 			:loading="props.lazy ? 'lazy' : 'eager'"
