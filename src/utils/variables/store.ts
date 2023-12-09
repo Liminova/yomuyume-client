@@ -10,7 +10,8 @@ enum State {
 
 // TODO: query this from server
 const MAX_AGE = 1209600;
-const MAX_WORKERS = Math.round(navigator.hardwareConcurrency / 2) || 4;
+const MAX_POLYFILL_WORKERS = 2;
+const MAX_BLURHASH_WORKERS = 4;
 
 function vibrate(): undefined {
 	const isBrowserSafari = /^((?!chrome|android).)*safari/iu.test(navigator.userAgent);
@@ -51,7 +52,8 @@ export {
 	isNavDrawerLarge,
 	isTopBarVisible,
 	MAX_AGE,
-	MAX_WORKERS,
+	MAX_POLYFILL_WORKERS,
+	MAX_BLURHASH_WORKERS,
 	State,
 	swiperBreakpoints,
 };
