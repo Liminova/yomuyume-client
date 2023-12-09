@@ -16,7 +16,7 @@ const props = defineProps({
 
 <template>
 	<router-link class="flex flex-col items-start justify-center" :to="`/item/${props.itemUuid}`">
-		<div class="img-cover group relative overflow-hidden rounded-xl">
+		<div class="img-cover group relative overflow-hidden rounded-xl w-full">
 			<ImagePoly
 				:image="props.cover"
 				:style="{
