@@ -13,23 +13,23 @@
 	"dependencies": {
 		"@material/web": "^1.0.1",
 		"debounce": "^2.0.0",
-		"fast-average-color": "^9.4.0",
 		"fast-blurhash": "^1.1.2",
 		"swiper": "^11.0.5",
-		"tailwindcss": "^3.3.5",
-		"vue": "^3.3.9",
+		"tailwindcss": "^3.3.6",
+		"vue": "^3.3.11",
 		"vue-router": "^4.2.5"
 	},
 	"devDependencies": {
 		"@commitlint/config-conventional": "^18.4.3",
+		"@faker-js/faker": "^8.3.1",
 		"@types/debounce": "^1.2.4",
-		"@typescript-eslint/eslint-plugin": "^6.13.1",
-		"@typescript-eslint/parser": "^6.13.1",
-		"@vitejs/plugin-vue": "^4.5.1",
+		"@typescript-eslint/eslint-plugin": "^6.13.2",
+		"@typescript-eslint/parser": "^6.13.2",
+		"@vitejs/plugin-vue": "^4.5.2",
 		"@vue/eslint-config-typescript": "^12.0.0",
 		"autoprefixer": "^10.4.16",
 		"commitlint": "^18.4.3",
-		"cz-git": "^1.7.1",
+		"cz-git": "^1.8.0",
 		"eslint": "^8.55.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-cadence": "^0.1.0",
@@ -39,10 +39,10 @@
 		"husky": "^8.0.3",
 		"postcss": "^8.4.32",
 		"sass": "^1.69.5",
-		"typescript": "^5.3.2",
-		"vite": "^5.0.4",
+		"typescript": "^5.3.3",
+		"vite": "^5.0.7",
 		"vue-eslint-parser": "^9.3.2",
-		"vue-tsc": "^1.8.24"
+		"vue-tsc": "^1.8.25"
 	},
 	"config": {
 		"commitizen": {
