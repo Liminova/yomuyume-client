@@ -1,43 +1,39 @@
-import { MAX_WORKERS } from "../../../utils/variables/store";
-import doNeedPolyfill from "../doNeedPolyfill";
+import { MAX_POLYFILL_WORKERS, MAX_BLURHASH_WORKERS } from "../../../utils/variables/store";
 import type MyImage from "../../../utils/types/MyImage";
-import type RendererBase from "./RendererBase";
+import type { Renderer } from "./RendererInterface";
 import type { Ref } from "vue";
 
 type blurhashQueueType = {
-	data: {
-		blurhash: string;
-		width: number;
-		height: number;
-	};
+	data: [string, number, number] /** blurhash, width, height */;
 	renderedDataRef: Ref<string>;
 };
 
 type imageQueueType = {
-	data: {
-		src: string;
-		format: string;
-	};
+	data: [string, string] /** src, format */;
 	renderedDataRef: Ref<string>;
 };
 
-export default class WebWorkerRenderer implements RendererBase {
-	blurhashQueue: Array<blurhashQueueType> = [];
-	imageQueue: Array<imageQueueType> = [];
+export default class WebWorkerRenderer implements Renderer {
+	private readonly blurhashQueue: Array<blurhashQueueType> = [];
+	private readonly imageQueue: Array<imageQueueType> = [];
+	private polyfillWorkersSpunUp = false;
 
 	private readonly blurhashWorkers: Array<{ instance: Worker; isReady: boolean }> = [];
-	private readonly imageWorkers: Array<{ instance: Worker; isReady: boolean }> = [];
+	private imageWorkers: Array<{ instance: Worker; isReady: boolean }> = [];
 
 	constructor() {
-		this.blurhashWorkers = Array.from({ length: MAX_WORKERS }, () => ({
+		this.blurhashWorkers = Array.from({ length: MAX_BLURHASH_WORKERS }, () => ({
 			instance: new Worker(new URL("../workers/blurhash.web.ts", import.meta.url), {
 				type: "module",
 				name: "blurhashRenderer",
 			}),
 			isReady: true,
 		}));
+	}
 
-		this.imageWorkers = Array.from({ length: MAX_WORKERS }, () => ({
+	private spinUpPolyfillWorkers() {
+		this.polyfillWorkersSpunUp = true;
+		this.imageWorkers = Array.from({ length: MAX_POLYFILL_WORKERS }, () => ({
 			instance: new Worker(new URL("../workers/actualImage.web.ts", import.meta.url), {
 				type: "module",
 				name: "actualImageRenderer",
@@ -70,32 +66,31 @@ export default class WebWorkerRenderer implements RendererBase {
 		}
 	}
 
-	async newJob(
+	newJob(
 		image: MyImage,
 		renderedBlurhashRef: Ref<string>,
-		renderedActualImageRef: Ref<string>
+		renderedImageRef: Ref<string>,
+		isNative: boolean
 	) {
 		this.blurhashQueue.push({
-			data: {
-				blurhash: image.blurhash,
-				width: image.width,
-				height: image.height,
-			},
+			data: [image.blurhash, image.width, image.height],
 			renderedDataRef: renderedBlurhashRef,
 		});
 		this.processQueue(this.blurhashQueue, this.blurhashWorkers);
 
-		if (await doNeedPolyfill(image)) {
-			this.imageQueue.push({
-				data: {
-					src: image.src,
-					format: image.format,
-				},
-				renderedDataRef: renderedActualImageRef,
-			});
-			this.processQueue(this.imageQueue, this.imageWorkers);
-		} else {
-			renderedActualImageRef.value = image.src;
+		if (isNative) {
+			renderedImageRef.value = image.src;
+			return;
 		}
+
+		if (!this.polyfillWorkersSpunUp) {
+			this.spinUpPolyfillWorkers();
+		}
+
+		this.imageQueue.push({
+			data: [image.src, image.format],
+			renderedDataRef: renderedImageRef,
+		});
+		this.processQueue(this.imageQueue, this.imageWorkers);
 	}
 }

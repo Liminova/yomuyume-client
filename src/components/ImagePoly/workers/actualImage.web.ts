@@ -4,10 +4,7 @@ import { getFromCache, saveToCache } from "../cacheOperations";
 import MyOffscreenCanvas from "../classes/MyOffscreenCanvas";
 import dataToBlobURL from "../dataToBlobURL";
 
-type MyMessageData = {
-	src: string;
-	format: string;
-};
+type MyMessageData = [string, string]; /** src, format */
 
 function getImageDecoder(format: string) {
 	switch (format) {
@@ -23,7 +20,7 @@ function getImageDecoder(format: string) {
 }
 
 self.onmessage = async (event: MessageEvent<MyMessageData>) => {
-	const { src, format } = event.data;
+	const [src, format] = event.data;
 
 	if (!src || !format) {
 		return;

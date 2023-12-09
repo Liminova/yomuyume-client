@@ -1,13 +1,9 @@
-import { MAX_WORKERS } from "../../../utils/variables/store";
+import { MAX_BLURHASH_WORKERS as MAX_WORKERS } from "../../../utils/variables/store";
 import { saveToCache, getFromCache } from "../cacheOperations";
 import MyOffscreenCanvas from "../classes/MyOffscreenCanvas";
 import dataToBlobURL from "../dataToBlobURL";
 
-type MyMessageData = {
-	blurhash: string;
-	width: number;
-	height: number;
-};
+type MyMessageData = [string, number, number]; /** blurhash, width, height */
 
 const queue: Array<{ data: MyMessageData; port: MessagePort }> = [];
 let activeWorkers = 0;
@@ -31,7 +27,7 @@ async function processQueue() {
 			return;
 		}
 
-		const { blurhash, width, height } = job.data;
+		const [blurhash, width, height] = job.data;
 
 		if (!blurhash || !width || !height) {
 			activeWorkers--;

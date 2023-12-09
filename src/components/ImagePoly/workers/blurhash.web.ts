@@ -2,14 +2,10 @@ import { saveToCache, getFromCache } from "../cacheOperations";
 import MyOffscreenCanvas from "../classes/MyOffscreenCanvas";
 import dataToBlobURL from "../dataToBlobURL";
 
-type MyMessageData = {
-	blurhash: string;
-	width: number;
-	height: number;
-};
+type MyMessageData = [string, number, number];
 
 self.onmessage = async (event: MessageEvent<MyMessageData>) => {
-	const { blurhash, width, height } = event.data;
+	const [blurhash, width, height] = event.data;
 
 	if (!blurhash || !width || !height) {
 		return;

@@ -1,32 +1,20 @@
 <script setup lang="ts">
 import renderImage from "./renderImage";
-import { ref, watchEffect } from "vue";
+import { ref } from "vue";
 import type MyImage from "../../utils/types/MyImage";
 
 const props = defineProps({
 	class: { type: String, default: "" },
 	draggable: { type: Boolean, default: false },
-	emitRenderedImgBlobUrl: { type: Boolean, default: false },
 	image: { type: Object as () => MyImage, required: true },
 	imageClass: { type: String, default: "" },
 	lazy: { type: Boolean, default: true },
 });
 
-const emit = defineEmits(["send-message"]);
 const renderedBlurhashBlobURL = ref("");
 const renderedActualImageBlobURL = ref("");
 
-if (props.emitRenderedImgBlobUrl) {
-	watchEffect(() => {
-		if (renderedActualImageBlobURL.value) {
-			emit("send-message", renderedActualImageBlobURL.value);
-		}
-	});
-}
-
-renderImage(props.image, renderedBlurhashBlobURL, renderedActualImageBlobURL).catch(() => {
-	/** */
-});
+renderImage(props.image, renderedBlurhashBlobURL, renderedActualImageBlobURL);
 </script>
 
 <template>

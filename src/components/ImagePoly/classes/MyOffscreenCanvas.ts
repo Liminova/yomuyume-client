@@ -12,28 +12,9 @@ export default class MyOffscreenCanvas extends OffscreenCanvas {
 		return this;
 	}
 
-	fromRawData(data: Uint8ClampedArray): this {
+	private fromRawData(data: Uint8ClampedArray): this {
 		this.fromImageData(new ImageData(data, this.width, this.height));
 		return this;
-	}
-
-	fromBlob(blob: Blob): Promise<this> {
-		return new Promise((resolve, _) => {
-			const image = new Image();
-
-			image.src = URL.createObjectURL(blob);
-
-			image.onload = () => {
-				const ctx = this.getContext("2d");
-
-				if (!ctx) {
-					return;
-				}
-
-				ctx.drawImage(image, 0, 0);
-				resolve(this);
-			};
-		});
 	}
 
 	fromBlurhash(blurhash: string): this {

@@ -1,14 +1,11 @@
 import avifDec from "../../../assets/avif_dec";
 import jxlDec from "../../../assets/jxl_dec";
-import { MAX_WORKERS } from "../../../utils/variables/store";
+import { MAX_POLYFILL_WORKERS as MAX_WORKERS } from "../../../utils/variables/store";
 import { saveToCache, getFromCache } from "../cacheOperations";
 import MyOffscreenCanvas from "../classes/MyOffscreenCanvas";
 import dataToBlobURL from "../dataToBlobURL";
 
-type MyMessageData = {
-	src: string;
-	format: string;
-};
+type MyMessageData = [string, string]; /** src, format */
 
 const queue: Array<{ data: MyMessageData; port: MessagePort }> = [];
 let activeWorkers = 0;
@@ -45,7 +42,7 @@ async function processQueue() {
 			return;
 		}
 
-		const { src, format } = job.data;
+		const [src, format] = job.data;
 
 		if (!src || !format) {
 			activeWorkers--;
@@ -77,7 +74,7 @@ async function processQueue() {
 
 		const canvas = new MyOffscreenCanvas(decoded.width, decoded.height).fromImageData(decoded);
 
-		await saveToCache(job.data.src, await canvas.convertToBase64());
+		await saveToCache(src, await canvas.convertToBase64());
 
 		job.port.postMessage(await canvas.convertToBlobURL());
 
