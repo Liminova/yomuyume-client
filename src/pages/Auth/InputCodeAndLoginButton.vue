@@ -4,10 +4,14 @@ import "@material/web/button/filled-tonal-button.js";
 import "@material/web/textfield/outlined-text-field.js";
 import { loginCode, sendCodeState, loginState } from "./states";
 import Toggle from "../../components/ToggleWrapper.vue";
+import Routes from "../../utils/variables/routes";
 import { State } from "../../utils/variables/store";
-import { ref } from "vue";
+import { inject, ref } from "vue";
+import type { Router } from "vue-router";
 
 const loginErrorMsg = ref("");
+
+const router = inject("router", {}) as Router;
 
 async function login() {
 	// TODO: implement login api
@@ -20,9 +24,7 @@ async function login() {
 		}
 
 		loginState.value = State.Loaded;
-
-		// @ts-expect-error: Property 'click' DOES exist on type 'Element'.
-		document.querySelector(".homeRoute")?.click();
+		void router.push(Routes.Home);
 	}, 1000);
 }
 </script>
@@ -57,6 +59,4 @@ async function login() {
 			Login
 		</md-filled-tonal-button>
 	</Toggle>
-
-	<router-link to="/" class="homeRoute hidden" />
 </template>
