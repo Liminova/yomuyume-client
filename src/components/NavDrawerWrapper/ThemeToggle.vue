@@ -17,7 +17,7 @@ if (localStorage.getItem("theme") !== null) {
 </script>
 
 <template>
-	<div class="mx-3 grid h-10 grid-cols-3 overflow-hidden">
+	<div class="mx-7 grid h-10 grid-cols-3 overflow-hidden">
 		<div class="relative rounded-s-full">
 			<md-ripple />
 			<button

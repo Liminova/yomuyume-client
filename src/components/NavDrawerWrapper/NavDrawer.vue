@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import NavEntry from "./NavEntry.vue";
 import ThemeToggle from "./ThemeToggle.vue";
-import router from "../../utils/variables/router";
 import Routes from "../../utils/variables/routes";
 import { isNavDrawerLarge as isNavOpen } from "../../utils/variables/store";
 import DividerBar from "../DividerBar.vue";
 import Toggle from "../ToggleWrapper.vue";
-import { ref } from "vue";
+import { inject, ref } from "vue";
+import type { Router } from "vue-router";
+
+const router = inject("router", {}) as Router;
 
 const entryBackground = ref<HTMLElement | null>(null);
 
@@ -22,14 +24,7 @@ function resetEntryBg() {
 }
 
 // NOTE: keep this array in sync with the entries in NavDrawer.vue
-const entryIndexMap: Array<string> = [
-	Routes.Home,
-	Routes.Library,
-	Routes.ContinueReading,
-	Routes.NewlyAdded,
-	Routes.CompletedStories,
-	Routes.CompletedReads,
-];
+const entryIndexMap: Array<string> = [Routes.Home, Routes.Library];
 
 function moveEntryBg(index: number) {
 	return () => {
@@ -92,31 +87,6 @@ function moveEntryBg(index: number) {
 					:target="Routes.Library"
 					count=""
 					:mouseover="moveEntryBg(1)"
-				/>
-				<NavEntry
-					name="Continue reading"
-					icon="fa-rectangle-history"
-					:target="Routes.ContinueReading"
-					count="10"
-					:mouseover="moveEntryBg(2)"
-				/>
-				<NavEntry
-					name="Recently added"
-					icon="fa-stars"
-					:target="Routes.NewlyAdded"
-					:mouseover="moveEntryBg(3)"
-				/>
-				<NavEntry
-					name="Completed stories"
-					icon="fa-check"
-					:target="Routes.CompletedStories"
-					:mouseover="moveEntryBg(4)"
-				/>
-				<NavEntry
-					name="Completed reading"
-					icon="fa-check-to-slot"
-					:target="Routes.CompletedReads"
-					:mouseover="moveEntryBg(5)"
 				/>
 			</div>
 			<Toggle :show="isNavOpen">
