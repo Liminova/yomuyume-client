@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import router from "../../utils/variables/router";
 import { isNavDrawerLarge } from "../../utils/variables/store";
-import { computed } from "vue";
+import { computed, inject } from "vue";
 import "@material/web/ripple/ripple.js";
+import type { Router } from "vue-router";
+
+const router = inject("router", {}) as Router;
 
 const props = defineProps({
 	name: { type: String, required: true },
