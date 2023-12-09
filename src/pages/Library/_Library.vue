@@ -2,7 +2,7 @@
 import Image from "../../components/ImagePoly/_ImagePoly.vue";
 import NavDrawerWrapper from "../../components/NavDrawerWrapper/_NavDrawerWrapper.vue";
 import imageAutoResizer from "../../utils/functions/imageAutoResizer";
-import { CATEGORIES } from "../../utils/variables/MOCK";
+import { randomCategories } from "../../utils/variables/random";
 import { onMounted, ref } from "vue";
 
 const imageContainerRef = ref<HTMLElement | null>(null);
@@ -13,8 +13,6 @@ const gapPixel = ref(16);
 onMounted(() => {
 	imageAutoResizer(imageContainerRef, imageHeight, numberOfImagePerRow, gapPixel.value, 1, 1);
 });
-
-/** */
 </script>
 
 <template>
@@ -27,14 +25,14 @@ onMounted(() => {
 				gap: `${gapPixel}px`,
 			}"
 		>
-			<div v-for="category in CATEGORIES" :key="category.category_uuid">
+			<div v-for="category in randomCategories" :key="category.categoryUUID">
 				<Image
 					class="overflow-hidden rounded-xl"
-					:image="category.coverImage"
+					:image="category.cover"
 					:style="{ height: imageHeight + 'px', transition: 'height 0.5s ease' }"
 					image-class="h-full object-cover"
 				/>
-				<div class="mt-3 text-center text-xl font-bold">{{ category.name }}</div>
+				<div class="mt-3 text-center text-xl font-bold">{{ category.title }}</div>
 			</div>
 		</div>
 	</NavDrawerWrapper>
