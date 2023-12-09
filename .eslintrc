@@ -28,6 +28,9 @@
 				"message": "Use Number.isNaN instead. isNaN does not check the input is of type number, and instead coerces input into a number.\nisNaN(\"foo\"); // true\nNumber.isNaN(\"foo\"); // false"
 			}
 		],
-		"@typescript-eslint/consistent-type-definitions": ["error", "type"]
+		"@typescript-eslint/consistent-type-definitions": [
+			"error",
+			"type"
+		]
 	}
 }
