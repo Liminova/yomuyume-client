@@ -3,13 +3,17 @@ import FilterBar from "./FilterBar.vue";
 import LogoAndTitle from "./LogoAndTitle.vue";
 import NavToggleIcon from "./NavToggleIcon.vue";
 import UserAvatar from "./UserAvatar.vue";
-import navigateToFilter from "../../utils/functions/navigateToFilter";
+import Routes from "../../utils/variables/routes";
 import { isTopBarVisible } from "../../utils/variables/store";
+import { inject } from "vue";
+import type { Router } from "vue-router";
+
+const router = inject("router", {}) as Router;
 
 window.addEventListener("keydown", (e) => {
 	if (e.ctrlKey && e.key === "k") {
 		e.preventDefault();
-		navigateToFilter();
+		void router.push(Routes.Filter);
 	}
 });
 </script>
