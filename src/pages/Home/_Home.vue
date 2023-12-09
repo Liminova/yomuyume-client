@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import CardRecommend from "./CardRecommend.vue";
-import CarouselCard from "./CarouselCard.vue";
 import CarouselWrapper from "./CarouselWrapper.vue";
 import HomeTitle from "./HomeTitle.vue";
 import { coverHeight, recommendsContainerHeight, gapPixel } from "./measurements";
+import ItemCard from "../../components/ItemCard.vue";
 import NavDrawerWrapper from "../../components/NavDrawerWrapper/_NavDrawerWrapper.vue";
 import imageAutoResizer from "../../utils/functions/imageAutoResizer";
-import { RECOMMENDATIONS, ITEMS } from "../../utils/variables/MOCK";
+import { randomRecommends, items } from "../../utils/variables/random";
 import Routes from "../../utils/variables/routes";
 import { register } from "swiper/element/bundle";
 import { onMounted, ref } from "vue";
@@ -18,6 +18,10 @@ const carouselContainerRef = ref<HTMLElement | null>(null);
 onMounted(() => {
 	imageAutoResizer(carouselContainerRef, coverHeight, undefined, gapPixel, 3, 4);
 });
+
+const continueReadingItems = items.slice(0, 25);
+
+/** */
 </script>
 
 <template>
@@ -30,40 +34,42 @@ onMounted(() => {
 			:autoplay-delay="5000"
 			:autoplay-disable-on-interaction="false"
 		>
-			<swiper-slide v-for="(item, index) in RECOMMENDATIONS" :key="item.itemUUID">
+			<swiper-slide v-for="(item, index) in randomRecommends" :key="item.itemUUID">
 				<CardRecommend
-					:artist="item.artist"
-					:cover-image="item.coverImage"
+					:author="item.author"
+					:cover-image="item.cover"
 					:description="item.description"
-					:is-completed="item.isCompleted"
-					:random-page="item.randomPage"
 					:tags="item.tags"
 					:title="item.title"
 					:is-first-item="index === 0"
-					:is-last-item="index === RECOMMENDATIONS.length - 1"
+					:is-last-item="index === randomRecommends.length - 1"
+					:item-uuid="item.itemUUID"
 				/>
 			</swiper-slide>
 		</swiper-container>
 
 		<HomeTitle :path="Routes.ContinueReading">Continue reading</HomeTitle>
 		<CarouselWrapper>
-			<CarouselCard
-				v-for="(item, index) in ITEMS"
-				:key="item.itemUUID"
-				:title="item.title"
-				:artist="item.artist"
-				:release-date="item.releaseDate"
-				:cover="item.coverImage"
-				:is-first-item="index === 0"
-				:is-last-item="index === ITEMS.length - 1"
-				:progress="item.pageRead / item.pageCount"
-				:language="item.language"
-			/>
+			<swiper-slide v-for="(item, index) in continueReadingItems" :key="item.itemUUID">
+				<ItemCard
+					:key="item.itemUUID"
+					:cover-height="coverHeight"
+					:title="item.title"
+					:author="item.author"
+					:release-date="item.releaseDate"
+					:cover="item.cover"
+					:is-first-item="index === 0"
+					:is-last-item="index === items.length - 1"
+					:progress="item.pageRead"
+					:item-uuid="item.itemUUID"
+				/>
+			</swiper-slide>
 		</CarouselWrapper>
 
 		<HomeTitle :path="Routes.RecentlyUpdated">Recently updated</HomeTitle>
-
 		<HomeTitle :path="Routes.NewlyAdded">Newly added</HomeTitle>
+		<HomeTitle :path="Routes.CompletedStories">Completed stories</HomeTitle>
+		<HomeTitle :path="Routes.CompletedReads">Completed reads</HomeTitle>
 
 		<div ref="carouselContainerRef" class="w-full"></div>
 	</NavDrawerWrapper>
