@@ -1,14 +1,16 @@
 enum Routes {
 	Auth = "/auth",
-	CompletedReads = "/completed-reads",
-	CompletedStories = "/completed-stories",
-	ContinueReading = "/continue-reading",
-	Filter = "/filter",
+	CompletedReads = "/filter?readingStatus=finished",
+	CompletedStories = "/filter?itemStatus=completed",
+	ContinueReading = "/filter?readingStatus=reading",
 	Home = "/",
 	Library = "/library",
-	NewlyAdded = "/recently-added",
-	RecentlyUpdated = "/newly-updated",
+	NewlyAdded = "/filter?sortResult=newest%20added",
+	RecentlyUpdated = "/filter?sortResult=newest%20updated",
 	Settings = "/settings",
+	Item = "/item/:itemUUID",
+	Filter = "/filter",
+	FourOhFour = "/404",
 }
 
 export default Routes;
