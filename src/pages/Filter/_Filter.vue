@@ -5,7 +5,8 @@ import { getRouteQueries, getRouteQuery } from "./getRouteQueries";
 import ItemCard from "../../components/ItemCard.vue";
 import NavDrawerWrapper from "../../components/NavDrawerWrapper/_NavDrawerWrapper.vue";
 import imageAutoResizer from "../../utils/functions/imageAutoResizer";
-import { items, randomCategories } from "../../utils/variables/random";
+import { titles, randomCategories } from "../../utils/variables/random";
+import debounce from "debounce";
 import { inject, onMounted, ref, watchEffect } from "vue";
 import type { Title } from "../../utils/variables/random";
 import type { LocationQueryValue, Router } from "vue-router";
@@ -16,16 +17,18 @@ import "@material/web/radio/radio.js";
 
 const router = inject("router", {}) as Router;
 
-// Results =====================================================================
-
-const filteredItems = ref<Array<Item>>(items);
-
-// For the result grid =========================================================
+// For the result grid styling =================================================
 
 const imageContainerRef = ref<HTMLElement | null>(null);
 const imageHeight = ref(200);
 const numberOfImagePerRow = ref(5);
 const gapPixel = ref(16);
+
+// Results =====================================================================
+
+const filteredTitles = ref<Array<Title>>(titles); /** found titles */
+const filteredTitlesToDisplay = ref<Array<Title>>([]);
+const foundAnything = ref(false); /** for displaying the message */
 
 // Chips variables =============================================================
 
@@ -40,8 +43,22 @@ const inCategories = ref(new Set<string>());
 
 // Logics ======================================================================
 
+function renderMoreResult() {
+	const howFarFromBottom = document.body.getBoundingClientRect().bottom - window.innerHeight;
+
+	if (howFarFromBottom < 200) {
+		const newTitles = filteredTitles.value.slice(
+			filteredTitlesToDisplay.value.length,
+			filteredTitlesToDisplay.value.length + numberOfImagePerRow.value * 3
+		);
+
+		filteredTitlesToDisplay.value = filteredTitlesToDisplay.value.concat(newTitles);
+	}
+}
+
 onMounted(() => {
 	imageAutoResizer(imageContainerRef, imageHeight, numberOfImagePerRow, gapPixel.value, 3, 4);
+	window.addEventListener("scroll", debounce(renderMoreResult, 50));
 });
 
 // TODO: implement server-side handling, this is only for the demo
@@ -67,7 +84,15 @@ watchEffect(() => {
 		filtered.sort((a, b) => b.dateUpdated - a.dateUpdated);
 	}
 
-	filteredItems.value = filtered.length !== 0 ? filtered : items;
+	if (filtered.length !== 0) {
+		foundAnything.value = true;
+		filteredTitles.value = filtered;
+		filteredTitlesToDisplay.value = filtered.slice(0, numberOfImagePerRow.value * 3);
+	} else {
+		foundAnything.value = false;
+		filteredTitles.value = titles;
+		filteredTitlesToDisplay.value = titles.slice(0, numberOfImagePerRow.value * 3);
+	}
 });
 
 /** either "NewestAdded" or "NewestUpdated" is allowed at once */
