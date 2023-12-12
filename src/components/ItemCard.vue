@@ -3,19 +3,19 @@ import ImagePoly from "./ImagePoly/_ImagePoly.vue";
 import type MyImage from "../utils/types/MyImage";
 
 const props = defineProps({
-	itemUuid: { type: String, required: true },
 	author: { type: String, required: true },
 	cover: { type: Object as () => MyImage, required: true },
 	coverHeight: { type: Number, required: true },
 	progress: { type: Number, default: 0 },
 	title: { type: String, required: true },
+	titleId: { type: String, required: true },
 });
 
 /** */
 </script>
 
 <template>
-	<router-link class="flex flex-col items-start justify-center" :to="`/item/${props.itemUuid}`">
+	<router-link class="flex flex-col items-start justify-center" :to="`/title/${props.titleId}`">
 		<div class="img-cover group relative w-full overflow-hidden rounded-xl">
 			<ImagePoly
 				:image="props.cover"

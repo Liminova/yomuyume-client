@@ -10,9 +10,9 @@ const props = defineProps({
 	description: { type: String, required: true },
 	tags: { type: Array as () => Array<string>, required: true },
 	title: { type: String, required: true },
-	isFirstItem: { type: Boolean, default: true },
-	isLastItem: { type: Boolean, default: false },
-	itemUuid: { type: String, required: true },
+	isFirstTitle: { type: Boolean, default: true },
+	isLastTitle: { type: Boolean, default: false },
+	titleId: { type: String, required: true },
 });
 
 /** */
@@ -20,14 +20,14 @@ const props = defineProps({
 
 <template>
 	<router-link
-		:to="`/item/${props.itemUuid}`"
+		:to="`/title/${props.titleId}`"
 		class="recommend-container relative flex h-full flex-row justify-center overflow-hidden bg-black/50 sm:static"
-		:class="{ 'rounded-l-3xl': props.isFirstItem, 'rounded-r-3xl': props.isLastItem }"
+		:class="{ 'rounded-l-3xl': props.isFirstTitle, 'rounded-r-3xl': props.isLastTitle }"
 	>
 		<!-- Background -->
 		<div
 			class="absolute left-0 top-0 z-[-1] hidden w-full overflow-hidden sm:block"
-			:class="{ 'rounded-l-3xl': props.isFirstItem, 'rounded-r-3xl': props.isLastItem }"
+			:class="{ 'rounded-l-3xl': props.isFirstTitle, 'rounded-r-3xl': props.isLastTitle }"
 			:style="{ height: `${recommendsContainerHeight}px` }"
 		>
 			<Image

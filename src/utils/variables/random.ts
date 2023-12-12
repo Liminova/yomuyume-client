@@ -1,14 +1,14 @@
 import { faker } from "@faker-js/faker";
 import type MyImage from "../types/MyImage";
 
-type Item = {
+type Title = {
 	author: string;
-	categoryUUID: string;
+	categoryId: string;
 	cover: MyImage;
 	dateAdded: number;
 	dateUpdated: number;
 	description: string;
-	itemUUID: string;
+	id: string;
 	lastRead: number;
 	pageRead: number;
 	pages: Array<MyImage>;
@@ -18,11 +18,11 @@ type Item = {
 	titleImagePath: string;
 };
 
-type ItemInRecommends = {
+type TitleInRecommends = {
 	author: string;
 	cover: MyImage;
 	description: string;
-	itemUUID: string;
+	id: string;
 	releaseDate: number;
 	tags: Array<string>;
 	title: string;
@@ -65,16 +65,16 @@ function getRandomEpoch(): number {
 	return Math.floor(faker.date.past().getTime() / 1000);
 }
 
-function getRandomAmountOfItems(): Array<Item> {
-	function randomItem(): Item {
+function getRandomAmountOfTitles(): Array<Title> {
+	function randomTitle(): Title {
 		return Object.freeze({
 			author: faker.internet.userName().replace(".", " "),
-			categoryUUID: getRandomCategory().categoryUUID,
+			categoryId: getRandomCategory().categoryUUID,
 			cover,
 			dateAdded: getRandomEpoch(),
 			dateUpdated: getRandomEpoch(),
 			description: faker.lorem.paragraph(10),
-			itemUUID: faker.string.uuid(),
+			id: faker.string.uuid(),
 			lastRead: getRandomEpoch(),
 			pageRead: faker.number.float({ min: 0, max: 1 }),
 			pages: getRandomAmountOfPages(),
@@ -86,34 +86,34 @@ function getRandomAmountOfItems(): Array<Item> {
 		});
 	}
 
-	return Array.from({ length: faker.number.int({ min: 30, max: 40 }) }, () => randomItem());
+	return Array.from({ length: faker.number.int({ min: 30, max: 40 }) }, () => randomTitle());
 }
 
-const items = getRandomAmountOfItems();
+const titles = getRandomAmountOfTitles();
 
-function getRandomAmountOfRecommends(): Array<ItemInRecommends> {
+function getRandomAmountOfRecommends(): Array<TitleInRecommends> {
 	let randomIndexes = Array.from({ length: faker.number.int({ min: 5, max: 10 }) }, () =>
-		faker.number.int({ min: 0, max: items.length - 1 })
+		faker.number.int({ min: 0, max: titles.length - 1 })
 	);
 
 	randomIndexes = [...new Set(randomIndexes)];
 
 	return randomIndexes.map((index) => {
-		const item = items[index];
+		const title = titles[index];
 
 		return {
-			author: item.author,
-			cover: item.cover,
-			description: item.description,
-			itemUUID: item.itemUUID,
-			releaseDate: item.releaseDate,
-			tags: item.tags,
-			title: item.title,
+			author: title.author,
+			cover: title.cover,
+			description: title.description,
+			id: title.id,
+			releaseDate: title.releaseDate,
+			tags: title.tags,
+			title: title.title,
 		};
 	});
 }
 
 const randomRecommends = getRandomAmountOfRecommends();
 
-export type { Item };
-export { randomCategories, randomRecommends, items };
+export type { Title };
+export { randomCategories, randomRecommends, titles };

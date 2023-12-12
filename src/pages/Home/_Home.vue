@@ -6,7 +6,7 @@ import { coverHeight, recommendsContainerHeight, gapPixel } from "./measurements
 import ItemCard from "../../components/ItemCard.vue";
 import NavDrawerWrapper from "../../components/NavDrawerWrapper/_NavDrawerWrapper.vue";
 import imageAutoResizer from "../../utils/functions/imageAutoResizer";
-import { randomRecommends, items } from "../../utils/variables/random";
+import { randomRecommends, titles } from "../../utils/variables/random";
 import Routes from "../../utils/variables/routes";
 import { register } from "swiper/element/bundle";
 import { onMounted, ref } from "vue";
@@ -19,7 +19,7 @@ onMounted(() => {
 	imageAutoResizer(carouselContainerRef, coverHeight, undefined, gapPixel, 3, 4);
 });
 
-const continueReadingItems = items.slice(0, 25);
+const continueReadingItems = titles.slice(0, 25);
 
 /** */
 </script>
@@ -34,34 +34,31 @@ const continueReadingItems = items.slice(0, 25);
 			:autoplay-delay="5000"
 			:autoplay-disable-on-interaction="false"
 		>
-			<swiper-slide v-for="(item, index) in randomRecommends" :key="item.itemUUID">
+			<swiper-slide v-for="(title, index) in randomRecommends" :key="title.id">
 				<CardRecommend
-					:author="item.author"
-					:cover-image="item.cover"
-					:description="item.description"
-					:tags="item.tags"
-					:title="item.title"
-					:is-first-item="index === 0"
-					:is-last-item="index === randomRecommends.length - 1"
-					:item-uuid="item.itemUUID"
+					:author="title.author"
+					:cover-image="title.cover"
+					:description="title.description"
+					:tags="title.tags"
+					:title="title.title"
+					:is-first-title="index === 0"
+					:is-last-title="index === randomRecommends.length - 1"
+					:title-id="title.id"
 				/>
 			</swiper-slide>
 		</swiper-container>
 
 		<HomeTitle :path="Routes.ContinueReading">Continue reading</HomeTitle>
 		<CarouselWrapper>
-			<swiper-slide v-for="(item, index) in continueReadingItems" :key="item.itemUUID">
+			<swiper-slide v-for="title in continueReadingItems" :key="title.id">
 				<ItemCard
-					:key="item.itemUUID"
+					:key="title.id"
+					:author="title.author"
+					:cover="title.cover"
 					:cover-height="coverHeight"
-					:title="item.title"
-					:author="item.author"
-					:release-date="item.releaseDate"
-					:cover="item.cover"
-					:is-first-item="index === 0"
-					:is-last-item="index === items.length - 1"
-					:progress="item.pageRead"
-					:item-uuid="item.itemUUID"
+					:progress="title.pageRead"
+					:title-id="title.id"
+					:title="title.title"
 				/>
 			</swiper-slide>
 		</CarouselWrapper>
