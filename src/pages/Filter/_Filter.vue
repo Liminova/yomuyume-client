@@ -162,7 +162,7 @@ function chipHandler(eventTarget: HTMLElement, chipArr: Set<LocationQueryValue> 
 		<div class="my-4 text-4xl font-bold">Here's what I found</div>
 		<div
 			ref="imageContainerRef"
-			class="grid transition-all"
+			class="grid"
 			:style="{
 				gridTemplateColumns: `repeat(${numberOfImagePerRow}, 1fr)`,
 				gap: `${gapPixel}px`,
