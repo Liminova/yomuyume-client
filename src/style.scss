@@ -83,13 +83,17 @@
 	.text-balance {
 		text-wrap: balance;
 	}
+
+	.transition-bg-surface {
+		background-color: var(--md-sys-color-surface);
+		transition-property: background-color;
+		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+		transition-duration: 150ms;
+	}
 }
 
 html {
-	background-color: var(--md-sys-color-surface);
-	transition-property: background-color;
-	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-	transition-duration: 150ms;
+	@apply transition-bg-surface;
 }
 
 * {
