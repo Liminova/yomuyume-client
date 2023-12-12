@@ -48,12 +48,12 @@ const swiperBreakpoints: BreakpointRecord = {
 };
 
 export {
-	vibrate,
 	isNavDrawerLarge,
 	isTopBarVisible,
 	MAX_AGE,
-	MAX_POLYFILL_WORKERS,
 	MAX_BLURHASH_WORKERS,
+	MAX_POLYFILL_WORKERS,
 	State,
 	swiperBreakpoints,
+	vibrate,
 };
