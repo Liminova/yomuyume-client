@@ -184,7 +184,12 @@ function chipHandler(eventTarget: HTMLElement, chipArr: Set<LocationQueryValue> 
 		</div>
 
 		<!-- Result region -->
-		<div class="my-4 text-4xl font-bold">Here's what I found</div>
+		<Toggle :show="foundAnything">
+			<div class="mb-8 mt-10 text-4xl font-bold">Here's what I found</div>
+		</Toggle>
+		<Toggle :show="!foundAnything">
+			<div class="mb-8 mt-10 text-4xl font-bold">Can't find anything, here's everything</div>
+		</Toggle>
 		<div
 			ref="imageContainerRef"
 			class="grid"
