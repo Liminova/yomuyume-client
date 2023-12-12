@@ -105,7 +105,7 @@ function chipHandler(eventTarget: HTMLElement, chipArr: Set<LocationQueryValue> 
 </script>
 
 <template>
-	<NavDrawerWrapper class="mt-3 flex w-full flex-col px-6 transition-all lg:mt-0 lg:pl-0 lg:pr-3">
+	<NavDrawerWrapper class="mt-3 flex w-full flex-col px-6 lg:mt-0 lg:pl-0 lg:pr-3">
 		<!-- Filter region -->
 		<div class="flex w-full flex-col gap-2">
 			<div class="text-4xl font-bold">I want to finds ones that...</div>

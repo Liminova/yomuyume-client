@@ -19,7 +19,7 @@ onMounted(() => {
 	<NavDrawerWrapper>
 		<div
 			ref="imageContainerRef"
-			class="mt-3 grid px-6 transition-all lg:mt-0 lg:pl-0 lg:pr-3"
+			class="mt-3 grid px-6 lg:mt-0 lg:pl-0 lg:pr-3"
 			:style="{
 				gridTemplateColumns: `repeat(${numberOfImagePerRow}, 1fr)`,
 				gap: `${gapPixel}px`,

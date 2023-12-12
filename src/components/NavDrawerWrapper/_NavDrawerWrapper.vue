@@ -43,17 +43,19 @@ onMounted(() => {
 	<div>
 		<TopBar />
 		<div
-			class="transition-all lg:grid lg:grid-cols-[0fr_1fr]"
+			class="lg:grid lg:grid-cols-[0fr_1fr]"
 			:class="isNavDrawerLarge ? 'lg:grid-cols-[360px_1fr]' : 'lg:grid-cols-[80px_1fr]'"
+			:style="{ transition: 'grid-template-columns 300ms cubic-bezier(0.4, 0, 0.2, 1)' }"
 		>
 			<NavDrawer />
 			<div
-				class="transition-all lg:min-w-[0px]"
+				class="lg:min-w-[0px]"
 				:class="
 					isNavDrawerLarge
 						? 'lg:max-w-[calc(100vw-360px)]'
 						: 'lg:max-w-[calc(100vw-80px)]'
 				"
+				:style="{ transition: 'max-width 300ms cubic-bezier(0.4, 0, 0.2, 1)' }"
 			>
 				<div :class="props.class">
 					<slot />

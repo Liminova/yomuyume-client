@@ -39,13 +39,18 @@ if (window.innerWidth <= 1024) {
 	<div class="relative z-0">
 		<router-link :to="props.target" class="peer" @mouseover="props.mouseover">
 			<div
-				class="relative grid h-14 items-center gap-3 self-center pl-4 pr-6 transition-all"
+				class="relative grid h-14 items-center gap-3 self-center pl-4 pr-6"
 				:class="
 					style.container +
 					(isNavDrawerLarge
 						? ' grid-cols-[1.5rem_1fr_1.5rem] rounded-[1.75rem]'
 						: ' grid-cols-[1.5rem_0fr_0fr] rounded-2xl')
 				"
+				:style="{
+					transitionProperty: 'border-radius, grid-template-columns',
+					transitionDuration: '300ms',
+					transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+				}"
 			>
 				<md-ripple style="--md-ripple-hover-color: transparent" />
 				<div class="flex h-6 w-6 items-center justify-center">
@@ -62,8 +67,9 @@ if (window.innerWidth <= 1024) {
 
 		<!-- Bubble when hover on small nav -->
 		<div
-			class="pointer-events-none absolute left-[68px] top-0 flex h-full scale-90 items-center justify-center opacity-0 transition-all peer-hover:scale-100 peer-hover:opacity-100"
+			class="pointer-events-none absolute left-[68px] top-0 flex h-full scale-90 items-center justify-center opacity-0 transition-transform peer-hover:scale-100 peer-hover:opacity-100"
 			:class="isNavDrawerLarge ? 'hidden' : ''"
+			:style="{ transition: 'opacity 200ms cubic-bezier(0.4, 0, 0.2, 1)' }"
 		>
 			<div
 				class="whitespace-nowrap rounded-xl bg-[var(--md-sys-color-primary-container)] px-4 py-3"

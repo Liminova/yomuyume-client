@@ -26,7 +26,7 @@ const continueReadingItems = items.slice(0, 25);
 
 <template>
 	<NavDrawerWrapper
-		class="mt-3 flex w-full select-none flex-col gap-7 px-6 transition-all lg:mt-0 lg:pl-0 lg:pr-3"
+		class="mt-3 flex w-full select-none flex-col gap-7 px-6 lg:mt-0 lg:pl-0 lg:pr-3"
 	>
 		<swiper-container
 			class="w-full overflow-hidden rounded-3xl"

@@ -20,7 +20,7 @@ window.addEventListener("keydown", (e) => {
 
 <template>
 	<div
-		class="sticky top-0 z-10 flex h-[--topbar-height] w-full flex-row items-center justify-between gap-2 bg-[--md-sys-color-surface] pr-4 transition-all"
+		class="transition-bg-surface sticky top-0 z-10 flex h-[--topbar-height] w-full flex-row items-center justify-between gap-2 pr-4 transition-transform"
 		:class="isTopBarVisible ? 'translate-y-0' : '-translate-y-full'"
 	>
 		<!-- MavToggleButton, LogoTitle -->

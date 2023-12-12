@@ -5,7 +5,7 @@ import { swiperBreakpoints } from "../../utils/variables/store";
 
 <template>
 	<swiper-container
-		class="w-full overflow-hidden rounded-t-xl transition-all"
+		class="w-full overflow-hidden rounded-t-xl"
 		:space-between="gapPixel"
 		:slides-per-view="2"
 		:breakpoints="swiperBreakpoints"

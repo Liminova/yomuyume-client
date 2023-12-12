@@ -16,7 +16,7 @@ const props = defineProps({
 
 <template>
 	<router-link class="flex flex-col items-start justify-center" :to="`/item/${props.itemUuid}`">
-		<div class="img-cover group relative overflow-hidden rounded-xl w-full">
+		<div class="img-cover group relative w-full overflow-hidden rounded-xl">
 			<ImagePoly
 				:image="props.cover"
 				:style="{
@@ -26,7 +26,7 @@ const props = defineProps({
 				image-class="rounded-xl h-full object-cover"
 			/>
 			<div
-				class="absolute left-0 top-0 h-full w-full bg-[rgba(255_255_255/0.08)] opacity-0 transition-all group-[.img-cover]:hover:opacity-100"
+				class="absolute left-0 top-0 h-full w-full bg-[rgba(255_255_255/0.08)] opacity-0 transition-opacity group-[.img-cover]:hover:opacity-100"
 			/>
 			<md-linear-progress
 				v-show="progress"

@@ -21,7 +21,7 @@ if (localStorage.getItem("theme") !== null) {
 		<div class="relative rounded-s-full">
 			<md-ripple />
 			<button
-				class="h-full w-full rounded-s-full border-y-[1px] border-l-[1px] border-solid border-[color:var(--md-sys-color-outline)] text-[color:var(--md-sys-color-on-surface)] transition-all"
+				class="theme-toggle-transition h-full w-full rounded-s-full border-y-[1px] border-l-[1px] border-solid border-[color:var(--md-sys-color-outline)] text-[color:var(--md-sys-color-on-surface)]"
 				:class="theme === 'dark' ? activeButtonStyle : ''"
 				@click="(theme = Theme.DARK) && changeTheme(Theme.DARK)"
 			>
@@ -31,7 +31,7 @@ if (localStorage.getItem("theme") !== null) {
 		<div class="relative">
 			<md-ripple />
 			<button
-				class="h-full w-full border-y-[1px] border-l-[1px] border-solid border-[color:var(--md-sys-color-outline)] text-[color:var(--md-sys-color-on-surface)] transition-all"
+				class="theme-toggle-transition h-full w-full border-y-[1px] border-l-[1px] border-solid border-[color:var(--md-sys-color-outline)] text-[color:var(--md-sys-color-on-surface)]"
 				:class="theme === 'auto' ? activeButtonStyle : ''"
 				@click="(theme = Theme.AUTO) && changeTheme(Theme.AUTO)"
 			>
@@ -41,7 +41,7 @@ if (localStorage.getItem("theme") !== null) {
 		<div class="relative rounded-e-full">
 			<md-ripple />
 			<button
-				class="h-full w-full rounded-e-full border-[1px] border-solid border-[color:var(--md-sys-color-outline)] text-[color:var(--md-sys-color-on-surface)] transition-all"
+				class="theme-toggle-transition h-full w-full rounded-e-full border-[1px] border-solid border-[color:var(--md-sys-color-outline)] text-[color:var(--md-sys-color-on-surface)]"
 				:class="theme === 'light' ? activeButtonStyle : ''"
 				@click="(theme = Theme.LIGHT) && changeTheme(Theme.LIGHT)"
 			>
@@ -50,3 +50,11 @@ if (localStorage.getItem("theme") !== null) {
 		</div>
 	</div>
 </template>
+
+<style scoped>
+.theme-toggle-transition {
+	transition-property: background-color, color;
+	transition-duration: 300ms;
+	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+</style>

@@ -9,7 +9,7 @@ const props = defineProps({
 <template>
 	<router-link
 		:to="props.path"
-		class="w-fit origin-left text-2xl font-medium transition-all hover:scale-[1.01]"
+		class="w-fit origin-left text-2xl font-medium transition-transform hover:scale-[1.02]"
 	>
 		<div class="text-4xl font-bold">
 			<slot />

@@ -21,9 +21,14 @@ const combinedHide = `${
 
 <template>
 	<div
-		class="grid transition-all"
+		class="grid"
 		:class="props.show ? combinedShow : combinedHide"
-		:style="{ pointerEvents: props.show ? 'auto' : 'none' }"
+		:style="{
+			pointerEvents: props.show ? 'auto' : 'none',
+			transitionProperty: 'grid-template-columns, grid-template-rows, opacity',
+			transitionDuration: '150ms',
+			transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+		}"
 	>
 		<div :class="props.horizontal ? 'min-w-0' : 'min-h-0'">
 			<slot />

@@ -9,18 +9,25 @@ import Routes from "../../utils/variables/routes";
 		<img src="/placeholder.svg" class="h-auto w-full rounded-full" />
 
 		<div
-			class="pointer-events-none absolute right-0 top-7 grid -translate-y-6 grid-rows-[0fr] rounded-2xl opacity-0 transition-all group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:grid-rows-[1fr] group-hover:opacity-100"
+			class="pointer-events-none absolute right-0 top-7 grid -translate-y-6 grid-rows-[0fr] rounded-2xl opacity-0 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:grid-rows-[1fr] group-hover:opacity-100"
+			:style="{
+				transitionProperty: 'opacity, transform',
+				transitionDuration: '200ms',
+				transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+			}"
 		>
 			<div class="elevation-3 mt-8 flex flex-col gap-3 rounded-2xl p-5">
 				<router-link :to="Routes.Settings">
 					<div
-						class="whitespace-nowrap text-[--md-sys-color-on-surface-variant] transition-all hover:text-[--md-sys-color-on-surface] dark:hover:text-[--md-sys-color-primary-fixed]"
+						class="whitespace-nowrap text-[--md-sys-color-on-surface-variant] hover:text-[--md-sys-color-on-surface] dark:hover:text-[--md-sys-color-primary-fixed]"
+						:style="{ transition: 'color 200ms cubic-bezier(0.4, 0, 0.2, 1)' }"
 					>
 						Settings
 					</div>
 				</router-link>
 				<div
-					class="whitespace-nowrap text-[--md-sys-color-on-surface-variant] transition-all hover:text-[--md-sys-color-on-surface] dark:hover:text-[--md-sys-color-primary-fixed]"
+					class="whitespace-nowrap text-[--md-sys-color-on-surface-variant] hover:text-[--md-sys-color-on-surface] dark:hover:text-[--md-sys-color-primary-fixed]"
+					:style="{ transition: 'color 200ms cubic-bezier(0.4, 0, 0.2, 1)' }"
 				>
 					Sign out
 				</div>
