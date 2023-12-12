@@ -4,6 +4,7 @@ import { FilterReadingStatus, FilterSortResult, FilterItemStatus } from "./enums
 import { getRouteQueries, getRouteQuery } from "./getRouteQueries";
 import ItemCard from "../../components/ItemCard.vue";
 import NavDrawerWrapper from "../../components/NavDrawerWrapper/_NavDrawerWrapper.vue";
+import Toggle from "../../components/ToggleWrapper.vue";
 import imageAutoResizer from "../../utils/functions/imageAutoResizer";
 import { titles, randomCategories } from "../../utils/variables/random";
 import debounce from "debounce";
