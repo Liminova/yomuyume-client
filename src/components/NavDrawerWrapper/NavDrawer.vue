@@ -62,7 +62,7 @@ function moveEntryBg(index: number) {
 			<!-- Entries' background -->
 			<div
 				ref="entryBackground"
-				class="pointer-events-none absolute left-0 top-0 flex h-14 w-full select-none items-stretch px-3 transition-transform"
+				class="pointer-events-none absolute left-0 top-0 flex h-14 w-full select-none items-stretch px-3"
 				:style="{
 					transform:
 						'translateY(' +
@@ -70,7 +70,8 @@ function moveEntryBg(index: number) {
 						'px)',
 					opacity:
 						entryIndexMap.indexOf(router.currentRoute.value.path) === -1 ? '0' : '1',
-					transition: 'opacity 200ms cubic-bezier(0.4, 0, 0.2, 1)',
+					transition:
+						'opacity 200ms cubic-bezier(0.4, 0, 0.2, 1), transform 150ms cubic-bezier(0.4, 0, 0.2, 1)',
 				}"
 			>
 				<div
