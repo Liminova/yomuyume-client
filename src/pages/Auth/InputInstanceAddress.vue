@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import "@material/web/textfield/outlined-text-field.js";
 import "@material/web/progress/linear-progress.js";
-import AuthType from "./AuthType";
 import {
 	fetchInstanceInfoState,
 	email,
 	isEmailValidState,
 	loginCode,
 	sendCodeState,
-	authType,
+	isPasswordless,
 } from "./states";
 import Toggle from "../../components/ToggleWrapper.vue";
 import { State } from "../../utils/variables/store";
@@ -39,7 +38,7 @@ async function fetchInstanceInfo(_instanceAddr = instanceAddr.value) {
 		}
 
 		fetchInstanceInfoState.value = State.Loaded;
-		authType.value = AuthType.UserEmailPassword;
+		isPasswordless.value = false;
 	}, 1000);
 	return Promise.resolve();
 }

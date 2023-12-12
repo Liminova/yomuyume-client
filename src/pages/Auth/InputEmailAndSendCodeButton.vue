@@ -9,6 +9,7 @@ import {
 	loginCode,
 	sendCodeState,
 	loginState,
+	isPasswordless,
 } from "./states";
 import Toggle from "../../components/ToggleWrapper.vue";
 import { State } from "../../utils/variables/store";
@@ -49,7 +50,7 @@ watchEffect(() => {
 			v-model="email"
 			label="Email"
 			class="mb-3 w-full"
-			:disabled="!(fetchInstanceInfoState === State.Loaded)"
+			:disabled="fetchInstanceInfoState !== State.Loaded || !isPasswordless"
 			@keydown.enter="sendCode"
 		/>
 	</Toggle>

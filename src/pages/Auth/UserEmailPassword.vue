@@ -2,7 +2,7 @@
 import "@material/web/progress/linear-progress.js";
 import "@material/web/button/filled-tonal-button.js";
 import "@material/web/textfield/outlined-text-field.js";
-import { fetchInstanceInfoState } from "./states";
+import { fetchInstanceInfoState, isPasswordless } from "./states";
 import Toggle from "../../components/ToggleWrapper.vue";
 import Routes from "../../utils/variables/routes";
 import { State } from "../../utils/variables/store";
@@ -33,7 +33,7 @@ async function login(): Promise<void> {
 		v-model="userNameOrEmail"
 		class="mb-3 w-full"
 		label="Username or email"
-		:disable="fetchInstanceInfoState === State.Loaded"
+		:disabled="isPasswordless || fetchInstanceInfoState !== State.Loaded"
 		@keydown.enter="login"
 	/>
 	<md-outlined-text-field
@@ -41,7 +41,7 @@ async function login(): Promise<void> {
 		class="mb-3 w-full"
 		type="password"
 		label="Password"
-		:disable="fetchInstanceInfoState === State.Loaded"
+		:disabled="isPasswordless || fetchInstanceInfoState !== State.Loaded"
 		@keydown.enter="login"
 	/>
 
@@ -55,7 +55,7 @@ async function login(): Promise<void> {
 
 	<md-filled-tonal-button
 		class="pointer-events-none w-full"
-		:disable="fetchInstanceInfoState === State.Loaded"
+		:disabled="isPasswordless || fetchInstanceInfoState !== State.Loaded"
 		@click="login"
 	>
 		Login
