@@ -7,7 +7,7 @@ import NavDrawerWrapper from "../../components/NavDrawerWrapper/_NavDrawerWrappe
 import imageAutoResizer from "../../utils/functions/imageAutoResizer";
 import { items, randomCategories } from "../../utils/variables/random";
 import { inject, onMounted, ref, watchEffect } from "vue";
-import type { Item } from "../../utils/variables/random";
+import type { Title } from "../../utils/variables/random";
 import type { LocationQueryValue, Router } from "vue-router";
 import "@material/web/textfield/filled-text-field.js";
 import "@material/web/chips/chip-set.js";
@@ -34,7 +34,7 @@ const readingStatus = ref(
 );
 const sortBy = ref(getRouteQuery(router, "sortResult", Object.values(FilterSortResult)));
 
-const itemStatus = ref(getRouteQueries(router, "itemStatus", Object.values(FilterItemStatus)));
+const titleStatus = ref(getRouteQueries(router, "titleStatus", Object.values(FilterItemStatus)));
 
 const inCategories = ref(new Set<string>());
 
@@ -46,17 +46,17 @@ onMounted(() => {
 
 // TODO: implement server-side handling, this is only for the demo
 watchEffect(() => {
-	const filtered = items.filter((item) => {
+	const filtered = titles.filter((title) => {
 		let isCompleted = true;
 
 		if (
-			itemStatus.value.has(FilterItemStatus.Completed) &&
-			!itemStatus.value.has(FilterItemStatus.Ongoing)
+			titleStatus.value.has(FilterItemStatus.Completed) &&
+			!titleStatus.value.has(FilterItemStatus.Ongoing)
 		) {
-			isCompleted = item.tags.includes("completed");
+			isCompleted = title.tags.includes("completed");
 		}
 
-		const inCategoriesMatch = inCategories.value.has(item.categoryUUID);
+		const inCategoriesMatch = inCategories.value.has(title.categoryId);
 
 		return isCompleted && inCategoriesMatch;
 	});
@@ -139,20 +139,23 @@ function chipHandler(eventTarget: HTMLElement, chipArr: Set<LocationQueryValue> 
 					v-for="status in Object.values(FilterItemStatus)"
 					:key="status"
 					:label="status"
-					:selected="itemStatus.has(status)"
-					@click="chipHandler($event.target, itemStatus)"
+					:selected="titleStatus.has(status)"
+					@click="chipHandler($event.target, titleStatus)"
 				/>
 			</FilterChipWrapper>
 
-			<FilterChipWrapper title="in category">
-				<md-filter-chip
-					v-for="category in randomCategories"
-					:key="category.categoryUUID"
-					:uuid="category.categoryUUID"
-					:label="category.title"
-					@click="chipCategoryHandler($event.target)"
-				/>
-			</FilterChipWrapper>
+			<div class="flex flex-row flex-wrap items-center gap-4">
+				<div class="text-xl font-semibold">in category</div>
+				<md-chip-set class="flex-rows flex">
+					<md-filter-chip
+						v-for="category in randomCategories"
+						:key="category.categoryUUID"
+						:uuid="category.categoryUUID"
+						:label="category.title"
+						@click="chipCategoryHandler($event.target)"
+					/>
+				</md-chip-set>
+			</div>
 		</div>
 
 		<!-- Result region -->
@@ -166,15 +169,14 @@ function chipHandler(eventTarget: HTMLElement, chipArr: Set<LocationQueryValue> 
 			}"
 		>
 			<ItemCard
-				v-for="item in filteredItems"
-				:key="item.itemUUID"
-				:author="item.author"
-				:cover="item.cover"
-				:title="item.title"
-				:item-uuid="item.itemUUID"
-				:item="item"
+				v-for="title in filteredTitlesToDisplay"
+				:key="title.id"
+				:author="title.author"
+				:cover="title.cover"
 				:cover-height="imageHeight"
-				:progress="item.pageRead"
+				:progress="title.pageRead"
+				:title="title.title"
+				:title-id="title.id"
 			/>
 		</div>
 	</NavDrawerWrapper>
