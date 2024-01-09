@@ -5,7 +5,6 @@ const FilterReadingStatus: FilterTypePosibleVal = {
 	Reading: { name: "reading", icon: "book-open" },
 	Bookmarked: { name: "bookmarked", icon: "bookmark" },
 	Finished: { name: "finished", icon: "check-circle" },
-	NotOpened: { name: "not opened", icon: "circle-xmark" },
 };
 
 const FilterSortBy: FilterTypePosibleVal = {
@@ -13,7 +12,8 @@ const FilterSortBy: FilterTypePosibleVal = {
 	AddDate: { name: "add date", icon: "calendar-plus" },
 	ReleaseDate: { name: "release date", icon: "calendar" },
 	UpdateDate: { name: "update date", icon: "calendar-clock" },
-	LastRead: { name: "last read", icon: "calendar-check" },
+
+	// LastRead: { name: "last read", icon: "calendar-check" },
 };
 
 const FilterSortOrder: FilterTypePosibleVal = {

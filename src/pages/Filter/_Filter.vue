@@ -1,22 +1,32 @@
 <script setup lang="ts">
-import FilterChipWrapper from "./FilterChipWrapper.vue";
-import { FilterReadingStatus, FilterSortResult, FilterItemStatus } from "./enums";
-import { getRouteQueries, getRouteQuery } from "./getRouteQueries";
-import ItemCard from "../../components/ItemCard.vue";
-import NavDrawerWrapper from "../../components/NavDrawerWrapper/_NavDrawerWrapper.vue";
-import Toggle from "../../components/ToggleWrapper.vue";
-import imageAutoResizer from "../../utils/functions/imageAutoResizer";
-import { titles, randomCategories } from "../../utils/variables/random";
-import debounce from "debounce";
-import { inject, onMounted, ref, watchEffect } from "vue";
-import type { Title } from "../../utils/variables/random";
-import type { LocationQueryValue, Router } from "vue-router";
 import "@material/web/textfield/filled-text-field.js";
 import "@material/web/chips/chip-set.js";
 import "@material/web/chips/filter-chip.js";
 import "@material/web/radio/radio.js";
+import ChipSection from "./ChipSection.vue";
+import { FilterReadingStatus, FilterSortBy, FilterSortOrder, FilterType } from "./FilterType";
+import indexApi from "../../api";
+import fileApiUrl from "../../api/file";
+import ItemCard from "../../components/ItemCard.vue";
+import NavDrawerWrapper from "../../components/NavDrawerWrapper/_NavDrawerWrapper.vue";
+import SnackBar from "../../components/SnackBar.vue";
+import Toggle from "../../components/ToggleWrapper.vue";
+import imageAutoResizer from "../../utils/functions/imageAutoResizer";
+import debounce from "debounce";
+import { onMounted, ref, watchEffect } from "vue";
+import type { FilterTitleResponseBody } from "../../api";
 
-const router = inject("router", {}) as Router;
+// Key: category id, Value: category name
+const categories = ref<Record<string, string>>({});
+const snackbarMessage = ref("");
+
+void (async () => {
+	const response = await indexApi.categories(snackbarMessage);
+
+	for (const category of response) {
+		categories.value[category.id] = category.name;
+	}
+})();
 
 // For the result grid styling =================================================
 
@@ -27,22 +37,8 @@ const gapPixel = ref(16);
 
 // Results =====================================================================
 
-const filteredTitles = ref<Array<Title>>(titles); /** found titles */
-const filteredTitlesToDisplay = ref<Array<Title>>([]);
-const foundAnything = ref(false); /** for displaying the message */
-
-// Chips variables =============================================================
-
-const readingStatus = ref(
-	getRouteQueries(router, "readingStatus", Object.values(FilterReadingStatus))
-);
-const sortBy = ref(getRouteQuery(router, "sortResult", Object.values(FilterSortResult)));
-
-const titleStatus = ref(getRouteQueries(router, "titleStatus", Object.values(FilterItemStatus)));
-
-const inCategories = ref(new Set<string>());
-
-// Logics ======================================================================
+const filteredTitles = ref<Array<FilterTitleResponseBody>>([]); /** found titles */
+const filteredTitlesToDisplay = ref<Array<FilterTitleResponseBody>>([]);
 
 function renderMoreResult() {
 	const howFarFromBottom = document.body.getBoundingClientRect().bottom - window.innerHeight;
@@ -62,49 +58,13 @@ onMounted(() => {
 	window.addEventListener("scroll", debounce(renderMoreResult, 50));
 });
 
-// TODO: implement server-side handling, this is only for the demo
-watchEffect(() => {
-	const filtered = titles.filter((title) => {
-		let isCompleted = true;
+// Chips variables =============================================================
 
-		if (
-			titleStatus.value.has(FilterItemStatus.Completed) &&
-			!titleStatus.value.has(FilterItemStatus.Ongoing)
-		) {
-			isCompleted = title.tags.includes("completed");
-		}
-
-		const inCategoriesMatch = inCategories.value.has(title.categoryId);
-
-		return isCompleted && inCategoriesMatch;
-	});
-
-	if (sortBy.value === FilterSortResult.NewestAdded) {
-		filtered.sort((a, b) => b.dateAdded - a.dateAdded);
-	} else if (sortBy.value === FilterSortResult.NewestUpdated) {
-		filtered.sort((a, b) => b.dateUpdated - a.dateUpdated);
-	}
-
-	if (filtered.length !== 0) {
-		foundAnything.value = true;
-		filteredTitles.value = filtered;
-		filteredTitlesToDisplay.value = filtered.slice(0, numberOfImagePerRow.value * 3);
-	} else {
-		foundAnything.value = false;
-		filteredTitles.value = titles;
-		filteredTitlesToDisplay.value = titles.slice(0, numberOfImagePerRow.value * 3);
-	}
-});
-
-/** either "NewestAdded" or "NewestUpdated" is allowed at once */
-function chipSortResultHandler(eventTarget: HTMLElement) {
-	const label = eventTarget.shadowRoot?.querySelector(".label")?.textContent ?? "";
-	const selected = eventTarget.getAttribute("selected") === null;
-
-	if (selected) {
-		sortBy.value = label;
-	}
-}
+const keywords = ref<string>("");
+const inCategories = ref(new Set<string>());
+const readingStatus = ref<Array<string>>([]);
+const sortBy = ref("");
+const sortOrder = ref("");
 
 function chipCategoryHandler(eventTarget: HTMLElement) {
 	const uuid = eventTarget.getAttribute("uuid") ?? "";
@@ -117,67 +77,73 @@ function chipCategoryHandler(eventTarget: HTMLElement) {
 	}
 }
 
-/** Chips get added to their corresponding array */
-function chipHandler(eventTarget: HTMLElement, chipArr: Set<LocationQueryValue> | Set<string>) {
-	const label = eventTarget.shadowRoot?.querySelector(".label")?.textContent ?? "";
-	const selected = eventTarget.getAttribute("selected") === null;
+watchEffect(async () => {
+	filteredTitles.value = await indexApi.filter(
+		{
+			keywords: keywords.value
+				.split(" ")
+				.map((keyword) => keyword.trim())
+				.filter((keyword) => keyword !== ""),
+			category_ids: Array.from(inCategories.value),
+			is_reading: readingStatus.value.includes(FilterReadingStatus.Reading.name),
+			is_finished: readingStatus.value.includes(FilterReadingStatus.Finished.name),
+			is_bookmarked: readingStatus.value.includes(FilterReadingStatus.Bookmarked.name),
+			is_favorite: readingStatus.value.includes(FilterReadingStatus.Liked.name),
+			sort_by: sortBy.value,
+			sort_order: sortOrder.value,
+		},
+		snackbarMessage
+	);
 
-	if (selected) {
-		chipArr.add(label);
-	} else {
-		chipArr.delete(label);
-	}
-}
+	filteredTitlesToDisplay.value = filteredTitles.value.slice(0, numberOfImagePerRow.value * 3);
+});
 </script>
 
 <template>
+	<SnackBar :message="snackbarMessage" @close="snackbarMessage = ''" />
 	<NavDrawerWrapper class="mb-10 mt-3 flex w-full flex-col px-6 lg:mt-0 lg:pl-0 lg:pr-3">
 		<!-- Filter region -->
 		<div class="flex w-full flex-col gap-2">
 			<div class="text-4xl font-bold">I want to finds ones that...</div>
-			<md-filled-text-field label="filter by keywords" value="" class="my-4 max-w-sm" />
+			<md-filled-text-field
+				v-model="keywords"
+				label="filter by keywords"
+				value=""
+				class="my-4 max-w-sm"
+			/>
 
-			<FilterChipWrapper title="I'm">
-				<md-filter-chip
-					v-for="status in Object.values(FilterReadingStatus)"
-					:key="status"
-					:label="status"
-					:selected="readingStatus.has(status)"
-					@click="chipHandler($event.target, readingStatus)"
-				/>
-			</FilterChipWrapper>
+			<ChipSection
+				title="I'm"
+				:filter-type="FilterType.ReadingStatus"
+				:filter-type-posible-val="FilterReadingStatus"
+				@add="readingStatus.push($event)"
+				@delete="readingStatus.splice(readingStatus.indexOf($event), 1)"
+			/>
 
-			<FilterChipWrapper title="sort by">
-				<md-filter-chip
-					:label="FilterSortResult.NewestAdded"
-					:selected="sortBy === FilterSortResult.NewestAdded"
-					@click="chipSortResultHandler($event.target)"
-				/>
-				<md-filter-chip
-					:label="FilterSortResult.NewestUpdated"
-					:selected="sortBy === FilterSortResult.NewestUpdated"
-					@click="chipSortResultHandler($event.target)"
-				/>
-			</FilterChipWrapper>
+			<ChipSection
+				title="sort by"
+				:filter-type="FilterType.SortResult"
+				:filter-type-posible-val="FilterSortBy"
+				is-overwrite
+				@overwrite="sortBy = $event"
+			/>
 
-			<FilterChipWrapper title="that are">
-				<md-filter-chip
-					v-for="status in Object.values(FilterItemStatus)"
-					:key="status"
-					:label="status"
-					:selected="titleStatus.has(status)"
-					@click="chipHandler($event.target, titleStatus)"
-				/>
-			</FilterChipWrapper>
+			<ChipSection
+				title="in order"
+				:filter-type="FilterType.SortOrder"
+				:filter-type-posible-val="FilterSortOrder"
+				is-overwrite
+				@overwrite="sortOrder = $event"
+			/>
 
 			<div class="flex flex-row flex-wrap items-center gap-4">
 				<div class="text-xl font-semibold">in category</div>
 				<md-chip-set class="flex-rows flex">
 					<md-filter-chip
-						v-for="category in randomCategories"
-						:key="category.categoryUUID"
-						:uuid="category.categoryUUID"
-						:label="category.title"
+						v-for="category_id in Object.keys(categories)"
+						:key="category_id"
+						:uuid="category_id"
+						:label="categories[category_id]"
 						@click="chipCategoryHandler($event.target)"
 					/>
 				</md-chip-set>
@@ -185,11 +151,11 @@ function chipHandler(eventTarget: HTMLElement, chipArr: Set<LocationQueryValue> 
 		</div>
 
 		<!-- Result region -->
-		<Toggle :show="foundAnything">
+		<Toggle :show="filteredTitles.length > 0">
 			<div class="mb-8 mt-10 text-4xl font-bold">Here's what I found</div>
 		</Toggle>
-		<Toggle :show="!foundAnything">
-			<div class="mb-8 mt-10 text-4xl font-bold">Can't find anything, here's everything</div>
+		<Toggle :show="filteredTitles.length === 0">
+			<div class="mb-8 mt-10 text-4xl font-bold">Can't find anything</div>
 		</Toggle>
 		<div
 			ref="imageContainerRef"
@@ -199,16 +165,25 @@ function chipHandler(eventTarget: HTMLElement, chipArr: Set<LocationQueryValue> 
 				gap: `${gapPixel}px`,
 			}"
 		>
-			<ItemCard
+			<router-link
 				v-for="title in filteredTitlesToDisplay"
 				:key="title.id"
-				:author="title.author"
-				:cover="title.cover"
-				:cover-height="imageHeight"
-				:progress="title.pageRead"
-				:title="title.title"
-				:title-id="title.id"
-			/>
+				:to="`/title/${title.id}`"
+			>
+				<ItemCard
+					:author="title.author ?? 'Unknown'"
+					:cover="{
+						src: fileApiUrl.thumbnail(title.id),
+						width: title.width,
+						height: title.height,
+						blurhash: title.blurhash,
+					}"
+					:cover-height="imageHeight"
+					:progress="title.page_read ? title.page_read / title.page_count : 0"
+					:title="title.title"
+					:title-id="title.id"
+				/>
+			</router-link>
 		</div>
 	</NavDrawerWrapper>
 </template>

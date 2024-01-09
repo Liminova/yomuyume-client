@@ -49,7 +49,7 @@ function chipHandler(eventTarget: HTMLElement) {
 	}
 
 	if (props.isOverwrite) {
-		emit("overwrite", `overwrite ${label}`);
+		emit("overwrite", label);
 		if (!chipSet.value) {
 			return;
 		}
