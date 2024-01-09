@@ -31,6 +31,7 @@
 		"@typescript-eslint/consistent-type-definitions": [
 			"error",
 			"type"
-		]
+		],
+		"vue/no-deprecated-slot-attribute": "off",
 	}
 }
