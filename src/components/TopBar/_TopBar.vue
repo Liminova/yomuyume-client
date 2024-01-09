@@ -20,8 +20,9 @@ window.addEventListener("keydown", (e) => {
 
 <template>
 	<div
-		class="transition-bg-surface sticky top-0 z-10 flex h-[--topbar-height] w-full flex-row items-center justify-between gap-2 pr-4 transition-transform"
+		class="transition-bg-surface sticky top-0 z-10 flex h-[--topbar-height] w-full flex-row items-center justify-between gap-2 pr-4"
 		:class="isTopBarVisible ? 'translate-y-0' : '-translate-y-full'"
+		:style="{ transition: 'transform 300ms cubic-bezier(0.4, 0, 0.2, 1)' }"
 	>
 		<!-- MavToggleButton, LogoTitle -->
 		<div class="flex flex-row items-center justify-start">
