@@ -6,7 +6,7 @@ import "@material/web/chips/assist-chip.js";
 
 const props = defineProps({
 	author: { type: String, required: true },
-	coverImage: { type: Object as () => MyImage, required: true },
+	cover: { type: Object as () => MyImage, required: true },
 	description: { type: String, required: true },
 	tags: { type: Array as () => Array<string>, required: true },
 	title: { type: String, required: true },
@@ -33,7 +33,7 @@ const props = defineProps({
 			<Image
 				class="w-full scale-110 overflow-hidden object-cover blur-sm"
 				:draggable="false"
-				:image="props.coverImage"
+				:image="props.cover"
 				image-class="overflow-hidden"
 				:lazy="false"
 			/>
@@ -43,7 +43,7 @@ const props = defineProps({
 		<div class="h-full w-full sm:min-w-[350px] sm:max-w-xs lg:py-10 lg:pl-10">
 			<Image
 				:draggable="false"
-				:image="props.coverImage"
+				:image="props.cover"
 				class="h-full overflow-hidden lg:rounded-2xl"
 				image-class="h-full object-cover"
 			/>
