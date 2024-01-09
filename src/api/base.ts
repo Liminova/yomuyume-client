@@ -5,12 +5,7 @@ type GenericResponseBody = {
 	message: string;
 };
 
-type GenericResponse = {
-	res: Response;
-	body: GenericResponseBody;
-};
-
-const instanceAddr = ref("");
+const instanceAddr = ref(localStorage.getItem("instance-address") ?? "http://localhost:3000");
 
 export default instanceAddr;
-export type { GenericResponse, GenericResponseBody };
+export type { GenericResponseBody };

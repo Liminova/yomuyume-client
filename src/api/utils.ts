@@ -1,4 +1,4 @@
-import instanceAddr from "./base";
+import req from "./req";
 
 type StatusResponseBody = {
 	server_time: string;
@@ -13,11 +13,9 @@ type StatusResponse = {
 };
 
 const otherApi = {
-	newRoute: (path: string) => new URL(`/api/${path}`, instanceAddr.value).toString(),
-
 	async status(): Promise<StatusResponse> {
 		try {
-			const res = await fetch(this.newRoute("status"), { method: "GET" });
+			const res = await req("/api/utils/status", "GET");
 
 			return { res, body: (await res.json()) as StatusResponseBody };
 		} catch {

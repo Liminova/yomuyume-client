@@ -1,6 +1,8 @@
 import instanceAddr from "./base";
-import fetchWithAuth from "./fetchWithAuth";
-import type { GenericResponse, GenericResponseBody } from "./base";
+import { reqWithAuth } from "./req";
+import parseRespJson from "../utils/functions/parseRespJson";
+import type { GenericResponseBody } from "./base";
+import type { Ref } from "vue";
 
 enum Action {
 	PUT = "PUT",
@@ -10,39 +12,38 @@ enum Action {
 const userApi = {
 	newRoute: (path: string) => new URL(`/api/user/${path}`, instanceAddr.value).toString(),
 
-	async check(): Promise<boolean> {
-		const res = await fetchWithAuth(this.newRoute("check"), { method: "GET" });
+	/** if res.ok, the GenericResponse is empty */
+	async favorite(titleId: string, action: Action, errRef: Ref<string>): Promise<boolean> {
+		const response = await reqWithAuth(`/api/user/favorite/${titleId}`, action);
 
-		console.log(await res.json());
-		return res.ok;
+		if (!response.ok) {
+			void parseRespJson(response, errRef).then((body_) => {
+				const body = body_ as GenericResponseBody;
+
+				if (body.message) {
+					errRef.value = body.message;
+				}
+			});
+		}
+
+		return Promise.resolve(response.ok);
 	},
 
-	async modify(username: string, email: string, password: string): Promise<GenericResponse> {
-		const res = await fetch(this.newRoute("modify"), {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({ username, email, password }),
-		});
+	/** if res.ok, the GenericResponse is empty */
+	async bookmark(titleId: string, action: Action, errRef: Ref<string>): Promise<boolean> {
+		const response = await reqWithAuth(`/api/user/bookmark/${titleId}`, action);
 
-		return { res, body: (await res.json()) as GenericResponseBody };
-	},
+		if (!response.ok) {
+			void parseRespJson(response, errRef).then((body_) => {
+				const body = body_ as GenericResponseBody;
 
-	async addFavorite(titleId: string, action: Action): Promise<boolean> {
-		const res = await fetch(this.newRoute(`favorite/${titleId}`), {
-			method: action,
-		});
+				if (body.message) {
+					errRef.value = body.message;
+				}
+			});
+		}
 
-		return res.ok;
-	},
-
-	async addBookmark(titleId: string, action: Action): Promise<boolean> {
-		const res = await fetch(this.newRoute(`bookmark/${titleId}`), {
-			method: action,
-		});
-
-		return res.ok;
+		return Promise.resolve(response.ok);
 	},
 };
 
