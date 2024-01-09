@@ -34,7 +34,7 @@ onMounted(() => {
 		prevScrollPos = currentScrollPos;
 	}
 
-	window.onscroll = debounce(toggleTopBar, 100);
+	window.onscroll = debounce(toggleTopBar, 0);
 	window.onresize = debounce(toggleTopBar, 100);
 });
 </script>
