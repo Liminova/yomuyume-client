@@ -8,11 +8,6 @@ enum State {
 	Error = "Error",
 }
 
-// TODO: query this from server
-const MAX_AGE = 1209600;
-const MAX_POLYFILL_WORKERS = 2;
-const MAX_BLURHASH_WORKERS = 4;
-
 function vibrate(): undefined {
 	const isBrowserSafari = /^((?!chrome|android).)*safari/iu.test(navigator.userAgent);
 
@@ -23,7 +18,7 @@ function vibrate(): undefined {
 	return undefined;
 }
 
-const isNavDrawerLarge = ref(true);
+const isNavDrawerLarge = ref(false);
 const isTopBarVisible = ref(true);
 
 const swiperBreakpoints: BreakpointRecord = {
@@ -47,13 +42,4 @@ const swiperBreakpoints: BreakpointRecord = {
 	},
 };
 
-export {
-	isNavDrawerLarge,
-	isTopBarVisible,
-	MAX_AGE,
-	MAX_BLURHASH_WORKERS,
-	MAX_POLYFILL_WORKERS,
-	State,
-	swiperBreakpoints,
-	vibrate,
-};
+export { isNavDrawerLarge, isTopBarVisible, State, swiperBreakpoints, vibrate };
