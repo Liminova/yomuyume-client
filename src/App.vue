@@ -1,26 +1,20 @@
 <script setup lang="ts">
+import { reqWithAuth } from "./api/req";
 import router from "./utils/variables/router";
 import Routes from "./utils/variables/routes";
 import { provide } from "vue";
 
-const cookies: Record<string, string> = (() => {
-	const cookies: Record<string, string> = {};
+if (localStorage.getItem("instance-address") === null) {
+	void router.push(Routes.Auth);
+}
 
-	for (const cookie of document.cookie.split(";")) {
-		const [key, value] = cookie.split("=");
+void (async () => {
+	const res = await reqWithAuth("/api/user/check", "GET");
 
-		cookies[key.trim()] = value;
-	}
-
-	return cookies;
-})();
-
-if (localStorage.getItem("instance-address") === null || !cookies.session) {
-	// TODO: remove this if false on production
-	if (false) {
+	if (!res.ok) {
 		void router.push(Routes.Auth);
 	}
-}
+})();
 
 provide("router", router);
 </script>
