@@ -1,7 +1,16 @@
 <script setup lang="ts">
 import "@material/web/ripple/ripple.js";
-
 import Routes from "../../utils/variables/routes";
+import { inject } from "vue";
+import type { Router } from "vue-router";
+
+const router = inject("router", {}) as Router;
+
+function logout() {
+	localStorage.removeItem("token");
+	document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+	void router.push(Routes.Auth);
+}
 </script>
 
 <template>
@@ -25,12 +34,13 @@ import Routes from "../../utils/variables/routes";
 						Settings
 					</div>
 				</router-link>
-				<div
+				<button
 					class="whitespace-nowrap text-[--md-sys-color-on-surface-variant] hover:text-[--md-sys-color-on-surface] dark:hover:text-[--md-sys-color-primary-fixed]"
 					:style="{ transition: 'color 200ms cubic-bezier(0.4, 0, 0.2, 1)' }"
+					@click="logout()"
 				>
 					Sign out
-				</div>
+				</button>
 			</div>
 		</div>
 	</div>
