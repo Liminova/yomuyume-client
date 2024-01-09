@@ -1,4 +1,4 @@
-import req from "./req";
+import { req } from "./req";
 
 type StatusResponseBody = {
 	server_time: string;
