@@ -1,14 +1,22 @@
 <script setup lang="ts">
-import Image from "../../components/ImagePoly/_ImagePoly.vue";
+import indexApi from "../../api";
 import NavDrawerWrapper from "../../components/NavDrawerWrapper/_NavDrawerWrapper.vue";
+import SnackBar from "../../components/SnackBar.vue";
 import imageAutoResizer from "../../utils/functions/imageAutoResizer";
-import { randomCategories } from "../../utils/variables/random";
 import { onMounted, ref } from "vue";
+import type { CategoryResponse } from "../../api";
 
 const imageContainerRef = ref<HTMLElement | null>(null);
 const imageHeight = ref(200);
 const numberOfImagePerRow = ref(5);
 const gapPixel = ref(16);
+
+const snackbarMessage = ref("");
+const categories = ref<Array<CategoryResponse>>([]);
+
+void (async () => {
+	categories.value = await indexApi.categories(snackbarMessage);
+})();
 
 onMounted(() => {
 	imageAutoResizer(imageContainerRef, imageHeight, numberOfImagePerRow, gapPixel.value, 1, 1);
@@ -16,6 +24,7 @@ onMounted(() => {
 </script>
 
 <template>
+	<SnackBar :message="snackbarMessage" @close="snackbarMessage = ''" />
 	<NavDrawerWrapper>
 		<div
 			ref="imageContainerRef"
@@ -25,15 +34,19 @@ onMounted(() => {
 				gap: `${gapPixel}px`,
 			}"
 		>
-			<div v-for="category in randomCategories" :key="category.categoryUUID">
-				<Image
+			<router-link
+				v-for="category in categories"
+				:key="category.id"
+				:to="`/category/${category.id}`"
+				class="elevation-2 rounded-xl"
+			>
+				<!-- <Image
 					class="overflow-hidden rounded-xl"
 					:image="category.cover"
 					:style="{ height: imageHeight + 'px', transition: 'height 0.5s ease' }"
-					image-class="h-full object-cover"
-				/>
-				<div class="mt-3 text-center text-xl font-bold">{{ category.title }}</div>
-			</div>
+					image-class="h-full object-cover" /> -->
+				<div class="my-3 text-center text-xl font-bold">{{ category.name }}</div>
+			</router-link>
 		</div>
 	</NavDrawerWrapper>
 </template>
