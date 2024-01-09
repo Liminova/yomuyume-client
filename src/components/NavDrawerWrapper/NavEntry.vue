@@ -67,9 +67,12 @@ if (window.innerWidth <= 1024) {
 
 		<!-- Bubble when hover on small nav -->
 		<div
-			class="pointer-events-none absolute left-[68px] top-0 flex h-full scale-90 items-center justify-center opacity-0 transition-transform peer-hover:scale-100 peer-hover:opacity-100"
+			class="pointer-events-none absolute left-[68px] top-0 flex h-full scale-90 items-center justify-center opacity-0 peer-hover:scale-100 peer-hover:opacity-100"
 			:class="isNavDrawerLarge ? 'hidden' : ''"
-			:style="{ transition: 'opacity 200ms cubic-bezier(0.4, 0, 0.2, 1)' }"
+			:style="{
+				transition:
+					'opacity 200ms cubic-bezier(0.4, 0, 0.2, 1), transform 200ms cubic-bezier(0.4, 0, 0.2, 1)',
+			}"
 		>
 			<div
 				class="whitespace-nowrap rounded-xl bg-[var(--md-sys-color-primary-container)] px-4 py-3"
