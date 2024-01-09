@@ -2,7 +2,7 @@
 import "@material/web/progress/linear-progress.js";
 import "@material/web/button/filled-tonal-button.js";
 import "@material/web/textfield/outlined-text-field.js";
-import { authState, AuthState } from "./authState";
+import { authState, AuthState, snackbarMessage } from "./authState";
 import Toggle from "../../components/ToggleWrapper.vue";
 import Routes from "../../utils/variables/routes";
 import { State } from "../../utils/variables/store";
@@ -10,9 +10,6 @@ import { inject, ref } from "vue";
 import type { Router } from "vue-router";
 
 const router = inject("router", {}) as Router;
-
-const sendCodeErrorMsg = ref("TODO: reason from server");
-
 const email = ref("");
 const sendCodeState = ref(State.Idle);
 
@@ -23,6 +20,7 @@ function sendCode() {
 		// TODO: remove this on production
 		if (email.value.includes("FORCE_ERROR")) {
 			sendCodeState.value = State.Error;
+			snackbarMessage.value = "Invalid email";
 			return;
 		}
 
@@ -31,7 +29,6 @@ function sendCode() {
 }
 
 const loginCode = ref("");
-const loginErrorMsg = ref("");
 const loginState = ref(State.Idle);
 
 function login() {
@@ -41,6 +38,7 @@ function login() {
 		// TODO: remove this on production
 		if (loginCode.value.includes("FORCE_ERROR")) {
 			loginState.value = State.Error;
+			snackbarMessage.value = "Invalid code";
 			return;
 		}
 
@@ -65,9 +63,6 @@ function login() {
 	<!-- Visualize state -->
 	<Toggle :show="sendCodeState === State.Loading">
 		<md-linear-progress indeterminate class="mb-3 w-full" />
-	</Toggle>
-	<Toggle :show="sendCodeState === State.Error">
-		<div class="text-center">Error: {{ sendCodeErrorMsg }}</div>
 	</Toggle>
 
 	<!-- Send code button -->
@@ -95,9 +90,6 @@ function login() {
 	<!-- Visualize state -->
 	<Toggle :show="loginState === State.Loading">
 		<md-linear-progress indeterminate class="mb-3 w-full" />
-	</Toggle>
-	<Toggle :show="loginState === State.Error">
-		<div class="mb-3 text-center">Error: {{ loginErrorMsg }}</div>
 	</Toggle>
 
 	<!-- Login button -->

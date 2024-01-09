@@ -8,6 +8,8 @@ enum AuthState {
 	ResetPassword = "resetPassword",
 }
 
+const snackbarMessage = ref("");
+
 const authState = ref(AuthState.Login);
 
-export { authState, AuthState };
+export { authState, AuthState, snackbarMessage };

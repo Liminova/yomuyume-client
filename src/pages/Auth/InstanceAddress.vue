@@ -4,8 +4,8 @@ import "@material/web/progress/linear-progress.js";
 import "@material/web/button/filled-tonal-button.js";
 import { authState, AuthState } from "./authState";
 import instanceAddr from "../../api/base";
-import otherApi from "../../api/other";
-import userApi from "../../api/user";
+import { reqWithAuth } from "../../api/req";
+import utilsApi from "../../api/utils";
 import Toggle from "../../components/ToggleWrapper.vue";
 import Routes from "../../utils/variables/routes";
 import { State } from "../../utils/variables/store";
@@ -26,7 +26,7 @@ async function fetchInstanceInfo(_instanceAddr = instanceAddr.value) {
 
 	fetchServerState.value = State.Loading;
 
-	const result = await otherApi.status();
+	const result = await utilsApi.status();
 
 	if (!result.res.ok) {
 		fetchServerState.value = State.Error;
@@ -71,16 +71,15 @@ fetchInstanceInfo().catch(() => {
 
 const router = inject("router", {}) as Router;
 
-userApi
-	.check()
-	.then((res) => {
-		if (res) {
-			void router.push(Routes.Home);
-		}
-	})
-	.catch(() => {
-		/** */
-	});
+async function check() {
+	const response = await reqWithAuth("/api/user/check", "GET");
+
+	if (!response.ok) {
+		void router.push(Routes.Auth);
+	}
+}
+
+void check();
 </script>
 
 <template>

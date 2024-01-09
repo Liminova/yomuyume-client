@@ -2,11 +2,14 @@
 import "@material/web/progress/linear-progress.js";
 import "@material/web/button/filled-tonal-button.js";
 import "@material/web/textfield/outlined-text-field.js";
-import { AuthState, authState } from "./authState";
-import authApi from "../../api/auth";
+import "@material/web/button/text-button.js";
+import { AuthState, authState, snackbarMessage } from "./authState";
+import { req } from "../../api/req";
 import Toggle from "../../components/ToggleWrapper.vue";
+import parseRespJson from "../../utils/functions/parseRespJson";
 import { State } from "../../utils/variables/store";
 import { ref } from "vue";
+import type { GenericResponseBody } from "../../api/base";
 
 const username = ref("");
 const email = ref("");
@@ -14,34 +17,44 @@ const password = ref("");
 const passwordRetype = ref("");
 
 const registerState = ref(State.Idle);
-const registerErrorMsg = ref("");
 
 async function register() {
 	registerState.value = State.Loading;
 
+	// client-side validation
 	if (password.value !== passwordRetype.value) {
-		registerErrorMsg.value = "Passwords do not match";
+		snackbarMessage.value = "Passwords do not match";
 		registerState.value = State.Error;
 		return;
 	}
 
-	// if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(password.value)) {
-	// 	registerErrorMsg.value = "Password must contains at least 8 characters, an uppercase letter, a lowercase letter and a number";
-	// 	registerState.value = State.Error;
-	// 	return;
-	// }
-
-	const result = await authApi.register(username.value, email.value, password.value);
-
-	if (!result.res.ok) {
-		registerErrorMsg.value = result.body.message;
+	if (!/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/u.test(password.value)) {
+		snackbarMessage.value =
+			"Password must contains at least 8 characters, an uppercase letter, a lowercase letter, a number and a special character";
 		registerState.value = State.Error;
 		return;
 	}
 
-	registerState.value = State.Loaded;
+	const response = await req("/api/auth/register", "POST", {
+		username: username.value,
+		email: email.value,
+		password: password.value,
+	});
 
-	authState.value = AuthState.Login;
+	if (response.ok) {
+		registerState.value = State.Loaded;
+		authState.value = AuthState.Login;
+		return;
+	}
+
+	void parseRespJson(response, snackbarMessage).then((body_) => {
+		const body = body_ as GenericResponseBody;
+
+		if (body.message) {
+			snackbarMessage.value = body.message;
+		}
+	});
+	registerState.value = State.Error;
 }
 </script>
 
@@ -82,15 +95,21 @@ async function register() {
 	<Toggle :show="registerState === State.Loading">
 		<md-linear-progress indeterminate class="mb-3 w-full" />
 	</Toggle>
-	<Toggle :show="registerState === State.Error">
-		<div class="mb-3 text-center">{{ registerErrorMsg }}</div>
-	</Toggle>
 
-	<md-filled-tonal-button
-		class="w-full"
-		:disabled="authState !== AuthState.Register"
-		@click="register"
-	>
-		Register
-	</md-filled-tonal-button>
+	<div class="grid grid-cols-2 gap-2">
+		<md-text-button
+			class="w-full"
+			:disabled="authState !== AuthState.Register"
+			@click="authState = AuthState.Login"
+		>
+			Back to login
+		</md-text-button>
+		<md-filled-tonal-button
+			class="w-full"
+			:disabled="authState !== AuthState.Register"
+			@click="register"
+		>
+			Register
+		</md-filled-tonal-button>
+	</div>
 </template>

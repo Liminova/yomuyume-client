@@ -3,31 +3,52 @@ import "@material/web/progress/linear-progress.js";
 import "@material/web/button/filled-tonal-button.js";
 import "@material/web/textfield/outlined-text-field.js";
 import "@material/web/button/text-button.js";
-import { authState, AuthState } from "./authState";
-import authApi from "../../api/auth";
+import { authState, AuthState, snackbarMessage } from "./authState";
+import { req } from "../../api/req";
 import Toggle from "../../components/ToggleWrapper.vue";
+import parseRespJson from "../../utils/functions/parseRespJson";
 import Routes from "../../utils/variables/routes";
 import { State } from "../../utils/variables/store";
 import { inject, ref } from "vue";
+import type { GenericResponseBody } from "../../api/base";
 import type { Router } from "vue-router";
 
 const router = inject("router", {}) as Router;
 
-const usernameOrEmail = ref("");
+const username = ref("");
 const password = ref("");
 const loginState = ref(State.Idle);
-const loginErrorMsg = ref("Error: <msg from server>");
+
+type LoginResponseBody = {
+	token: string;
+	description: string;
+};
 
 async function login(): Promise<void> {
 	loginState.value = State.Loading;
 
-	const result = await authApi.login(usernameOrEmail.value, password.value);
+	const response = await req("/api/auth/login", "POST", {
+		login: username.value,
+		password: password.value,
+	});
 
-	if (!result.res.ok) {
+	if (!response.ok) {
+		void parseRespJson(response, snackbarMessage).then((body_) => {
+			const body = body_ as GenericResponseBody;
+
+			if (body.message) {
+				snackbarMessage.value = body.message;
+			}
+		});
+
 		loginState.value = State.Error;
-		loginErrorMsg.value = result.body.description;
 		return;
 	}
+
+	const body = (await parseRespJson(response, snackbarMessage)) as LoginResponseBody;
+
+	localStorage.setItem("token", body.token);
+	document.cookie = `token=${body.token}`;
 
 	loginState.value = State.Loaded;
 
@@ -38,9 +59,9 @@ async function login(): Promise<void> {
 <template>
 	<!-- Input login -->
 	<md-outlined-text-field
-		v-model="usernameOrEmail"
+		v-model="username"
 		class="mb-3 w-full"
-		label="Username or email"
+		label="Username"
 		:disabled="authState !== AuthState.Login"
 		@keydown.enter="login"
 	/>
@@ -59,26 +80,29 @@ async function login(): Promise<void> {
 	<Toggle :show="loginState === State.Loading">
 		<md-linear-progress indeterminate class="mb-3 w-full" />
 	</Toggle>
-	<Toggle :show="loginState === State.Error">
-		<div class="mb-3 text-center">Error: {{ loginErrorMsg }}</div>
-	</Toggle>
 
-	<!-- Action button -->
-
-	<div class="grid grid-cols-2 gap-2">
-		<md-text-button
-			class="w-full"
-			:disabled="authState !== AuthState.Login"
-			@click="authState = AuthState.Register"
-		>
-			New here? Register
-		</md-text-button>
+	<!-- Buttons -->
+	<div class="grid grid-cols-2 gap-1">
 		<md-filled-tonal-button
-			class="mb-3 w-full"
+			class="col-span-2"
 			:disabled="authState !== AuthState.Login"
 			@click="login"
 		>
 			Login
 		</md-filled-tonal-button>
+
+		<md-text-button
+			:disabled="authState !== AuthState.Login"
+			@click="authState = AuthState.Register"
+		>
+			Register
+		</md-text-button>
+
+		<md-text-button
+			:disabled="authState !== AuthState.Login"
+			@click="authState = AuthState.ResetPassword"
+		>
+			Reset password
+		</md-text-button>
 	</div>
 </template>
