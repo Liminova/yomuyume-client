@@ -11,37 +11,39 @@ const props = defineProps({
 	lazy: { type: Boolean, default: true },
 });
 
-const renderedBlurhashBlobURL = ref("");
-const renderedActualImageBlobURL = ref("");
+const blurhashUrl = ref("");
+const imageUrl = ref("");
 
-renderImage(props.image, renderedBlurhashBlobURL, renderedActualImageBlobURL);
+renderImage(props.image, blurhashUrl, imageUrl);
 </script>
 
 <template>
 	<div class="relative" :class="props.class">
 		<!-- Blurhash placeholder -->
 		<img
+			v-if="blurhashUrl"
 			:loading="props.lazy ? 'lazy' : 'eager'"
 			class="left-0 top-0"
 			:style="{
-				opacity: renderedBlurhashBlobURL ? 1 : 0,
+				opacity: blurhashUrl ? 1 : 0,
 			}"
 			:class="props.imageClass"
-			:src="renderedBlurhashBlobURL"
+			:src="blurhashUrl"
 			:draggable="props.draggable"
 		/>
 
 		<!-- Actual image -->
 		<img
+			v-if="imageUrl"
 			:loading="props.lazy ? 'lazy' : 'eager'"
 			class="absolute left-0 top-0"
 			:style="{
-				opacity: renderedActualImageBlobURL ? 1 : 0,
 				transition: 'opacity 0.5s ease',
 			}"
+			:src="imageUrl"
 			:class="props.imageClass"
-			:src="renderedActualImageBlobURL"
 			:draggable="props.draggable"
 		/>
 	</div>
 </template>
+./renderBlurhash

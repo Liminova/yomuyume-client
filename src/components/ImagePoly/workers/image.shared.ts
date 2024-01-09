@@ -1,7 +1,7 @@
-import blurhashDecode from "./blurhashDecode";
-import { BLURHASH_WORKER_COUNT } from "../workerCount";
+import imageDecode from "./imageDecode";
+import { IMAGE_WORKER_COUNT } from "../workerCount";
 
-type MyMessageData = [string, number, number]; /** blurhash, width, height */
+type MyMessageData = [string, string, string]; /** src, format, jwt token */
 
 const queue: Array<{ data: MyMessageData; port: MessagePort }> = [];
 let activeWorkers = 0;
@@ -17,7 +17,7 @@ self.onconnect = (event: MessageEvent<MyMessageData>) => {
 };
 
 async function processQueue() {
-	if (activeWorkers < BLURHASH_WORKER_COUNT && queue.length > 0) {
+	if (activeWorkers < IMAGE_WORKER_COUNT && queue.length > 0) {
 		activeWorkers++;
 		const job = queue.shift();
 
@@ -25,7 +25,8 @@ async function processQueue() {
 			return;
 		}
 
-		job.port.postMessage(await blurhashDecode(job.data));
+		job.port.postMessage(await imageDecode(job.data));
+
 		activeWorkers--;
 		await processQueue();
 	}
