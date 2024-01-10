@@ -48,3 +48,4 @@ const userApi = {
 };
 
 export default userApi;
+export { Action };
