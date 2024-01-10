@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import indexApi from "../../api";
 import fileApiUrl from "../../api/file";
+import ImagePoly from "../../components/ImagePoly/_ImagePoly.vue";
 import NavDrawerWrapper from "../../components/NavDrawerWrapper/_NavDrawerWrapper.vue";
 import SnackBar from "../../components/SnackBar.vue";
 import Routes from "../../utils/variables/routes";
@@ -41,7 +42,11 @@ void (async () => {
 
 			<!-- Pages -->
 			<div v-for="page in title.pages" :key="page.id" class="mx-auto max-w-[700px]">
-				<img loading="lazy" :src="fileApiUrl.page(page.id)" :alt="page.id" />
+				<ImagePoly
+					:image="{
+						src: fileApiUrl.page(page.id),
+					}"
+				/>
 			</div>
 		</div>
 	</NavDrawerWrapper>
