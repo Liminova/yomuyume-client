@@ -1,8 +1,8 @@
 type MyImage = {
-	blurhash: string;
-	height: number;
 	src: string;
-	width: number;
+	width?: number;
+	height?: number;
+	blurhash?: string;
 };
 
 export default MyImage;
