@@ -1,4 +1,4 @@
-import imageDecode from "./imageDecode";
+import imageDecode from "../decodePipeline/image";
 
 type MyMessageData = [string, string, string]; /** src, format, jwt token */
 

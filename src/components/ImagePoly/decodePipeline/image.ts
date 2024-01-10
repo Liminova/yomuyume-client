@@ -10,7 +10,7 @@ function getDecoder(format: string) {
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 			return Promise.resolve(avifDec());
 		default:
-			throw new Error("Unknown format to polyfill");
+			throw new Error(`Unknown format to polyfill: ${format}`);
 	}
 }
 

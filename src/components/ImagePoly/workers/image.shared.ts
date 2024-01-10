@@ -1,4 +1,4 @@
-import imageDecode from "./imageDecode";
+import imageDecode from "../decodePipeline/image";
 import { IMAGE_WORKER_COUNT } from "../workerCount";
 
 type MyMessageData = [string, string, string]; /** src, format, jwt token */
@@ -26,7 +26,6 @@ async function processQueue() {
 		}
 
 		job.port.postMessage(await imageDecode(job.data));
-
 		activeWorkers--;
 		await processQueue();
 	}

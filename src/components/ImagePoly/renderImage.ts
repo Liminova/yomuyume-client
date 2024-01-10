@@ -96,12 +96,16 @@ class WebWorkerRenderer {
 	}
 
 	async new(image: MyImage, blurhashRef: Ref<string>, imageRef: Ref<string>) {
-		this.blurhashQueue.push({
-			data: [image.blurhash, image.width, image.height],
-			renderedDataRef: blurhashRef,
-		});
-		this.processQueue(this.blurhashQueue, this.blurhashWorkers);
+		// Decode blurhash
+		if (image.width !== undefined && image.height !== undefined && image.blurhash) {
+			this.blurhashQueue.push({
+				data: [image.blurhash, image.width, image.height],
+				renderedDataRef: blurhashRef,
+			});
+			this.processQueue(this.blurhashQueue, this.blurhashWorkers);
+		}
 
+		// Is native?
 		const format = await getFormat(image.src);
 
 		if (await isNative(format)) {
@@ -109,10 +113,12 @@ class WebWorkerRenderer {
 			return;
 		}
 
+		// Web Worker init
 		if (!this.polyfillWorkersSpunUp) {
 			this.spinUpPolyfillWorkers();
 		}
 
+		// Decode image
 		this.imageQueue.push({
 			data: [image.src, format, localStorage.getItem("token") ?? ""],
 			renderedDataRef: imageRef,
@@ -123,23 +129,30 @@ class WebWorkerRenderer {
 
 class SharedWorkerRenderer {
 	async new(image: MyImage, blurhashRef: Ref<string>, imageRef: Ref<string>) {
-		const blurhashWorker = new SharedWorker(
-			new URL("./workers/blurhash.shared.ts", import.meta.url),
-			{
-				type: "module",
-				name: "blurhashRenderer",
-			}
-		);
+		// Decode blurhash
+		if (image.width !== undefined && image.height !== undefined && image.blurhash) {
+			const blurhashWorker = new SharedWorker(
+				new URL("./workers/blurhash.shared.ts", import.meta.url),
+				{
+					type: "module",
+					name: "blurhashRenderer",
+				}
+			);
 
-		blurhashWorker.port.onmessage = (event: MessageEvent<string>) =>
-			(blurhashRef.value = event.data);
-		blurhashWorker.port.postMessage([image.blurhash, image.width, image.height]);
+			blurhashWorker.port.onmessage = (event: MessageEvent<string>) =>
+				(blurhashRef.value = event.data);
+			blurhashWorker.port.postMessage([image.blurhash, image.width, image.height]);
+		}
 
-		if (await isNative(image.src)) {
+		// Is native?
+		const format = await getFormat(image.src);
+
+		if (await isNative(format)) {
 			imageRef.value = image.src;
 			return;
 		}
 
+		// Decode image
 		const imageWorker = new SharedWorker(
 			new URL("./workers/image.shared.ts", import.meta.url),
 			{
@@ -148,8 +161,11 @@ class SharedWorkerRenderer {
 			}
 		);
 
-		imageWorker.port.onmessage = (event: MessageEvent<string>) => (image.src = event.data);
-		imageWorker.port.postMessage(image.src);
+		imageWorker.port.onmessage = (event: MessageEvent<string>) => {
+			imageRef.value = event.data;
+		};
+
+		imageWorker.port.postMessage([image.src, format, localStorage.getItem("token") ?? ""]);
 	}
 }
 

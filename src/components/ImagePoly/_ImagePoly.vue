@@ -13,6 +13,7 @@ const props = defineProps({
 
 const blurhashUrl = ref("");
 const imageUrl = ref("");
+const imageFullyLoaded = ref(false);
 
 renderImage(props.image, blurhashUrl, imageUrl);
 </script>
@@ -21,11 +22,11 @@ renderImage(props.image, blurhashUrl, imageUrl);
 	<div class="relative" :class="props.class">
 		<!-- Blurhash placeholder -->
 		<img
-			v-if="blurhashUrl"
+			v-if="props.image.blurhash && blurhashUrl && !imageFullyLoaded"
 			:loading="props.lazy ? 'lazy' : 'eager'"
-			class="left-0 top-0"
+			class="left-0 top-0 -z-10"
 			:style="{
-				opacity: blurhashUrl ? 1 : 0,
+				position: imageFullyLoaded ? 'absolute' : 'static',
 			}"
 			:class="props.imageClass"
 			:src="blurhashUrl"
@@ -36,14 +37,15 @@ renderImage(props.image, blurhashUrl, imageUrl);
 		<img
 			v-if="imageUrl"
 			:loading="props.lazy ? 'lazy' : 'eager'"
-			class="absolute left-0 top-0"
+			class="left-0 top-0"
 			:style="{
 				transition: 'opacity 0.5s ease',
+				position: imageFullyLoaded ? 'static' : 'absolute',
 			}"
 			:src="imageUrl"
 			:class="props.imageClass"
 			:draggable="props.draggable"
+			@load="imageFullyLoaded = true"
 		/>
 	</div>
 </template>
-./renderBlurhash

@@ -1,4 +1,4 @@
-import blurhashDecode from "./blurhashDecode";
+import blurhashDecode from "../decodePipeline/blurhash";
 import { BLURHASH_WORKER_COUNT } from "../workerCount";
 
 type MyMessageData = [string, number, number]; /** blurhash, width, height */
