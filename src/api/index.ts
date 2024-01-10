@@ -31,7 +31,7 @@ type TitleResponseBody = {
 	category_id: string;
 	title: string;
 	author?: string;
-	desc?: string; // Title's description
+	desc?: string;
 	release_date?: string;
 	thumbnail: {
 		blurhash: string;
@@ -51,7 +51,6 @@ type TitleResponseBody = {
 	date_added: string;
 	date_updated: string;
 };
-
 type CategoryResponse = {
 	id: string;
 	name: string;
