@@ -14,7 +14,7 @@ import Toggle from "../../components/ToggleWrapper.vue";
 import imageAutoResizer from "../../utils/functions/imageAutoResizer";
 import debounce from "debounce";
 import { onMounted, ref, watchEffect } from "vue";
-import type { FilterTitleResponseBody } from "../../api";
+import type { FilterTitleResponse } from "../../api";
 
 // Key: category id, Value: category name
 const categories = ref<Record<string, string>>({});
@@ -37,8 +37,8 @@ const gapPixel = ref(16);
 
 // Results =====================================================================
 
-const filteredTitles = ref<Array<FilterTitleResponseBody>>([]); /** found titles */
-const filteredTitlesToDisplay = ref<Array<FilterTitleResponseBody>>([]);
+const filteredTitles = ref<Array<FilterTitleResponse>>([]); /** found titles */
+const filteredTitlesToDisplay = ref<Array<FilterTitleResponse>>([]);
 
 function renderMoreResult() {
 	const howFarFromBottom = document.body.getBoundingClientRect().bottom - window.innerHeight;
@@ -97,6 +97,8 @@ watchEffect(async () => {
 
 	filteredTitlesToDisplay.value = filteredTitles.value.slice(0, numberOfImagePerRow.value * 3);
 });
+
+document.title = "Yomuyume - Filter";
 </script>
 
 <template>
