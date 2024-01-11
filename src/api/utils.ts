@@ -1,4 +1,5 @@
-import { req } from "./req";
+import { req, reqWithAuth } from "./req";
+import type { Ref } from "vue";
 
 type StatusResponseBody = {
 	server_time: string;
@@ -12,7 +13,12 @@ type StatusResponse = {
 	body: StatusResponseBody;
 };
 
-const otherApi = {
+type TagResponse = {
+	description?: string;
+	tags: Array<[number, string]>;
+};
+
+const utilsApi = {
 	async status(): Promise<StatusResponse> {
 		try {
 			const res = await req("/api/utils/status", "GET");
@@ -25,6 +31,18 @@ const otherApi = {
 			return { res, body: body as StatusResponseBody };
 		}
 	},
+
+	async tags(errRef: Ref<string>): Promise<TagResponse> {
+		try {
+			const res = await reqWithAuth("/api/utils/tags", "GET");
+			const body = (await res.json()) as TagResponse;
+
+			return body;
+		} catch {
+			errRef.value = "Failed to get tags";
+			return { tags: [] };
+		}
+	},
 };
 
-export default otherApi;
+export default utilsApi;
