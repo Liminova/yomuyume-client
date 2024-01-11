@@ -32,7 +32,7 @@ type TitleResponseBody = {
 	title: string;
 	author?: string;
 	desc?: string;
-	release_date?: string;
+	release?: string;
 	thumbnail: {
 		blurhash: string;
 		width: number;
@@ -45,12 +45,14 @@ type TitleResponseBody = {
 		description?: string;
 	}>;
 	favorites?: number;
+	bookmarks?: number;
 	is_favorite?: boolean;
 	is_bookmark?: boolean;
 	page_read?: number;
 	date_added: string;
 	date_updated: string;
 };
+
 type CategoryResponse = {
 	id: string;
 	name: string;
@@ -121,14 +123,19 @@ const indexApi = {
 	async title(id: string, errRef: Ref<string>): Promise<[Response, TitleResponseBody]> {
 		const response = await reqWithAuth(`/api/index/title/${id}`, "GET");
 
-		return [response, (await parseRespJson(response, errRef)) as TitleResponseBody];
+		const body = await parseRespJson(response, errRef).then((body_) => {
+			const body = body_ as TitleResponseBody;
+
+			if (body.description && body.description !== "OK") {
+				errRef.value = body.description;
+			}
+
+			return body;
+		});
+
+		return [response, body];
 	},
 };
 
 export default indexApi;
-export type {
-	FilterTitleResponse as FilterTitleResponseBody,
-	TitleResponseBody,
-	CategoryResponseBody,
-	CategoryResponse,
-};
+export type { FilterTitleResponse, TitleResponseBody, CategoryResponseBody, CategoryResponse };
