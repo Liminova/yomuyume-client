@@ -6,7 +6,7 @@ import NavDrawerWrapper from "../../components/NavDrawerWrapper/_NavDrawerWrappe
 import SnackBar from "../../components/SnackBar.vue";
 import imageAutoResizer from "../../utils/functions/imageAutoResizer";
 import { inject, onMounted, ref } from "vue";
-import type { FilterTitleResponseBody } from "../../api";
+import type { FilterTitleResponse } from "../../api";
 import type { Router } from "vue-router";
 
 const imageContainerRef = ref<HTMLElement | null>(null);
@@ -19,7 +19,7 @@ const categoryIdRaw = router.currentRoute.value.params.categoryId;
 const categoryId = Array.isArray(categoryIdRaw) ? categoryIdRaw[0] : categoryIdRaw;
 const snackbarMessage = ref("");
 
-const titles = ref<Array<FilterTitleResponseBody>>([]);
+const titles = ref<Array<FilterTitleResponse>>([]);
 
 void (async () => {
 	titles.value = await indexApi.filter(
