@@ -11,6 +11,8 @@ import Theme from "../../utils/enums/Theme";
 import changeTheme from "../../utils/functions/changeTheme";
 
 changeTheme(Theme.AUTO);
+
+document.title = "Yomuyume - Auth";
 </script>
 
 <template>
