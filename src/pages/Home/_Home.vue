@@ -2,7 +2,7 @@
 import CardRecommend from "./CardRecommend.vue";
 import CarouselWrapper from "./CarouselWrapper.vue";
 import HomeTitle from "./HomeTitle.vue";
-import { coverHeight, recommendsContainerHeight, gapPixel } from "./measurements";
+import { coverHeight, recommendsContainerHeight, gapPixel } from "./store";
 import indexApi from "../../api";
 import fileApiUrl from "../../api/file";
 import ItemCard from "../../components/ItemCard.vue";
@@ -12,7 +12,7 @@ import imageAutoResizer from "../../utils/functions/imageAutoResizer";
 import Routes from "../../utils/variables/routes";
 import { register } from "swiper/element/bundle";
 import { onMounted, ref } from "vue";
-import type { FilterTitleResponseBody } from "../../api";
+import type { FilterTitleResponse } from "../../api";
 import type { Ref } from "vue";
 
 register();
@@ -24,10 +24,10 @@ onMounted(() => {
 	imageAutoResizer(carouselContainerRef, coverHeight, undefined, gapPixel, 3, 4);
 });
 
-const recommendsItems: Ref<Array<FilterTitleResponseBody>> = ref([]);
-const recentlyUpdatedItems: Ref<Array<FilterTitleResponseBody>> = ref([]);
-const newlyAddedItems: Ref<Array<FilterTitleResponseBody>> = ref([]);
-const completedStoriesItems: Ref<Array<FilterTitleResponseBody>> = ref([]);
+const recommendsItems: Ref<Array<FilterTitleResponse>> = ref([]);
+const recentlyUpdatedItems: Ref<Array<FilterTitleResponse>> = ref([]);
+const newlyAddedItems: Ref<Array<FilterTitleResponse>> = ref([]);
+const completedStoriesItems: Ref<Array<FilterTitleResponse>> = ref([]);
 
 void Promise.all([
 	indexApi.filter({ keywords: [""], limit: 10 }, snackbarMessage),
@@ -47,14 +47,12 @@ void Promise.all([
 	completedStoriesItems.value = completedStories;
 });
 
-/** */
+document.title = "Yomuyume - Home";
 </script>
 
 <template>
 	<SnackBar :message="snackbarMessage" @close="snackbarMessage = ''" />
-	<NavDrawerWrapper
-		class="mt-3 flex w-full select-none flex-col gap-7 px-6 lg:mt-0 lg:pl-0 lg:pr-3"
-	>
+	<NavDrawerWrapper class="mt-3 flex w-full flex-col gap-7 px-6 lg:mt-0 lg:pl-0 lg:pr-3">
 		<swiper-container
 			class="w-full overflow-hidden rounded-3xl"
 			:style="{ height: `${recommendsContainerHeight}px` }"
@@ -63,19 +61,9 @@ void Promise.all([
 		>
 			<swiper-slide v-for="(title, index) in recommendsItems" :key="title.id">
 				<CardRecommend
-					:author="title.author ?? 'Unknown'"
-					:cover="{
-						src: fileApiUrl.thumbnail(title.id),
-						width: title.width,
-						height: title.height,
-						blurhash: title.blurhash,
-					}"
-					:description="''"
-					:tags="[]"
-					:title="title.title"
 					:is-first-title="index === 0"
 					:is-last-title="index === recommendsItems.length - 1"
-					:title-id="title.id"
+					:preview-title="title"
 				/>
 			</swiper-slide>
 		</swiper-container>
