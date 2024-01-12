@@ -21,6 +21,8 @@ void (async () => {
 onMounted(() => {
 	imageAutoResizer(imageContainerRef, imageHeight, numberOfImagePerRow, gapPixel.value, 1, 1);
 });
+
+document.title = "Yomuyume - Library";
 </script>
 
 <template>
