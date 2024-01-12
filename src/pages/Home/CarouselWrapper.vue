@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { gapPixel } from "./measurements";
+import { gapPixel } from "./store";
 import { swiperBreakpoints } from "../../utils/variables/store";
 </script>
 
