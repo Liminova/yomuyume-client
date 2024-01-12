@@ -23,7 +23,9 @@ const title = ref({}) as Ref<TitleResponseBody>;
 const isFavorite = ref(false);
 const isBookmark = ref(false);
 const favorites = ref(0);
+const bookmarks = ref(0);
 
+// Fetching all infos
 void (async () => {
 	const res = await indexApi.title(id, snackbarMessage);
 
@@ -33,11 +35,11 @@ void (async () => {
 	}
 
 	title.value = res[1];
-
 	document.title = title.value.title;
 	isFavorite.value = title.value.is_favorite ?? false;
 	isBookmark.value = title.value.is_bookmark ?? false;
 	favorites.value = title.value.favorites ?? 0;
+	bookmarks.value = title.value.bookmarks ?? 0;
 })();
 
 function toggleFavorite() {
@@ -64,6 +66,7 @@ function toggleBookmark() {
 				return;
 			}
 
+			bookmarks.value = bookmarks.value + (isBookmark.value ? -1 : 1);
 			isBookmark.value = !isBookmark.value;
 			snackbarMessage.value = isBookmark.value
 				? "Added to bookmarks"
@@ -79,11 +82,11 @@ function toggleBookmark() {
 			<!-- Basic infos -->
 			<div class="mb-7 px-7 lg:px-0">
 				<div class="text-6xl font-semibold">{{ title.title }}</div>
-				<div v-if="title.desc">{{ title.desc }}</div>
+				<div v-if="title.desc" class="mt-7 text-justify">{{ title.desc }}</div>
 			</div>
 
 			<!-- Like and fav buttons -->
-			<div class="my-7 flex w-full flex-row items-center justify-center gap-7">
+			<div class="my-7 flex w-full grow-[100] flex-row items-center justify-center gap-7">
 				<md-text-button class="scale-125" @click="toggleBookmark">
 					<i
 						class="fa-bookmark"
@@ -92,6 +95,7 @@ function toggleBookmark() {
 							'fa-light': !isBookmark,
 						}"
 					/>
+					{{ bookmarks > 0 ? bookmarks : "" }}
 				</md-text-button>
 				<md-text-button class="scale-125" @click="toggleFavorite">
 					<i
