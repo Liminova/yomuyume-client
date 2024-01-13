@@ -3,11 +3,14 @@
 	"parser": "vue-eslint-parser",
 	"parserOptions": {
 		"parser": "@typescript-eslint/parser",
-		"sourceType": "module"
+		"sourceType": "module",
+		"project": "./tsconfig.json",
+		"extraFileExtensions": [
+			".vue"
+		]
 	},
 	"extends": [
-		"@vue/typescript/recommended",
-		"plugin:vue/vue3-recommended",
+		"plugin:nuxt/recommended",
 		"plugin:tailwindcss/recommended",
 		"plugin:cadence/recommended"
 	],
@@ -15,7 +18,7 @@
 		"cadence"
 	],
 	"rules": {
-		"import/named": "off",
+		"no-undef": "off",
 		"tailwindcss/no-custom-classname": "off",
 		"no-restricted-globals": [
 			"error",
@@ -31,7 +34,6 @@
 		"@typescript-eslint/consistent-type-definitions": [
 			"error",
 			"type"
-		],
-		"vue/no-deprecated-slot-attribute": "off",
+		]
 	}
 }
