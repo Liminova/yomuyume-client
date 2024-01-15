@@ -63,4 +63,7 @@ export default defineNuxtConfig({
 	eslint: {
 		lintOnStart: false,
 	},
+	experimental: {
+		viewTransition: true,
+	},
 });
