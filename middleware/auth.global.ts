@@ -1,15 +1,18 @@
 export default defineNuxtRouteMiddleware(async (to, _) => {
-	const response = await reqWithAuth("/api/user/check", "GET");
+	const { status } = await useFetch("/api/user/check", {
+		baseURL: globalStore.instanceAddr,
+		method: "GET",
+	});
 
-	if (to.path === "/auth" && response.ok) {
+	if (to.path === "/auth" && status.value === "success") {
 		return navigateTo("/");
 	}
 
-	if (response.ok) {
+	if (status.value === "success") {
 		return;
 	}
 
-	localStorage.removeItem("token");
+	globalStore.token = "";
 	document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 	if (to.path !== "/auth") {
 		return navigateTo("/auth");
