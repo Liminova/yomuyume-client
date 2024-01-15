@@ -22,27 +22,26 @@ onMounted(() => {
 	imageAutoResizer(carouselContainerRef, store.setCoverHeight, empty, store.gapPixel, 3, 4);
 });
 
-const recommendsItems: Ref<Array<FilterTitleResponse>> = ref([]);
-const recentlyUpdatedItems: Ref<Array<FilterTitleResponse>> = ref([]);
-const newlyAddedItems: Ref<Array<FilterTitleResponse>> = ref([]);
-const completedStoriesItems: Ref<Array<FilterTitleResponse>> = ref([]);
+const recommendsItems: Ref<Array<FilterItemServerResponse>> = ref([]);
+const recentlyUpdatedItems: Ref<Array<FilterItemServerResponse>> = ref([]);
+const newlyAddedItems: Ref<Array<FilterItemServerResponse>> = ref([]);
+const completedStoriesItems: Ref<Array<FilterItemServerResponse>> = ref([]);
 
 void Promise.all([
-	indexApi.filter({ keywords: [""], limit: 10 }, store.setSnackbarMessage),
-	indexApi.filter(
-		{ keywords: [""], limit: 10, sort_by: "update date", sort_order: "descending" },
-		store.setSnackbarMessage
-	),
-	indexApi.filter(
-		{ keywords: [""], limit: 10, sort_by: "add date", sort_order: "descending" },
-		store.setSnackbarMessage
-	),
-	indexApi.filter({ keywords: [""], limit: 10, is_finished: true }, store.setSnackbarMessage),
+	indexApi.filter({ keywords: [""], limit: 10 }),
+	indexApi.filter({
+		keywords: [""],
+		limit: 10,
+		sort_by: "update date",
+		sort_order: "descending",
+	}),
+	indexApi.filter({ keywords: [""], limit: 10, sort_by: "add date", sort_order: "descending" }),
+	indexApi.filter({ keywords: [""], limit: 10, is_finished: true }),
 ]).then(([recommends, recentlyUpdated, newlyAdded, completedStories]) => {
-	recommendsItems.value = recommends;
-	recentlyUpdatedItems.value = recentlyUpdated;
-	newlyAddedItems.value = newlyAdded;
-	completedStoriesItems.value = completedStories;
+	recommendsItems.value = recommends.data;
+	recentlyUpdatedItems.value = recentlyUpdated.data;
+	newlyAddedItems.value = newlyAdded.data;
+	completedStoriesItems.value = completedStories.data;
 });
 </script>
 

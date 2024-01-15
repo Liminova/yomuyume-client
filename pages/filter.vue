@@ -42,8 +42,8 @@ const gapPixel = ref(16);
 
 // Results =====================================================================
 
-const filteredTitles: Ref<Array<FilterTitleResponse>> = ref([]); /** found titles */
-const filteredTitlesToDisplay: Ref<Array<FilterTitleResponse>> = ref([]);
+const filteredTitles: Ref<Array<FilterItemServerResponse>> = ref([]); /** found titles */
+const filteredTitlesToDisplay: Ref<Array<FilterItemServerResponse>> = ref([]);
 
 function renderMoreResult() {
 	const howFarFromBottom = document.body.getBoundingClientRect().bottom - window.innerHeight;

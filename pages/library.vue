@@ -12,10 +12,17 @@ const gapPixel = ref(16);
 const snackbarMessage = ref("");
 const setSnackbarMessage = (newVal: string) => (snackbarMessage.value = newVal);
 
-const categories = ref<Array<CategoryResponse>>([]);
+const categories = ref<Array<CategoryItemServerResponse>>([]);
 
 void (async () => {
-	categories.value = await indexApi.categories(setSnackbarMessage);
+	const { data, message, status } = await indexApi.categories();
+
+	if (status === "error") {
+		setSnackbarMessage(message);
+		return;
+	}
+
+	categories.value = data;
 })();
 
 onMounted(() => {

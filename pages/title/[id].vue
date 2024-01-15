@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import "@material/web/button/text-button.js";
-import type { TitleResponseBody } from "~/composables/api";
+import type { TitleServerResponse } from "~/composables/api";
 import { indexApi, userApi, fileApiUrl } from "~/composables/api";
 import NavDrawerWrapper from "~/layouts/NavDrawerWrapper.vue";
 
@@ -10,7 +10,7 @@ const id = Array.isArray(idRaw) ? idRaw[0] : idRaw;
 const snackbarMessage = ref("");
 const snackbarTimeout = ref(5000);
 
-const title = ref({}) as Ref<TitleResponseBody>;
+const title = ref({}) as Ref<TitleServerResponse>;
 
 const isFavorite = ref(false);
 const isBookmark = ref(false);

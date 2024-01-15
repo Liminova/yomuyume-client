@@ -6,6 +6,7 @@ import utils from "./api/utils";
 import type {
 	FilterItemServerResponse,
 	TitleServerResponse,
+	CategoryItemServerResponse,
 	CategoryServerResponse,
 	CategoriesFnResponse,
 } from "./api/index";
@@ -20,8 +21,9 @@ export {
 };
 
 export type {
-	FilterItemServerResponse as FilterTitleResponse,
-	TitleServerResponse as TitleResponseBody,
-	CategoryServerResponse as CategoryResponseBody,
-	CategoriesFnResponse as CategoryResponse,
+	FilterItemServerResponse,
+	TitleServerResponse,
+	CategoryItemServerResponse,
+	CategoryServerResponse,
+	CategoriesFnResponse,
 };

@@ -12,17 +12,20 @@ const gapPixel = ref(16);
 const categoryIdRaw = useRoute().params.id;
 const categoryId = Array.isArray(categoryIdRaw) ? categoryIdRaw[0] : categoryIdRaw;
 const snackbarMessage = ref("");
-const setSnackbarMessage = (newVal: string) => (snackbarMessage.value = newVal);
 
-const titles = ref<Array<FilterTitleResponse>>([]);
+const titles = ref<Array<FilterItemServerResponse>>([]);
 
 void (async () => {
-	titles.value = await indexApi.filter(
-		{
-			category_ids: [categoryId],
-		},
-		setSnackbarMessage
-	);
+	const { data, message, status } = await indexApi.filter({
+		category_ids: [categoryId],
+	});
+
+	if (status === "error") {
+		snackbarMessage.value = message;
+		return;
+	}
+
+	titles.value = data;
 })();
 
 onMounted(() => {

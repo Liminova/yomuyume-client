@@ -111,12 +111,18 @@ async function filter(body: {
 		};
 	}
 
-	const data_ = data.value as FilterServerResponse;
+	const data_ = data.value as FilterServerResponse | undefined;
 
 	return {
 		status: status.value,
 		message: "",
-		data: data_.data,
+		data: (() => {
+			if (data_) {
+				return data_.data;
+			}
+
+			return [];
+		})(),
 	};
 }
 
@@ -189,6 +195,7 @@ export default { categories, filter, title };
 export type {
 	FilterItemServerResponse,
 	TitleServerResponse,
+	CategoryItemServerResponse,
 	CategoryServerResponse,
 	CategoriesFnResponse,
 };

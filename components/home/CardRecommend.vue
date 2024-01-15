@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import "@material/web/chips/assist-chip.js";
 import { homeStore } from "./homeStore";
-import type { FilterTitleResponse, TitleResponseBody } from "~/composables/api";
+import type { FilterItemServerResponse, TitleServerResponse } from "~/composables/api";
 import ImagePoly from "~/components/ImagePoly.vue";
 import { fileApiUrl, indexApi, utilsApi } from "~/composables/api";
 
 const props = defineProps({
 	previewTitle: {
-		type: Object as () => FilterTitleResponse,
+		type: Object as () => FilterItemServerResponse,
 		required: true,
 	},
 	isFirstTitle: { type: Boolean, default: true },
@@ -23,7 +23,7 @@ const cover = {
 };
 
 const store = homeStore();
-const fullTitle: Ref<TitleResponseBody> = ref({}) as Ref<TitleResponseBody>;
+const fullTitle: Ref<TitleServerResponse> = ref({}) as Ref<TitleServerResponse>;
 const titleTagNames = ref<Array<string>>([]);
 const tagIdToNameMap = ref<Array<[number, string]>>([]);
 
