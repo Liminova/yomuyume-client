@@ -33,14 +33,39 @@ async function login(): Promise<void> {
 	}
 
 	globalStore.token = token;
-
 	loginState.value = State.Loaded;
 
+	const serverAddr = new URL("/", globalStore.instanceAddr).toString();
+	const clientAddr = new URL("/", window.location.href).toString();
+
+	if (clientAddr === serverAddr) {
+		await navigateTo("/");
+		return;
+	}
+
+	/* eslint-disable-next-line no-console */
+	console.warn(
+		"Warning: client and server address are on different domains. Cookie will be set manually."
+	);
+
+	let exp = 0;
+
+	try {
+		exp = (JSON.parse(atob(token.split(".")[1])) as { exp: number }).exp;
+	} catch {
+		authStore.snackbarMessage = "Cannot parse token";
+		loginState.value = State.Error;
+		return;
+	}
+
+	document.cookie = `token=${token}; expires=${new Date(exp * 1000).toUTCString()}; path=/`;
 	await navigateTo("/");
 }
 </script>
 
 <template>
+	<Snackbar :message="authStore.snackbarMessage" @close="authStore.snackbarMessage = ''" />
+
 	<!-- Input login -->
 	<md-outlined-text-field
 		v-model="username"
