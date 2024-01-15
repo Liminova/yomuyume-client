@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import FilterBar from "./FilterBar.vue";
-import LogoAndTitle from "./LogoAndTitle.vue";
-import NavToggleIcon from "./NavToggleIcon.vue";
-import UserAvatar from "./UserAvatar.vue";
+import FilterBar from "./TopBar/FilterBar.vue";
+import LogoAndTitle from "./TopBar/LogoAndTitle.vue";
+import NavToggleIcon from "./TopBar/NavToggleIcon.vue";
+import UserAvatar from "./TopBar/UserAvatar.vue";
 
 window.addEventListener("keydown", async (e) => {
 	if (e.ctrlKey && e.key === "k") {

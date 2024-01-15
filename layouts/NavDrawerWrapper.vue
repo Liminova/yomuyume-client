@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import NavDrawer from "./NavDrawerWrapper/NavDrawer.vue";
-import TopBar from "./NavDrawerWrapper/TopBar/_TopBar.vue";
+import TopBar from "./NavDrawerWrapper/TopBar.vue";
 import debounce from "debounce";
 
 const props = defineProps({
