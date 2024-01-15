@@ -51,6 +51,7 @@ onMounted(() => {
 						width: title.width,
 						height: title.height,
 						blurhash: title.blurhash,
+						format: title.format,
 						src: fileApiUrl.thumbnail(title.id),
 					}"
 				>
