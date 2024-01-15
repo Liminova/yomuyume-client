@@ -11,8 +11,8 @@
 	},
 	"extends": [
 		"plugin:nuxt/recommended",
-		"plugin:tailwindcss/recommended",
-		"plugin:cadence/recommended"
+		"plugin:cadence/recommended",
+		"plugin:tailwindcss/recommended"
 	],
 	"plugins": [
 		"cadence"
@@ -30,7 +30,7 @@
 				"name": "isNaN",
 				"message": "Use Number.isNaN instead. isNaN does not check the input is of type number, and instead coerces input into a number.\nisNaN(\"foo\"); // true\nNumber.isNaN(\"foo\"); // false"
 			}
-		],
+],
 		"@typescript-eslint/consistent-type-definitions": [
 			"error",
 			"type"
