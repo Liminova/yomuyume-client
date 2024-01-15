@@ -5,7 +5,6 @@ import "@material/web/textfield/outlined-text-field.js";
 import { AuthScreen, authStore } from "./authStore";
 import State from "~/composables/enumResponseState";
 
-const store = authStore();
 const email = ref("");
 const sendCodeState = ref(State.Idle);
 const loginCode = ref("");
@@ -17,7 +16,7 @@ function sendCode() {
 		// TODO: remove this on production
 		if (email.value.includes("FORCE_ERROR")) {
 			sendCodeState.value = State.Error;
-			store.snackbarMessage = "Invalid email";
+			authStore.snackbarMessage = "Invalid email";
 			return;
 		}
 
@@ -32,7 +31,7 @@ function login() {
 		// TODO: remove this on production
 		if (loginCode.value.includes("FORCE_ERROR")) {
 			loginState.value = State.Error;
-			store.snackbarMessage = "Invalid code";
+			authStore.snackbarMessage = "Invalid code";
 			return;
 		}
 
@@ -44,12 +43,12 @@ function login() {
 
 <template>
 	<!-- Input email -->
-	<Toggle :show="store.screen === AuthScreen.Passwordless">
+	<Toggle :show="authStore.screen === AuthScreen.Passwordless">
 		<md-outlined-text-field
 			v-model="email"
 			label="Email"
 			class="mb-3 w-full"
-			:disabled="store.screen !== AuthScreen.Passwordless"
+			:disabled="authStore.screen !== AuthScreen.Passwordless"
 			@keydown.enter="sendCode"
 		/>
 	</Toggle>
@@ -63,7 +62,7 @@ function login() {
 	<Toggle :show="sendCodeState === State.Idle">
 		<md-filled-tonal-button
 			class="w-full"
-			:disabled="sendCodeState !== State.Idle || store.screen !== AuthScreen.Passwordless"
+			:disabled="sendCodeState !== State.Idle || authStore.screen !== AuthScreen.Passwordless"
 			@click="sendCode"
 		>
 			Send code

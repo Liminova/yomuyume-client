@@ -2,8 +2,8 @@
 import "@material/web/ripple/ripple.js";
 
 async function logout() {
-	localStorage.removeItem("token");
 	document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+	globalStore.token = "";
 	await navigateTo("/auth");
 }
 </script>

@@ -5,43 +5,34 @@ import "@material/web/textfield/outlined-text-field.js";
 import "@material/web/button/text-button.js";
 import { authStore, AuthScreen } from "./authStore";
 import State from "~/composables/enumResponseState";
-import parseRespJson from "~/composables/functions/parseRespJson";
 
-const store = authStore();
 const username = ref("");
 const password = ref("");
 const loginState = ref(State.Idle);
 
-type LoginResponseBody = {
-	token: string;
-	description: string;
-};
-
 async function login(): Promise<void> {
-	loginState.value = State.Loading;
+	const checkPassword = isStrongPassword(password.value);
 
-	const response = await req("/api/auth/login", "POST", {
-		login: username.value,
-		password: password.value,
-	});
-
-	if (!response.ok) {
-		void parseRespJson(response, store.setSnackbarMessage).then((body_) => {
-			const body = body_ as GenericResponseBody;
-
-			if (body.message) {
-				store.snackbarMessage = body.message;
-			}
-		});
-
+	if (!checkPassword.isStrong) {
+		authStore.snackbarMessage = checkPassword.message;
 		loginState.value = State.Error;
 		return;
 	}
 
-	const body = (await parseRespJson(response, store.setSnackbarMessage)) as LoginResponseBody;
+	loginState.value = State.Loading;
 
-	localStorage.setItem("token", body.token);
-	document.cookie = `token=${body.token}`;
+	const { status, token, message } = await authApi.login({
+		login: username.value,
+		password: password.value,
+	});
+
+	if (status === "error") {
+		authStore.snackbarMessage = message;
+		loginState.value = State.Error;
+		return;
+	}
+
+	globalStore.token = token;
 
 	loginState.value = State.Loaded;
 
@@ -55,7 +46,7 @@ async function login(): Promise<void> {
 		v-model="username"
 		class="mb-3 w-full"
 		label="Username"
-		:disabled="store.screen !== AuthScreen.Login"
+		:disabled="authStore.screen !== AuthScreen.Login"
 		@keydown.enter="login"
 	/>
 
@@ -65,7 +56,7 @@ async function login(): Promise<void> {
 		class="mb-3 w-full"
 		type="password"
 		label="Password"
-		:disabled="store.screen !== AuthScreen.Login"
+		:disabled="authStore.screen !== AuthScreen.Login"
 		@keydown.enter="login"
 	/>
 
@@ -78,22 +69,22 @@ async function login(): Promise<void> {
 	<div class="grid grid-cols-2 gap-1">
 		<md-filled-tonal-button
 			class="col-span-2"
-			:disabled="store.screen !== AuthScreen.Login"
+			:disabled="authStore.screen !== AuthScreen.Login"
 			@click="login"
 		>
 			Login
 		</md-filled-tonal-button>
 
 		<md-text-button
-			:disabled="store.screen !== AuthScreen.Login"
-			@click="store.screen = AuthScreen.Register"
+			:disabled="authStore.screen !== AuthScreen.Login"
+			@click="authStore.screen = AuthScreen.Register"
 		>
 			Register
 		</md-text-button>
 
 		<md-text-button
-			:disabled="store.screen !== AuthScreen.Login"
-			@click="store.screen = AuthScreen.ResetPassword"
+			:disabled="authStore.screen !== AuthScreen.Login"
+			@click="authStore.screen = AuthScreen.ResetPassword"
 		>
 			Reset password
 		</md-text-button>

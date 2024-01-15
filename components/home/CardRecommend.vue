@@ -15,10 +15,11 @@ const props = defineProps({
 });
 
 const cover = {
+	src: fileApiUrl.thumbnail(props.previewTitle.id),
 	width: props.previewTitle.width,
 	height: props.previewTitle.height,
+	format: props.previewTitle.format,
 	blurhash: props.previewTitle.blurhash,
-	src: fileApiUrl.thumbnail(props.previewTitle.id),
 };
 
 const store = homeStore();
@@ -27,12 +28,17 @@ const titleTagNames = ref<Array<string>>([]);
 const tagIdToNameMap = ref<Array<[number, string]>>([]);
 
 void (async () => {
-	tagIdToNameMap.value = (await utilsApi.tags(store.setSnackbarMessage)).tags;
-	const response = await indexApi.title(props.previewTitle.id, store.setSnackbarMessage);
+	tagIdToNameMap.value = (await utilsApi.tags()).tags;
+	const { data, message, status } = await indexApi.title(props.previewTitle.id);
 
-	fullTitle.value = response[1];
+	if (status === "error" || !data) {
+		store.snackbarMessage = message ?? "";
+		return;
+	}
 
-	titleTagNames.value = response[1].tag_ids.map((tagId) => {
+	fullTitle.value = data;
+
+	titleTagNames.value = data.tag_ids.map((tagId) => {
 		const tagName = tagIdToNameMap.value.find((tag) => tag[0] === tagId);
 
 		return tagName ? tagName[1] : "";

@@ -3,17 +3,14 @@ import "@material/web/textfield/outlined-text-field.js";
 import "@material/web/progress/linear-progress.js";
 import "@material/web/button/filled-tonal-button.js";
 import { authStore, AuthScreen } from "./authStore";
-import apiStore from "~/composables/api/apiStore";
 import State from "~/composables/enumResponseState";
 
-const store = authStore();
-const activeApiStore = apiStore();
 const serverVersion = ref("");
 const fetchServerState = ref(State.Idle);
 const hideServerAddrChange = ref(false);
 
-async function fetchInstanceInfo(_instanceAddr = activeApiStore.instanceAddr) {
-	store.screen = AuthScreen.Idle;
+async function fetchInstanceInfo(_instanceAddr = globalStore.instanceAddr) {
+	authStore.screen = AuthScreen.Idle;
 
 	if (_instanceAddr === "") {
 		fetchServerState.value = State.Idle;
@@ -24,25 +21,25 @@ async function fetchInstanceInfo(_instanceAddr = activeApiStore.instanceAddr) {
 
 	const result = await utilsApi.status();
 
-	if (!result.res.ok) {
+	if (result.status === "error") {
 		fetchServerState.value = State.Error;
 		return Promise.reject(new Error(""));
 	}
 
-	if (result.body.password_less !== undefined && result.body.password_less) {
-		store.screen = AuthScreen.Passwordless;
+	if (result.data.password_less !== undefined && result.data.password_less) {
+		authStore.screen = AuthScreen.Passwordless;
 	} else {
-		store.screen = AuthScreen.Login;
+		authStore.screen = AuthScreen.Login;
 	}
 
 	fetchServerState.value = State.Loaded;
-	serverVersion.value = result.body.version;
+	serverVersion.value = result.data.version;
 	hideServerAddrChange.value = true;
 	return Promise.resolve();
 }
 
-function instanceAddrChanged(_instanceAddr: string = activeApiStore.instanceAddr) {
-	activeApiStore.instanceAddr = _instanceAddr;
+function instanceAddrChanged(_instanceAddr: string = globalStore.instanceAddr) {
+	globalStore.instanceAddr = _instanceAddr;
 	fetchServerState.value = State.Loading;
 	fetchInstanceInfo(_instanceAddr)
 		.then(() => {
@@ -66,9 +63,15 @@ fetchInstanceInfo().catch(() => {
 });
 
 async function check() {
-	const response = await reqWithAuth("/api/user/check", "GET");
+	const { status } = await useFetch("/api/user/check", {
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${globalStore.token}`,
+		},
+	});
 
-	if (!response.ok) {
+	if (status.value === "success") {
 		await navigateTo("/auth");
 	}
 }
@@ -84,7 +87,7 @@ void check();
 	<Toggle :show="!hideServerAddrChange">
 		<!-- Input + Check instance addr -->
 		<md-outlined-text-field
-			v-model="activeApiStore.instanceAddr"
+			v-model="globalStore.instanceAddr"
 			label="Instance address"
 			class="mb-3 w-full"
 			@keydown.enter="instanceAddrChanged()"

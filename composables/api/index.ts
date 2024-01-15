@@ -1,8 +1,57 @@
-import { reqWithAuth } from "./req";
-import parseRespJson from "../functions/parseRespJson";
-import type { GenericResponseBody } from "./apiStore";
+import type { GenericResponseBody } from "../types";
+import type { AsyncDataRequestStatus } from "nuxt/dist/app/composables/asyncData";
 
-type FilterTitleResponse = {
+type CategoryItemServerResponse = {
+	id: string;
+	name: string;
+	description?: string;
+};
+
+type CategoryServerResponse = {
+	data: Array<CategoryItemServerResponse>;
+};
+
+type CategoriesFnResponse = {
+	status: AsyncDataRequestStatus;
+	message: string;
+	data: Array<{
+		id: string;
+		name: string;
+		description?: string;
+	}>;
+};
+
+async function categories(): Promise<CategoriesFnResponse> {
+	const { data, status } = await useFetch("/api/index/categories", {
+		baseURL: globalStore.instanceAddr,
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${globalStore.token}`,
+		},
+	});
+
+	if (status.value === "error") {
+		const data_ = data.value as GenericResponseBody;
+
+		return {
+			status: status.value,
+			message: data_.message,
+			data: [],
+		};
+	}
+
+	const data_ = data.value as CategoryServerResponse;
+
+	return {
+		status: status.value,
+		message: "",
+		data: data_.data,
+	};
+}
+
+/** For what the server returns */
+type FilterItemServerResponse = {
 	id: string;
 	title: string;
 	author?: string;
@@ -11,18 +60,68 @@ type FilterTitleResponse = {
 	favorite_count?: number;
 	page_count: number;
 	page_read?: number;
+
 	blurhash: string;
 	width: number;
 	height: number;
+	format: string;
 };
 
-type FilterResponseBody = {
-	description: string;
+type FilterServerResponse = {
+	data: Array<FilterItemServerResponse>;
+};
+
+type FilterFnResponse = {
+	status: AsyncDataRequestStatus;
 	message: string;
-	data: Array<FilterTitleResponse>;
+	data: Array<FilterItemServerResponse>;
 };
 
-type TitleResponseBody = {
+async function filter(body: {
+	keywords?: Array<string>;
+	category_ids?: Array<string>;
+	tag_ids?: Array<number>;
+	limit?: number;
+
+	is_reading?: boolean;
+	is_finished?: boolean;
+	is_bookmarked?: boolean;
+	is_favorite?: boolean;
+
+	sort_by?: string;
+	sort_order?: string;
+}): Promise<FilterFnResponse> {
+	const { data, status } = await useFetch("/api/index/filter", {
+		baseURL: globalStore.instanceAddr,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${globalStore.token}`,
+		},
+		body,
+	});
+
+	if (status.value === "error") {
+		const data_ = data.value as GenericResponseBody;
+
+		return {
+			status: status.value,
+			message: data_.message,
+			data: [],
+		};
+	}
+
+	const data_ = data.value as FilterServerResponse;
+
+	return {
+		status: status.value,
+		message: "",
+		data: data_.data,
+	};
+}
+
+/** What the server returns */
+type TitleServerResponse = {
 	message?: string;
 	description?: string; // Error description
 
@@ -35,11 +134,12 @@ type TitleResponseBody = {
 		blurhash: string;
 		width: number;
 		height: number;
+		format: string;
 	};
 	tag_ids: Array<number>;
 	pages: Array<{
 		id: string;
-		title_id: string;
+		format: string;
 		description?: string;
 	}>;
 	favorites?: number;
@@ -51,88 +151,44 @@ type TitleResponseBody = {
 	date_updated: string;
 };
 
-type CategoryResponse = {
-	id: string;
-	name: string;
-	description?: string;
+/** What the below fn returns */
+type TitleFnResponse = {
+	status: AsyncDataRequestStatus;
+	message?: string;
+	data?: TitleServerResponse;
 };
 
-type CategoryResponseBody = {
-	data: Array<CategoryResponse>;
-};
+async function title(id: string): Promise<TitleFnResponse> {
+	const { data, status } = await useFetch(`/api/index/title/${id}`, {
+		baseURL: globalStore.instanceAddr,
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${globalStore.token}`,
+		},
+	});
 
-async function categories(setErrMsg: (_: string) => void): Promise<Array<CategoryResponse>> {
-	const response = await reqWithAuth("/api/index/categories", "GET");
+	if (status.value === "error") {
+		const data_ = data.value as GenericResponseBody;
 
-	if (response.ok) {
-		const body = (await parseRespJson(response, setErrMsg)) as CategoryResponseBody;
-
-		return body.data;
+		return {
+			status: status.value,
+			message: data_.message,
+		};
 	}
 
-	void parseRespJson(response, setErrMsg).then((body_) => {
-		const body = body_ as GenericResponseBody;
+	const data_ = data.value as TitleServerResponse;
 
-		if (body.message) {
-			setErrMsg(body.message);
-		}
-	});
-
-	return [];
-}
-
-async function filter(
-	params: {
-		keywords?: Array<string>;
-		category_ids?: Array<string>;
-		tag_ids?: Array<number>;
-		limit?: number;
-
-		is_reading?: boolean;
-		is_finished?: boolean;
-		is_bookmarked?: boolean;
-		is_favorite?: boolean;
-
-		sort_by?: string;
-		sort_order?: string;
-	},
-	setErrMsg: (_: string) => void
-): Promise<Array<FilterTitleResponse>> {
-	const response = await reqWithAuth("/api/index/filter", "POST", params);
-
-	if (response.status === 204 || !response.ok) {
-		return [];
-	}
-
-	return parseRespJson(response, setErrMsg).then((body_) => {
-		const body = body_ as FilterResponseBody;
-
-		if (body.message) {
-			setErrMsg(body.message);
-		}
-
-		return body.data;
-	});
-}
-
-async function title(
-	id: string,
-	setErrMsg: (_: string) => void
-): Promise<[Response, TitleResponseBody]> {
-	const response = await reqWithAuth(`/api/index/title/${id}`, "GET");
-
-	const body = await parseRespJson(response, setErrMsg).then((body_) => {
-		const body = body_ as TitleResponseBody;
-
-		if (body.description && body.description !== "OK") {
-			setErrMsg(body.description);
-		}
-
-		return body;
-	});
-
-	return [response, body];
+	return {
+		status: status.value,
+		data: data_,
+	};
 }
 
 export default { categories, filter, title };
-export type { FilterTitleResponse, TitleResponseBody, CategoryResponseBody, CategoryResponse };
+export type {
+	FilterItemServerResponse,
+	TitleServerResponse,
+	CategoryServerResponse,
+	CategoriesFnResponse,
+};

@@ -7,6 +7,8 @@ import { homeStore } from "~/components/home/homeStore";
 import imageAutoResizer from "~/composables/functions/imageAutoResizer";
 import NavDrawerWrapper from "~/layouts/NavDrawerWrapper.vue";
 
+document.title = "Yomuyume - Home";
+
 register();
 
 const store = homeStore();
@@ -42,8 +44,6 @@ void Promise.all([
 	newlyAddedItems.value = newlyAdded;
 	completedStoriesItems.value = completedStories;
 });
-
-document.title = "Yomuyume - Home";
 </script>
 
 <template>
@@ -76,6 +76,7 @@ document.title = "Yomuyume - Home";
 							width: title.width,
 							height: title.height,
 							blurhash: title.blurhash,
+							format: title.format,
 						}"
 						:cover-height="store.coverHeight"
 						:progress="title.page_read ? title.page_read / title.page_count : 0"
@@ -95,6 +96,7 @@ document.title = "Yomuyume - Home";
 							width: title.width,
 							height: title.height,
 							blurhash: title.blurhash,
+							format: title.format,
 						}"
 						:cover-height="store.coverHeight"
 						:progress="title.page_read ? title.page_read / title.page_count : 0"
@@ -114,6 +116,7 @@ document.title = "Yomuyume - Home";
 							width: title.width,
 							height: title.height,
 							blurhash: title.blurhash,
+							format: title.format,
 						}"
 						:cover-height="store.coverHeight"
 						:progress="title.page_read ? title.page_read / title.page_count : 0"

@@ -1,12 +1,10 @@
-import apiStore from "./apiStore";
-
 /**
  * Get the url of the thumbnail file for a title.
  *
  * @param id the id of the title
  */
 function thumbnail(id: string): string {
-	return new URL(`/api/file/thumbnail/${id}`, apiStore().instanceAddr).toString();
+	return new URL(`/api/file/thumbnail/${id}`, globalStore.instanceAddr).toString();
 }
 
 /**
@@ -15,7 +13,7 @@ function thumbnail(id: string): string {
  * @param id the id of the page
  */
 function page(id: string): string {
-	return new URL(`/api/file/page/${id}`, apiStore().instanceAddr).toString();
+	return new URL(`/api/file/page/${id}`, globalStore.instanceAddr).toString();
 }
 
 export default {

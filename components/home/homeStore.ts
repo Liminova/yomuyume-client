@@ -4,7 +4,6 @@ export const homeStore = defineStore("home", () => {
 	const recommendsContainerHeight = 500;
 	const gapPixel = 18;
 	const snackbarMessage = ref("");
-	const setSnackbarMessage = (newVal: string) => (snackbarMessage.value = newVal);
 
 	return {
 		coverHeight,
@@ -12,6 +11,5 @@ export const homeStore = defineStore("home", () => {
 		recommendsContainerHeight,
 		gapPixel,
 		snackbarMessage,
-		setSnackbarMessage,
 	};
 });

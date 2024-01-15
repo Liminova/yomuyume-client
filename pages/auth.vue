@@ -10,30 +10,29 @@ import Theme from "~/composables/enums/Theme";
 import changeTheme from "~/composables/functions/changeTheme";
 
 changeTheme(Theme.AUTO);
-const store = authStore();
 
 document.title = "Yomuyume - Auth";
 </script>
 
 <template>
 	<div class="flex h-screen items-center justify-center">
-		<Snackbar :message="store.snackbarMessage" @close="store.snackbarMessage = ''" />
+		<Snackbar :message="authStore.snackbarMessage" @close="authStore.snackbarMessage = ''" />
 		<div class="flex w-80 flex-col">
 			<InstanceAddress />
 
-			<Toggle :show="store.screen == AuthScreen.Passwordless">
+			<Toggle :show="authStore.screen == AuthScreen.Passwordless">
 				<PasswordlessMode />
 			</Toggle>
 
-			<Toggle :show="store.screen == AuthScreen.Login">
+			<Toggle :show="authStore.screen == AuthScreen.Login">
 				<LoginMode />
 			</Toggle>
 
-			<Toggle :show="store.screen == AuthScreen.Register">
+			<Toggle :show="authStore.screen == AuthScreen.Register">
 				<RegisterMode />
 			</Toggle>
 
-			<Toggle :show="store.screen == AuthScreen.ResetPassword">
+			<Toggle :show="authStore.screen == AuthScreen.ResetPassword">
 				<ResetPassword />
 			</Toggle>
 		</div>

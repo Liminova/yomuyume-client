@@ -10,5 +10,10 @@ type MyImage = {
 	width?: number;
 	height?: number;
 	blurhash?: string;
+	format: string;
 };
-export type { BreakpointRecord, MyImage };
+type GenericResponseBody = {
+	description: string;
+	message: string;
+};
+export type { BreakpointRecord, MyImage, GenericResponseBody };

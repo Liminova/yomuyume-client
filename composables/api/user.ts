@@ -1,54 +1,46 @@
-import { reqWithAuth } from "./req";
-import parseRespJson from "../functions/parseRespJson";
-import type { GenericResponseBody } from "./apiStore";
+import type { GenericResponseBody } from "../types";
+import type { AsyncDataRequestStatus } from "nuxt/dist/app/composables/asyncData";
 
-enum Action {
-	PUT = "PUT",
-	DELETE = "DELETE",
-}
-
-export { Action };
-
-/** if res.ok, the GenericResponse is empty */
 async function favorite(
 	titleId: string,
-	action: Action,
-	setErrMsg: (_: string) => void
-): Promise<boolean> {
-	const response = await reqWithAuth(`/api/user/favorite/${titleId}`, action);
+	action: "DELETE" | "PUT"
+): Promise<{
+	status: AsyncDataRequestStatus;
+	message: string;
+}> {
+	const { data, status } = await useFetch(`/api/user/favorite/${titleId}`, {
+		baseURL: globalStore.instanceAddr,
+		method: action,
+		headers: {
+			Authorization: `Bearer ${globalStore.token}`,
+		},
+	});
 
-	if (!response.ok) {
-		void parseRespJson(response, setErrMsg).then((body_) => {
-			const body = body_ as GenericResponseBody;
-
-			if (body.message) {
-				setErrMsg(body.message);
-			}
-		});
-	}
-
-	return Promise.resolve(response.ok);
+	return {
+		status: status.value,
+		message: (data.value as GenericResponseBody).message,
+	};
 }
 
-/** if res.ok, the GenericResponse is empty */
 async function bookmark(
 	titleId: string,
-	action: Action,
-	setErrMsg: (_: string) => void
-): Promise<boolean> {
-	const response = await reqWithAuth(`/api/user/bookmark/${titleId}`, action);
+	action: "DELETE" | "PUT"
+): Promise<{
+	status: AsyncDataRequestStatus;
+	message: string;
+}> {
+	const { data, status } = await useFetch(`/api/user/bookmark/${titleId}`, {
+		baseURL: globalStore.instanceAddr,
+		method: action,
+		headers: {
+			Authorization: `Bearer ${globalStore.token}`,
+		},
+	});
 
-	if (!response.ok) {
-		void parseRespJson(response, setErrMsg).then((body_) => {
-			const body = body_ as GenericResponseBody;
-
-			if (body.message) {
-				setErrMsg(body.message);
-			}
-		});
-	}
-
-	return Promise.resolve(response.ok);
+	return {
+		status: status.value,
+		message: (data.value as GenericResponseBody).message,
+	};
 }
 
 export default { favorite, bookmark };

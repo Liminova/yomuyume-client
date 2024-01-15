@@ -1,45 +1,61 @@
-import { req, reqWithAuth } from "./req";
+import type { AsyncDataRequestStatus } from "nuxt/dist/app/composables/asyncData";
 
-type StatusResponseBody = {
+type StatusServerResponse = {
 	server_time: string;
 	version: string;
 	echo?: string;
 	password_less?: boolean;
 };
 
-type StatusResponse = {
-	res: Response;
-	body: StatusResponseBody;
+type StatusFnResponse = {
+	data: StatusServerResponse;
+	status: AsyncDataRequestStatus;
 };
 
-type TagResponse = {
-	description?: string;
+async function status(): Promise<StatusFnResponse> {
+	const { data, status } = await useFetch("/api/utils/status", {
+		baseURL: globalStore.instanceAddr,
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${globalStore.token}`,
+		},
+	});
+
+	return {
+		data: data.value as StatusServerResponse,
+		status: status.value,
+	};
+}
+
+type TagsServerResponse = {
 	tags: Array<[number, string]>;
 };
 
-export default {
-	async status(): Promise<StatusResponse> {
-		try {
-			const res = await req("/api/utils/status", "GET");
-
-			return { res, body: (await res.json()) as StatusResponseBody };
-		} catch {
-			const res = new Response(null, { status: 500 });
-			const body = {};
-
-			return { res, body: body as StatusResponseBody };
-		}
-	},
-
-	async tags(setErrMsg: (_: string) => void): Promise<TagResponse> {
-		try {
-			const res = await reqWithAuth("/api/utils/tags", "GET");
-			const body = (await res.json()) as TagResponse;
-
-			return body;
-		} catch {
-			setErrMsg("Failed to get tags");
-			return { tags: [] };
-		}
-	},
+type TagsFnResponse = {
+	tags: Array<[number, string]>;
+	message: string;
 };
+
+async function tags(): Promise<TagsFnResponse> {
+	const { data, status } = await useFetch("/api/utils/tags", {
+		baseURL: globalStore.instanceAddr,
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${globalStore.token}`,
+		},
+	});
+
+	if (status.value === "error") {
+		const data_ = data.value as GenericResponseBody;
+
+		return { tags: [], message: data_.message };
+	}
+
+	const data_ = data.value as TagsServerResponse;
+
+	return { tags: data_.tags, message: "" };
+}
+
+export default { status, tags };

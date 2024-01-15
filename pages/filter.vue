@@ -17,12 +17,16 @@ import NavDrawerWrapper from "~/layouts/NavDrawerWrapper.vue";
 // Key: category id, Value: category name
 const categories = ref<Record<string, string>>({});
 const snackbarMessage = ref("");
-const setSnackbarMessage = (newVal: string) => (snackbarMessage.value = newVal);
 
 void (async () => {
-	const response = await indexApi.categories(setSnackbarMessage);
+	const { data, message, status } = await indexApi.categories();
 
-	for (const category of response) {
+	if (status === "error") {
+		snackbarMessage.value = message;
+		return;
+	}
+
+	for (const category of data) {
 		categories.value[category.id] = category.name;
 	}
 })();
@@ -38,8 +42,8 @@ const gapPixel = ref(16);
 
 // Results =====================================================================
 
-const filteredTitles = ref<Array<FilterTitleResponse>>([]); /** found titles */
-const filteredTitlesToDisplay = ref<Array<FilterTitleResponse>>([]);
+const filteredTitles: Ref<Array<FilterTitleResponse>> = ref([]); /** found titles */
+const filteredTitlesToDisplay: Ref<Array<FilterTitleResponse>> = ref([]);
 
 function renderMoreResult() {
 	const howFarFromBottom = document.body.getBoundingClientRect().bottom - window.innerHeight;
@@ -79,23 +83,26 @@ function chipCategoryHandler(eventTarget: HTMLElement) {
 }
 
 watchEffect(async () => {
-	filteredTitles.value = await indexApi.filter(
-		{
-			keywords: keywords.value
-				.split(" ")
-				.map((keyword) => keyword.trim())
-				.filter((keyword) => keyword !== ""),
-			category_ids: Array.from(inCategories.value),
-			is_reading: readingStatus.value.includes(FilterReadingStatus.Reading.name),
-			is_finished: readingStatus.value.includes(FilterReadingStatus.Finished.name),
-			is_bookmarked: readingStatus.value.includes(FilterReadingStatus.Bookmarked.name),
-			is_favorite: readingStatus.value.includes(FilterReadingStatus.Liked.name),
-			sort_by: sortBy.value,
-			sort_order: sortOrder.value,
-		},
-		setSnackbarMessage
-	);
+	const { data, message, status } = await indexApi.filter({
+		keywords: keywords.value
+			.split(" ")
+			.map((keyword) => keyword.trim())
+			.filter((keyword) => keyword !== ""),
+		category_ids: Array.from(inCategories.value),
+		is_reading: readingStatus.value.includes(FilterReadingStatus.Reading.name),
+		is_finished: readingStatus.value.includes(FilterReadingStatus.Finished.name),
+		is_bookmarked: readingStatus.value.includes(FilterReadingStatus.Bookmarked.name),
+		is_favorite: readingStatus.value.includes(FilterReadingStatus.Liked.name),
+		sort_by: sortBy.value,
+		sort_order: sortOrder.value,
+	});
 
+	if (status === "error") {
+		snackbarMessage.value = message;
+		return;
+	}
+
+	filteredTitles.value = data;
 	filteredTitlesToDisplay.value = filteredTitles.value.slice(0, imagePerRow.value * 3);
 });
 
@@ -181,6 +188,7 @@ document.title = "Yomuyume - Filter";
 							width: title.width,
 							height: title.height,
 							blurhash: title.blurhash,
+							format: title.format,
 						}"
 						:cover-height="imageHeight"
 						:progress="title.page_read ? title.page_read / title.page_count : 0"

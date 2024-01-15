@@ -12,23 +12,6 @@ type imageQueueType = {
 	renderedDataRef: Ref<string>;
 };
 
-async function getFormat(imageUrl: string): Promise<string> {
-	if (imageUrl === "") {
-		return Promise.resolve("");
-	}
-
-	const response = await fetch(imageUrl, {
-		method: "HEAD",
-		headers: {
-			Authorization: `Bearer ${localStorage.getItem("token")}`,
-		},
-	});
-
-	const contentType = response.headers.get("content-type");
-
-	return contentType ? contentType.split("/")[1] : "";
-}
-
 async function isNative(format: string): Promise<boolean> {
 	switch (format) {
 		case "jxl":
@@ -105,9 +88,7 @@ class WebWorkerRenderer {
 		}
 
 		// Is native?
-		const format = await getFormat(image.src);
-
-		if (await isNative(format)) {
+		if (await isNative(image.format)) {
 			imageRef.value = image.src;
 			return;
 		}
@@ -119,7 +100,7 @@ class WebWorkerRenderer {
 
 		// Decode image
 		this.imageQueue.push({
-			data: [image.src, format, localStorage.getItem("token") ?? ""],
+			data: [image.src, image.format, globalStore.token],
 			renderedDataRef: imageRef,
 		});
 		this.processQueue(this.imageQueue, this.imageWorkers);
@@ -144,9 +125,7 @@ class SharedWorkerRenderer {
 		}
 
 		// Is native?
-		const format = await getFormat(image.src);
-
-		if (await isNative(format)) {
+		if (await isNative(image.format)) {
 			imageRef.value = image.src;
 			return;
 		}
@@ -164,7 +143,7 @@ class SharedWorkerRenderer {
 			imageRef.value = event.data;
 		};
 
-		imageWorker.port.postMessage([image.src, format, localStorage.getItem("token") ?? ""]);
+		imageWorker.port.postMessage([image.src, image.format, globalStore.token]);
 	}
 }
 
