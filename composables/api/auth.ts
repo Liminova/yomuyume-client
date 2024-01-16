@@ -11,7 +11,7 @@ type LoginFnResponse = {
 };
 
 async function login(body: { login: string; password: string }): Promise<LoginFnResponse> {
-	const { data, status } = await useFetch("/api/auth/login", {
+	const { data, status, error } = await useFetch("/api/auth/login", {
 		baseURL: globalStore.instanceAddr,
 		method: "POST",
 		headers: {
@@ -21,14 +21,20 @@ async function login(body: { login: string; password: string }): Promise<LoginFn
 	});
 
 	if (status.value === "error") {
-		const message = (data.value as GenericResponseBody).message;
+		const data_ = error.value?.data as GenericServerResponse;
 
-		return { status: status.value, token: "", message };
+		return {
+			status: "error",
+			token: "",
+			message: data_.message ?? "Login failed, server doesn't give any reason.",
+		};
 	}
 
+	const data_ = data.value as LognServerResponse;
+
 	return {
-		status: status.value,
-		token: (data.value as LognServerResponse).token,
+		status: "success",
+		token: data_.token,
 		message: "",
 	};
 }
@@ -38,7 +44,7 @@ async function register(body: {
 	email: string;
 	password: string;
 }): Promise<{ status: AsyncDataRequestStatus; message: string }> {
-	const { data, status } = await useFetch("/api/auth/register", {
+	const { status, error } = await useFetch("/api/auth/register", {
 		baseURL: globalStore.instanceAddr,
 		method: "POST",
 		headers: {
@@ -48,16 +54,19 @@ async function register(body: {
 	});
 
 	if (status.value === "error") {
-		const message = (data.value as GenericResponseBody).message;
+		const data_ = error.value?.data as GenericServerResponse;
 
-		return { status: status.value, message };
+		return {
+			status: status.value,
+			message: data_.message ?? "Registration failed, server doesn't give any reason.",
+		};
 	}
 
 	return { status: status.value, message: "" };
 }
 
 async function resetPassword(email: string): Promise<string> {
-	const { data, status } = await useFetch(`/api/auth/reset/${email}`, {
+	const { status, error } = await useFetch(`/api/auth/reset/${email}`, {
 		baseURL: globalStore.instanceAddr,
 		method: "GET",
 		headers: {
@@ -66,14 +75,16 @@ async function resetPassword(email: string): Promise<string> {
 	});
 
 	if (status.value === "error") {
-		return (data.value as GenericResponseBody).message;
+		const data_ = error.value?.data as GenericServerResponse;
+
+		return data_.message ?? "Send email failed, server doesn't give any reason.";
 	}
 
 	return "Verification email sent";
 }
 
 async function confirmReset(password: string, token: string): Promise<string> {
-	const { data, status } = await useFetch(`/api/auth/reset`, {
+	const { status, error } = await useFetch(`/api/auth/reset`, {
 		baseURL: globalStore.instanceAddr,
 		method: "POST",
 		headers: {
@@ -84,14 +95,16 @@ async function confirmReset(password: string, token: string): Promise<string> {
 	});
 
 	if (status.value === "error") {
-		return (data.value as GenericResponseBody).message;
+		const data_ = error.value?.data as GenericServerResponse;
+
+		return data_.message ?? "Reset password failed, server doesn't give any reason.";
 	}
 
 	return "Password reset successfully";
 }
 
 async function deleteAccount(email: string): Promise<string> {
-	const { data, status } = await useFetch(`/api/auth/delete/${email}`, {
+	const { status, error } = await useFetch(`/api/auth/delete/${email}`, {
 		baseURL: globalStore.instanceAddr,
 		method: "DELETE",
 		headers: {
@@ -100,14 +113,16 @@ async function deleteAccount(email: string): Promise<string> {
 	});
 
 	if (status.value === "error") {
-		return (data.value as GenericResponseBody).message;
+		const data_ = error.value?.data as GenericServerResponse;
+
+		return data_.message ?? "Send email failed, server doesn't give any reason.";
 	}
 
 	return "Confirmation email sent";
 }
 
 async function confirmDelete(token: string): Promise<string> {
-	const { data, status } = await useFetch(`/api/auth/delete`, {
+	const { status, error } = await useFetch(`/api/auth/delete`, {
 		baseURL: globalStore.instanceAddr,
 		method: "POST",
 		headers: {
@@ -117,14 +132,16 @@ async function confirmDelete(token: string): Promise<string> {
 	});
 
 	if (status.value === "error") {
-		return (data.value as GenericResponseBody).message;
+		const data_ = error.value?.data as GenericServerResponse;
+
+		return data_.message ?? "Delete account failed, server doesn't give any reason.";
 	}
 
 	return "Account deleted";
 }
 
 async function verifyAccount() {
-	const { data, status } = await useFetch(`/api/auth/verify`, {
+	const { status, error } = await useFetch(`/api/auth/verify`, {
 		baseURL: globalStore.instanceAddr,
 		method: "POST",
 		headers: {
@@ -134,14 +151,16 @@ async function verifyAccount() {
 	});
 
 	if (status.value === "error") {
-		return (data.value as GenericResponseBody).message;
+		const data_ = error.value?.data as GenericServerResponse;
+
+		return data_.message ?? "Verification failed, server doesn't give any reason.";
 	}
 
 	return "Confirmation email sent";
 }
 
 async function confirmVerification(token: string): Promise<string> {
-	const { data, status } = await useFetch(`/api/auth/verify`, {
+	const { status, error } = await useFetch(`/api/auth/verify`, {
 		baseURL: globalStore.instanceAddr,
 		method: "POST",
 		headers: {
@@ -151,7 +170,9 @@ async function confirmVerification(token: string): Promise<string> {
 	});
 
 	if (status.value === "error") {
-		return (data.value as GenericResponseBody).message;
+		const data_ = error.value?.data as GenericServerResponse;
+
+		return data_.message ?? "Verification failed, server doesn't give any reason.";
 	}
 
 	return "Account verified";

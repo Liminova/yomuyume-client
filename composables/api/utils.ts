@@ -38,7 +38,7 @@ type TagsFnResponse = {
 };
 
 async function tags(): Promise<TagsFnResponse> {
-	const { data, status } = await useFetch("/api/utils/tags", {
+	const { data, status, error } = await useFetch("/api/utils/tags", {
 		baseURL: globalStore.instanceAddr,
 		method: "GET",
 		headers: {
@@ -48,9 +48,12 @@ async function tags(): Promise<TagsFnResponse> {
 	});
 
 	if (status.value === "error") {
-		const data_ = data.value as GenericResponseBody;
+		const data_ = error.value?.data as GenericServerResponse;
 
-		return { tags: [], message: data_.message };
+		return {
+			tags: [],
+			message: data_.message ?? "Failed to fetch tags, server doesn't give any reason.",
+		};
 	}
 
 	const data_ = data.value as TagsServerResponse;

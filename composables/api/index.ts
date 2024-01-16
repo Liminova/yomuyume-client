@@ -1,4 +1,4 @@
-import type { GenericResponseBody } from "../types";
+import type { GenericServerResponse } from "../types";
 import type { AsyncDataRequestStatus } from "nuxt/dist/app/composables/asyncData";
 
 type CategoryItemServerResponse = {
@@ -22,7 +22,7 @@ type CategoriesFnResponse = {
 };
 
 async function categories(): Promise<CategoriesFnResponse> {
-	const { data, status } = await useFetch("/api/index/categories", {
+	const { data, status, error } = await useFetch("/api/index/categories", {
 		baseURL: globalStore.instanceAddr,
 		method: "GET",
 		headers: {
@@ -32,11 +32,11 @@ async function categories(): Promise<CategoriesFnResponse> {
 	});
 
 	if (status.value === "error") {
-		const data_ = data.value as GenericResponseBody;
+		const data_ = error.value?.data as GenericServerResponse;
 
 		return {
 			status: status.value,
-			message: data_.message,
+			message: data_.message ?? "Failed to fetch categories, server doesn't give any reason.",
 			data: [],
 		};
 	}
@@ -91,7 +91,7 @@ async function filter(body: {
 	sort_by?: string;
 	sort_order?: string;
 }): Promise<FilterFnResponse> {
-	const { data, status } = await useFetch("/api/index/filter", {
+	const { data, status, error } = await useFetch("/api/index/filter", {
 		baseURL: globalStore.instanceAddr,
 		method: "POST",
 		headers: {
@@ -102,11 +102,12 @@ async function filter(body: {
 	});
 
 	if (status.value === "error") {
-		const data_ = data.value as GenericResponseBody;
+		const data_ = error.value?.data as GenericServerResponse;
 
 		return {
 			status: status.value,
-			message: data_.message,
+			message:
+				data_.message ?? "Failed to send filter request, server doesn't give any reason.",
 			data: [],
 		};
 	}
@@ -165,7 +166,7 @@ type TitleFnResponse = {
 };
 
 async function title(id: string): Promise<TitleFnResponse> {
-	const { data, status } = await useFetch(`/api/index/title/${id}`, {
+	const { data, status, error } = await useFetch(`/api/index/title/${id}`, {
 		baseURL: globalStore.instanceAddr,
 		method: "GET",
 		headers: {
@@ -175,11 +176,11 @@ async function title(id: string): Promise<TitleFnResponse> {
 	});
 
 	if (status.value === "error") {
-		const data_ = data.value as GenericResponseBody;
+		const data_ = error.value?.data as GenericServerResponse;
 
 		return {
 			status: status.value,
-			message: data_.message,
+			message: data_.message ?? "Failed to fetch title, server doesn't give any reason.",
 		};
 	}
 

@@ -1,4 +1,4 @@
-import type { GenericResponseBody } from "../types";
+import type { GenericServerResponse } from "../types";
 import type { AsyncDataRequestStatus } from "nuxt/dist/app/composables/asyncData";
 
 async function favorite(
@@ -8,7 +8,7 @@ async function favorite(
 	status: AsyncDataRequestStatus;
 	message: string;
 }> {
-	const { data, status } = await useFetch(`/api/user/favorite/${titleId}`, {
+	const { status, error } = await useFetch(`/api/user/favorite/${titleId}`, {
 		baseURL: globalStore.instanceAddr,
 		method: action,
 		headers: {
@@ -16,9 +16,18 @@ async function favorite(
 		},
 	});
 
+	if (status.value === "error") {
+		const data_ = error.value?.data as GenericServerResponse;
+
+		return {
+			status: status.value,
+			message: data_.message ?? "Failed to favorite, server doesn't give any reason.",
+		};
+	}
+
 	return {
 		status: status.value,
-		message: (data.value as GenericResponseBody).message,
+		message: "Added to favorite.",
 	};
 }
 
@@ -29,7 +38,7 @@ async function bookmark(
 	status: AsyncDataRequestStatus;
 	message: string;
 }> {
-	const { data, status } = await useFetch(`/api/user/bookmark/${titleId}`, {
+	const { status, error } = await useFetch(`/api/user/bookmark/${titleId}`, {
 		baseURL: globalStore.instanceAddr,
 		method: action,
 		headers: {
@@ -37,9 +46,18 @@ async function bookmark(
 		},
 	});
 
+	if (status.value === "error") {
+		const data_ = error.value?.data as GenericServerResponse;
+
+		return {
+			status: status.value,
+			message: data_.message ?? "Failed to bookmark, server doesn't give any reason.",
+		};
+	}
+
 	return {
 		status: status.value,
-		message: (data.value as GenericResponseBody).message,
+		message: "Added to bookmark.",
 	};
 }
 
