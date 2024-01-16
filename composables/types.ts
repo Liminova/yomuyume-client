@@ -12,8 +12,8 @@ type MyImage = {
 	blurhash?: string;
 	format: string;
 };
-type GenericResponseBody = {
-	description: string;
-	message: string;
+type GenericServerResponse = {
+	description?: string;
+	message?: string;
 };
-export type { BreakpointRecord, MyImage, GenericResponseBody };
+export type { BreakpointRecord, MyImage, GenericServerResponse };
