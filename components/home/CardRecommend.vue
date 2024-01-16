@@ -70,7 +70,7 @@ void (async () => {
 		</div>
 
 		<!-- Cover -->
-		<div class="h-full w-full sm:min-w-[350px] sm:max-w-xs lg:py-10 lg:pl-10">
+		<div class="size-full sm:min-w-[350px] sm:max-w-xs lg:py-10 lg:pl-10">
 			<ImagePoly
 				:draggable="false"
 				:image="cover"
@@ -80,12 +80,12 @@ void (async () => {
 		</div>
 
 		<div
-			class="pointer-events-none absolute left-0 top-0 flex h-full w-full bg-black/50 sm:hidden"
+			class="pointer-events-none absolute left-0 top-0 flex size-full bg-black/50 sm:hidden"
 		/>
 
 		<!-- Informations -->
 		<div
-			class="absolute left-0 top-0 z-[1] flex h-full w-full flex-col justify-end p-7 sm:static sm:z-auto sm:max-w-3xl sm:justify-start sm:bg-transparent sm:p-10"
+			class="absolute left-0 top-0 z-[1] flex size-full flex-col justify-end p-7 sm:static sm:z-auto sm:max-w-3xl sm:justify-start sm:bg-transparent sm:p-10"
 		>
 			<div class="text-lg font-light" data-theme="dark">
 				{{ props.previewTitle.author ?? "Unknown" }}

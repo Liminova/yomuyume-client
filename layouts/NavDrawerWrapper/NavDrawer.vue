@@ -52,7 +52,7 @@ function moveEntryBg(index: number) {
 	>
 		<!-- Navigation drawer -->
 		<div
-			class="transition-bg-surface relative flex h-full w-full max-w-[360px] flex-col justify-start rounded-br-3xl shadow-2xl lg:rounded-none lg:shadow-none"
+			class="transition-bg-surface relative flex size-full max-w-[360px] flex-col justify-start rounded-br-3xl shadow-2xl lg:rounded-none lg:shadow-none"
 		>
 			<!-- Entries' background -->
 			<div

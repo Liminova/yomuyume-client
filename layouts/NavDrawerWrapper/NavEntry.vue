@@ -48,7 +48,7 @@ if (window.innerWidth <= 1024) {
 				}"
 			>
 				<md-ripple style="--md-ripple-hover-color: transparent" />
-				<div class="flex h-6 w-6 items-center justify-center">
+				<div class="flex size-6 items-center justify-center">
 					<i class="fa-light text-xl" :class="props.icon + ' ' + style.icon"></i>
 				</div>
 				<div class="min-w-0 overflow-hidden whitespace-nowrap text-sm" :class="style.label">

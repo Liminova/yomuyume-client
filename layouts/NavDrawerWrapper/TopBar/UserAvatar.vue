@@ -9,7 +9,7 @@ async function logout() {
 </script>
 
 <template>
-	<div class="elevation-1 group relative h-12 w-12 rounded-full">
+	<div class="elevation-1 group relative size-12 rounded-full">
 		<img src="/placeholder.svg" class="h-auto w-full rounded-full" />
 
 		<div

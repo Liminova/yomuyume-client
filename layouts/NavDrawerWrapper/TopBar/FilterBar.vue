@@ -19,7 +19,7 @@ import "@material/web/ripple/ripple.js";
 				</div>
 			</div>
 		</div>
-		<div class="flex h-12 w-12 items-center justify-center md:hidden">
+		<div class="flex size-12 items-center justify-center md:hidden">
 			<i class="fa-light fa-filters text-[--md-sys-color-on-surface-variant)] text-2xl"></i>
 		</div>
 	</nuxt-link>

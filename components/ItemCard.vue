@@ -26,7 +26,7 @@ const props = defineProps({
 				image-class="rounded-xl h-full object-cover"
 			/>
 			<div
-				class="absolute left-0 top-0 h-full w-full bg-[rgba(255_255_255/0.08)] opacity-0 transition-opacity group-[.img-cover]:hover:opacity-100"
+				class="absolute left-0 top-0 size-full bg-[rgba(255_255_255/0.08)] opacity-0 transition-opacity group-[.img-cover]:hover:opacity-100"
 			/>
 			<md-linear-progress
 				v-show="progress"

@@ -1,13 +1,13 @@
 <template>
 	<div
-		class="relative mx-4 flex h-12 w-12 cursor-pointer place-content-center place-items-center items-center justify-center overflow-hidden rounded-full"
+		class="relative mx-4 flex size-12 cursor-pointer place-content-center place-items-center items-center justify-center overflow-hidden rounded-full"
 	>
 		<md-ripple />
 		<input
 			id="nav-toggle"
 			v-model="globalStore.isNavDrawerLarge"
 			type="checkbox"
-			class="absolute z-[1] h-12 w-12 opacity-0"
+			class="absolute z-[1] size-12 opacity-0"
 		/>
 		<div class="absolute flex flex-col gap-2">
 			<div
