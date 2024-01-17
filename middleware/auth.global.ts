@@ -1,4 +1,8 @@
 export default defineNuxtRouteMiddleware(async (to, _) => {
+	if (to.path === "/404") {
+		return;
+	}
+
 	const { status } = await useFetch("/api/user/check", {
 		baseURL: globalStore.instanceAddr,
 		method: "GET",
