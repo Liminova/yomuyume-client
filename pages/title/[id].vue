@@ -63,11 +63,7 @@ async function toggleBookmark() {
 
 <template>
 	<div>
-		<Snackbar
-			:message="snackbarMessage"
-			:timeout="snackbarTimeout"
-			@close="snackbarMessage = ''"
-		/>
+		<Snackbar :message="snackbarMessage" :timeout="snackbarTimeout" />
 		<NavDrawerWrapper>
 			<div class="mt-3 px-0 lg:mt-0 lg:pl-0 lg:pr-3">
 				<!-- Basic infos -->

@@ -16,7 +16,7 @@ document.title = "Yomuyume - Auth";
 
 <template>
 	<div class="flex h-screen items-center justify-center">
-		<Snackbar :message="authStore.snackbarMessage" @close="authStore.snackbarMessage = ''" />
+		<Snackbar :message="authStore.snackbarMessage" />
 		<div class="flex w-80 flex-col">
 			<InstanceAddress />
 

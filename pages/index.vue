@@ -47,7 +47,7 @@ void Promise.all([
 
 <template>
 	<div>
-		<Snackbar :message="snackbarMessage" @close="snackbarMessage = ''" />
+		<Snackbar :message="snackbarMessage" />
 		<NavDrawerWrapper class="mt-3 flex w-full flex-col gap-7 px-6 lg:mt-0 lg:pl-0 lg:pr-3">
 			<swiper-container
 				class="w-full overflow-hidden rounded-3xl"

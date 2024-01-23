@@ -41,7 +41,7 @@ document.title = "Yomuyume - Library";
 
 <template>
 	<div>
-		<Snackbar :message="snackbarMessage" @close="snackbarMessage = ''" />
+		<Snackbar :message="snackbarMessage" />
 
 		<NavDrawerWrapper>
 			<div

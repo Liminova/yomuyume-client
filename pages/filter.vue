@@ -111,7 +111,7 @@ document.title = "Yomuyume - Filter";
 
 <template>
 	<div>
-		<Snackbar :message="snackbarMessage" @close="snackbarMessage = ''" />
+		<Snackbar :message="snackbarMessage" />
 		<NavDrawerWrapper class="mb-10 mt-3 flex w-full flex-col px-6 lg:mt-0 lg:pl-0 lg:pr-3">
 			<!-- Filter region -->
 			<div class="flex w-full flex-col gap-2">
