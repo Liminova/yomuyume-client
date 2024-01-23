@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import Snackbar from "~/components/Snackbar.vue";
 import InstanceAddress from "~/components/auth/InstanceAddress.vue";
-import LoginMode from "~/components/auth/LoginMode.vue";
-import PasswordlessMode from "~/components/auth/PasswordlessMode.vue";
-import RegisterMode from "~/components/auth/RegisterMode.vue";
+import LoginMode from "~/components/auth/Login.vue";
+import PasswordlessMode from "~/components/auth/Passwordless.vue";
+import RegisterMode from "~/components/auth/Register.vue";
 import ResetPassword from "~/components/auth/ResetPassword.vue";
 import { AuthScreen, authStore } from "~/components/auth/authStore";
 import Theme from "~/composables/enums/Theme";

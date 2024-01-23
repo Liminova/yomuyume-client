@@ -24,15 +24,10 @@ async function reset() {
 		v-model="email"
 		class="mb-3 w-full"
 		label="Email"
-		:disabled="authStore.screen !== AuthScreen.ResetPassword"
 		@keydown.enter="sendToken"
 	/>
 
-	<md-filled-tonal-button
-		class="mb-3 w-full"
-		:disabled="authStore.screen !== AuthScreen.ResetPassword"
-		@click="sendToken"
-	>
+	<md-filled-tonal-button class="mb-3 w-full" @click="sendToken">
 		Send token
 	</md-filled-tonal-button>
 
@@ -40,7 +35,7 @@ async function reset() {
 		v-model="token"
 		class="mb-3 w-full"
 		label="Token"
-		:disabled="authStore.screen !== AuthScreen.ResetPassword || !tokenSent"
+		:disabled="!tokenSent"
 		@keydown.enter="reset"
 	/>
 
@@ -48,23 +43,15 @@ async function reset() {
 		v-model="newPassword"
 		class="mb-3 w-full"
 		label="New password"
-		:disabled="authStore.screen !== AuthScreen.ResetPassword || !tokenSent"
+		:disabled="!tokenSent"
 		@keydown.enter="reset"
 	/>
 
-	<md-filled-tonal-button
-		class="mb-1 w-full"
-		:disabled="authStore.screen !== AuthScreen.ResetPassword || !tokenSent"
-		@click="reset"
-	>
+	<md-filled-tonal-button class="mb-1 w-full" :disabled="!tokenSent" @click="reset">
 		Reset password
 	</md-filled-tonal-button>
 
-	<md-text-button
-		class="w-full"
-		:disabled="authStore.screen !== AuthScreen.ResetPassword"
-		@click="authStore.screen = AuthScreen.Login"
-	>
+	<md-text-button class="w-full" @click="authStore.screen = AuthScreen.Login">
 		Back to login
 	</md-text-button>
 </template>

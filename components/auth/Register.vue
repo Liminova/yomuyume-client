@@ -59,28 +59,15 @@ async function register() {
 </script>
 
 <template>
-	<md-outlined-text-field
-		v-model="username"
-		class="mb-3 w-full"
-		type="text"
-		label="Username"
-		:disabled="authStore.screen !== AuthScreen.Register"
-	/>
+	<md-outlined-text-field v-model="username" class="mb-3 w-full" type="text" label="Username" />
 
-	<md-outlined-text-field
-		v-model="email"
-		class="mb-3 w-full"
-		type="email"
-		label="Email"
-		:disabled="authStore.screen !== AuthScreen.Register"
-	/>
+	<md-outlined-text-field v-model="email" class="mb-3 w-full" type="email" label="Email" />
 
 	<md-outlined-text-field
 		v-model="password"
 		class="mb-3 w-full"
 		type="password"
 		label="Password"
-		:disabled="authStore.screen !== AuthScreen.Register"
 	/>
 
 	<md-outlined-text-field
@@ -88,7 +75,6 @@ async function register() {
 		class="mb-3 w-full"
 		type="password"
 		label="Retype password"
-		:disabled="authStore.screen !== AuthScreen.Register"
 		@keydown.enter="register"
 	/>
 
@@ -97,19 +83,9 @@ async function register() {
 	</Toggle>
 
 	<div class="grid grid-cols-2 gap-2">
-		<md-text-button
-			class="w-full"
-			:disabled="authStore.screen !== AuthScreen.Register"
-			@click="authStore.screen = AuthScreen.Login"
-		>
+		<md-text-button class="w-full" @click="authStore.screen = AuthScreen.Login">
 			Back to login
 		</md-text-button>
-		<md-filled-tonal-button
-			class="w-full"
-			:disabled="authStore.screen !== AuthScreen.Register"
-			@click="register"
-		>
-			Register
-		</md-filled-tonal-button>
+		<md-filled-tonal-button class="w-full" @click="register"> Register </md-filled-tonal-button>
 	</div>
 </template>

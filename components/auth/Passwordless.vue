@@ -48,7 +48,6 @@ function login() {
 			v-model="email"
 			label="Email"
 			class="mb-3 w-full"
-			:disabled="authStore.screen !== AuthScreen.Passwordless"
 			@keydown.enter="sendCode"
 		/>
 	</Toggle>
@@ -62,7 +61,7 @@ function login() {
 	<Toggle :show="sendCodeState === State.Idle">
 		<md-filled-tonal-button
 			class="w-full"
-			:disabled="sendCodeState !== State.Idle || authStore.screen !== AuthScreen.Passwordless"
+			:disabled="sendCodeState !== State.Idle"
 			@click="sendCode"
 		>
 			Send code

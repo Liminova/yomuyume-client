@@ -64,14 +64,11 @@ async function login(): Promise<void> {
 </script>
 
 <template>
-	<Snackbar :message="authStore.snackbarMessage" @close="authStore.snackbarMessage = ''" />
-
 	<!-- Input login -->
 	<md-outlined-text-field
 		v-model="username"
 		class="mb-3 w-full"
 		label="Username"
-		:disabled="authStore.screen !== AuthScreen.Login"
 		@keydown.enter="login"
 	/>
 
@@ -81,7 +78,6 @@ async function login(): Promise<void> {
 		class="mb-3 w-full"
 		type="password"
 		label="Password"
-		:disabled="authStore.screen !== AuthScreen.Login"
 		@keydown.enter="login"
 	/>
 
@@ -92,25 +88,11 @@ async function login(): Promise<void> {
 
 	<!-- Buttons -->
 	<div class="grid grid-cols-2 gap-1">
-		<md-filled-tonal-button
-			class="col-span-2"
-			:disabled="authStore.screen !== AuthScreen.Login"
-			@click="login"
-		>
-			Login
-		</md-filled-tonal-button>
+		<md-filled-tonal-button class="col-span-2" @click="login"> Login </md-filled-tonal-button>
 
-		<md-text-button
-			:disabled="authStore.screen !== AuthScreen.Login"
-			@click="authStore.screen = AuthScreen.Register"
-		>
-			Register
-		</md-text-button>
+		<md-text-button @click="authStore.screen = AuthScreen.Register"> Register </md-text-button>
 
-		<md-text-button
-			:disabled="authStore.screen !== AuthScreen.Login"
-			@click="authStore.screen = AuthScreen.ResetPassword"
-		>
+		<md-text-button @click="authStore.screen = AuthScreen.ResetPassword">
 			Reset password
 		</md-text-button>
 	</div>
