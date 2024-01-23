@@ -28,48 +28,44 @@ const props = defineProps({
 	},
 });
 
-const emits = defineEmits(["close"]);
-
-const isVisible = ref(false);
+const isShowing = ref(true);
 const container = ref<HTMLElement | null>(null);
 
-let closeTimeout: NodeJS.Timeout;
-
 function close() {
-	if (container.value) {
-		container.value.style.transform = "translate(0, 200%)";
-	}
-
-	clearTimeout(closeTimeout);
-	closeTimeout = setTimeout(() => {
-		isVisible.value = false;
-		emits("close");
-	}, 150);
-}
-
-let showTimeout: NodeJS.Timeout;
-
-function show(message: string = props.message) {
-	// Don't show if message is empty
-	if (!message) {
+	if (!container.value) {
 		return;
 	}
 
-	// Show the snackbar
-	isVisible.value = true;
-	clearTimeout(showTimeout);
-	showTimeout = setTimeout(() => {
-		if (container.value) {
-			container.value.style.transform = "translate(0)";
-		}
-	}, 50);
+	container.value.classList.remove("show");
+	container.value.classList.add("closed");
+}
 
-	// Close the snackbar if autoHide or close button is not shown
+function show(message: string) {
+	if (message === "" || container.value === null) {
+		return;
+	}
+
+	isShowing.value = true;
+	container.value.classList.remove("closed");
+	container.value.classList.add("show");
+
 	if (props.autoHide || !props.showClose) {
 		debounce(() => {
 			close();
 		}, props.timeout)();
 	}
+}
+
+function handleTransitionEnd() {
+	if (container.value === null) {
+		return;
+	}
+
+	if (!container.value.classList.contains("closed")) {
+		return;
+	}
+
+	isShowing.value = false;
 }
 
 watchEffect(() => {
@@ -79,10 +75,10 @@ watchEffect(() => {
 
 <template>
 	<div
-		v-if="isVisible"
+		v-if="isShowing"
 		ref="container"
-		class="fixed bottom-6 z-10 flex w-full items-center justify-center transition-transform"
-		:style="{ transform: 'translate(0, 200%)' }"
+		class="closed fixed bottom-6 z-10 flex w-full items-center justify-center transition-transform"
+		@transitionend="handleTransitionEnd"
 	>
 		<div
 			class="flex max-w-xl flex-row items-center gap-1 rounded bg-zinc-800 px-4 shadow"
@@ -117,3 +113,12 @@ watchEffect(() => {
 		</div>
 	</div>
 </template>
+
+<style scoped>
+.show {
+	transform: translate(0, 0);
+}
+.closed {
+	transform: translate(0, 200%);
+}
+</style>
