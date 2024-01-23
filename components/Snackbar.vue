@@ -28,44 +28,39 @@ const props = defineProps({
 	},
 });
 
-const isShowing = ref(true);
-const container = ref<HTMLElement | null>(null);
+const emit = defineEmits(["close"]);
 
-function close() {
-	if (!container.value) {
-		return;
-	}
+const enabled = ref(true);
+const appliedVisibleClass = ref("closed");
 
-	container.value.classList.remove("show");
-	container.value.classList.add("closed");
+function hide() {
+	appliedVisibleClass.value = "closed";
 }
 
 function show(message: string) {
-	if (message === "" || container.value === null) {
+	if (message === "") {
 		return;
 	}
 
-	isShowing.value = true;
-	container.value.classList.remove("closed");
-	container.value.classList.add("show");
+	enabled.value = true;
+	debounce(() => {
+		appliedVisibleClass.value = "show";
+	}, 0)();
 
 	if (props.autoHide || !props.showClose) {
 		debounce(() => {
-			close();
+			hide();
 		}, props.timeout)();
 	}
 }
 
-function handleTransitionEnd() {
-	if (container.value === null) {
+function postHide() {
+	if (appliedVisibleClass.value === "show") {
 		return;
 	}
 
-	if (!container.value.classList.contains("closed")) {
-		return;
-	}
-
-	isShowing.value = false;
+	enabled.value = false;
+	emit("close");
 }
 
 watchEffect(() => {
@@ -75,10 +70,10 @@ watchEffect(() => {
 
 <template>
 	<div
-		v-if="isShowing"
-		ref="container"
-		class="closed fixed bottom-6 z-10 flex w-full items-center justify-center transition-transform"
-		@transitionend="handleTransitionEnd"
+		v-show="enabled"
+		class="fixed bottom-6 z-10 flex w-full items-center justify-center transition-transform"
+		:class="appliedVisibleClass"
+		@transitionend="postHide"
 	>
 		<div
 			class="flex max-w-xl flex-row items-center gap-1 rounded bg-zinc-800 px-4 shadow"
@@ -96,7 +91,7 @@ watchEffect(() => {
 				{{ props.actionText }}
 			</button>
 
-			<button v-if="props.showClose" class="m-1 p-2" @click="close">
+			<button v-if="props.showClose" class="m-1 p-2" @click="hide">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					width="24"
