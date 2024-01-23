@@ -34,7 +34,7 @@ onMounted(() => {
 </script>
 
 <template>
-	<Snackbar :message="snackbarMessage" />
+	<Snackbar :message="snackbarMessage" @close="snackbarMessage = ''" />
 	<NavDrawerWrapper>
 		<div
 			ref="imageContainerRef"

@@ -111,11 +111,11 @@ document.title = "Yomuyume - Filter";
 
 <template>
 	<div>
-		<Snackbar :message="snackbarMessage" />
+		<Snackbar :message="snackbarMessage" @close="snackbarMessage = ''" />
 		<NavDrawerWrapper class="mb-10 mt-3 flex w-full flex-col px-6 lg:mt-0 lg:pl-0 lg:pr-3">
 			<!-- Filter region -->
 			<div class="flex w-full flex-col gap-2">
-				<div class="text-4xl font-bold">I want to finds ones that...</div>
+				<div class="text-xl font-semibold"></div>
 				<md-filled-text-field
 					v-model="keywords"
 					label="filter by keywords"
@@ -124,7 +124,7 @@ document.title = "Yomuyume - Filter";
 				/>
 
 				<ChipSection
-					title="I'm"
+					title="Status"
 					:filter-type="FilterType.ReadingStatus"
 					:filter-type-posible-val="FilterReadingStatus"
 					@add="readingStatus.push($event)"
@@ -132,7 +132,7 @@ document.title = "Yomuyume - Filter";
 				/>
 
 				<ChipSection
-					title="sort by"
+					title="Sort by"
 					:filter-type="FilterType.SortResult"
 					:filter-type-posible-val="FilterSortBy"
 					is-overwrite
@@ -140,7 +140,7 @@ document.title = "Yomuyume - Filter";
 				/>
 
 				<ChipSection
-					title="in order"
+					title="Sort order"
 					:filter-type="FilterType.SortOrder"
 					:filter-type-posible-val="FilterSortOrder"
 					is-overwrite
