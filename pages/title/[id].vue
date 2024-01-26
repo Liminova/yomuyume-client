@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import "@material/web/button/text-button.js";
+import debounce from "debounce";
 import type { TitleServerResponse } from "~/composables/api";
 import { indexApi, userApi, fileApiUrl } from "~/composables/api";
 import NavDrawerWrapper from "~/layouts/NavDrawerWrapper.vue";
@@ -80,7 +81,17 @@ const pageObservers = new IntersectionObserver(
 	}
 );
 
-watchEffect(() => userApi.progress(id, currentPageIndex.value));
+async function saveProgress(currentPageIndex: number) {
+	const { status, message } = await userApi.progress(id, currentPageIndex);
+
+	if (status === "error") {
+		snackbarMessage.value = message;
+	}
+}
+
+watchEffect(() => {
+	debounce(saveProgress, 30000)(currentPageIndex.value);
+});
 
 function handleImageLoad(pageId: string) {
 	const element = document.getElementById(pageId);
