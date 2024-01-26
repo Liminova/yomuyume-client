@@ -59,6 +59,38 @@ async function toggleBookmark() {
 	isBookmark.value = !isBookmark.value;
 	snackbarMessage.value = isBookmark.value ? "Added to bookmarks" : "Removed from bookmarks";
 }
+
+const currentPageIndex = ref(0);
+const pageObservers = new IntersectionObserver(
+	(entries) => {
+		for (const entry of entries) {
+			if (!entry.isIntersecting) {
+				continue;
+			}
+
+			const element = entry.target;
+
+			currentPageIndex.value = title.value.pages.findIndex((page) => page.id === element.id);
+		}
+	},
+	{
+		root: null,
+		rootMargin: "0px",
+		threshold: 0.5,
+	}
+);
+
+watchEffect(() => userApi.progress(id, currentPageIndex.value));
+
+function handleImageLoad(pageId: string) {
+	const element = document.getElementById(pageId);
+
+	if (element === null) {
+		return;
+	}
+
+	pageObservers.observe(element);
+}
 </script>
 
 <template>
@@ -101,8 +133,14 @@ async function toggleBookmark() {
 				</div>
 
 				<!-- Pages -->
-				<div v-for="page in title.pages" :key="page.id" class="mx-auto max-w-[700px]">
+				<div
+					v-for="page in title.pages"
+					:key="page.id"
+					:id="page.id"
+					class="mx-auto max-w-[700px]"
+				>
 					<ImagePoly
+						@loaded="handleImageLoad(page.id)"
 						:image="{
 							src: fileApiUrl.page(page.id),
 							format: page.format,
