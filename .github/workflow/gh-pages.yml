@@ -1,0 +1,23 @@
+name: Build and Deploy
+on:
+  push:
+    branches: [ main ]
+permissions:
+    contents: write
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        env: BASE_URL: /yomuyume-client/
+        steps:
+            -   uses: actions/checkout@v4.1.1
+            -   name: Install pnpm ⚡
+                run: npm install -g pnpm
+            -   name: Install dependencies 📦
+                run: pnpm install
+            -   name: Build 🛠️
+                run: pnpm generate
+            -   name: Deploy 🚀
+                uses: JamesIves/github-pages-deploy-action@v4.5.0
+                with:
+                    branch: gh-pages
+                    folder: .output/public
