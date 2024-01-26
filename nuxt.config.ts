@@ -42,6 +42,7 @@ export default defineNuxtConfig({
 				},
 			],
 		},
+		baseUrl: process.env.BASE_URL,
 	},
 	vue: {
 		compilerOptions: {
