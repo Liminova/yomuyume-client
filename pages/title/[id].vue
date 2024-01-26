@@ -90,7 +90,7 @@ async function saveProgress(currentPageIndex: number) {
 }
 
 watchEffect(() => {
-	debounce(saveProgress, 30000)(currentPageIndex.value);
+	void debounce(saveProgress, 30000)(currentPageIndex.value);
 });
 
 function handleImageLoad(pageId: string) {
