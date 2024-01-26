@@ -61,4 +61,34 @@ async function bookmark(
 	};
 }
 
-export default { favorite, bookmark };
+async function progress(
+	titleId: string,
+	page: number
+): Promise<{
+	status: AsyncDataRequestStatus;
+	message: string;
+}> {
+	const { status, error } = await useFetch(`/api/user/progress/${titleId}/${page}`, {
+		baseURL: globalStore.instanceAddr,
+		method: "PUT",
+		headers: {
+			Authorization: `Bearer ${globalStore.token}`,
+		},
+	});
+
+	if (status.value === "error") {
+		const data_ = error.value?.data as GenericServerResponse;
+
+		return {
+			status: status.value,
+			message: data_.message ?? "Failed to progress, server doesn't give any reason.",
+		};
+	}
+
+	return {
+		status: status.value,
+		message: "",
+	};
+}
+
+export default { favorite, bookmark, progress };
