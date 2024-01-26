@@ -2,8 +2,10 @@
 
 const baseUrl = process.env.BASE_URL ?? "/";
 
-function addBaseUrl(path: string): string {
-	return new URL(path, baseUrl).toString();
+function addBaseUrl(path_: string): string {
+	const path = path_.startsWith("/") ? path_ : `/${path_}`;
+	const base = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
+	return `${base}${path}`;
 }
 
 export default defineNuxtConfig({
