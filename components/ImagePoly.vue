@@ -14,6 +14,13 @@ const blurhashUrl = ref("");
 const imageUrl = ref("");
 const imageFullyLoaded = ref(false);
 
+const emit = defineEmits(["loaded"]);
+
+function handleImageLoad() {
+	imageFullyLoaded.value = true;
+	emit("loaded");
+}
+
 renderImage(props.image, blurhashUrl, imageUrl);
 </script>
 
@@ -44,7 +51,7 @@ renderImage(props.image, blurhashUrl, imageUrl);
 			:src="imageUrl"
 			:class="props.imageClass"
 			:draggable="props.draggable"
-			@load="imageFullyLoaded = true"
+			@load="handleImageLoad"
 		/>
 	</div>
 </template>
