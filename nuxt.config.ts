@@ -43,6 +43,7 @@ export default defineNuxtConfig({
 			],
 		},
 		baseURL: process.env.BASE_URL ?? "/",
+		buildAssetsDir: "assets",
 	},
 	vue: {
 		compilerOptions: {
