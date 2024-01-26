@@ -1,4 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
+const baseUrl = process.env.BASE_URL ?? "/";
+
+function addBaseUrl(path: string): string {
+	return new URL(path, baseUrl).toString();
+}
+
 export default defineNuxtConfig({
 	devtools: { enabled: true },
 	ssr: false,
@@ -21,21 +28,21 @@ export default defineNuxtConfig({
 					rel: "icon",
 					type: "image/png",
 					sizes: "32x32",
-					href: "/favicon/favicon-32x32.png",
+					href: addBaseUrl("/favicon/favicon-32x32.png"),
 				},
 				{
 					rel: "icon",
 					type: "image/png",
 					sizes: "16x16",
-					href: "/favicon/favicon-16x16.png",
+					href: addBaseUrl("/favicon/favicon-16x16.png"),
 				},
 				{
 					rel: "apple-touch-icon",
 					sizes: "180x180",
-					href: "/favicon/apple-touch-icon.png",
+					href: addBaseUrl("/favicon/apple-touch-icon.png"),
 				},
-				{ rel: "mask-icon", href: "/favicon/safari-pinned-tab.svg", color: "#5bbad5" },
-				{ rel: "manifest", href: "/favicon/manifest.json" },
+				{ rel: "mask-icon", href: addBaseUrl("/favicon.ico"), color: "#a30056" },
+				{ rel: "manifest", href: addBaseUrl("/favicon/manifest.json") },
 				{
 					rel: "stylesheet",
 					href: "https://cdn.jsdelivr.net/gh/unilec/fa-pro/css/all.min.css",
