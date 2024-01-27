@@ -51,7 +51,7 @@ void (async () => {
 <template>
 	<nuxt-link
 		:to="`/title/${props.previewTitle.id}`"
-		class="recommend-container relative flex h-full flex-row justify-center overflow-hidden bg-black/50 sm:static"
+		class="relative flex h-full flex-row justify-center overflow-hidden bg-black/50 sm:static"
 		:class="{ 'rounded-l-3xl': props.isFirstTitle, 'rounded-r-3xl': props.isLastTitle }"
 	>
 		<!-- Background -->
