@@ -5,6 +5,7 @@ const baseUrl = process.env.BASE_URL ?? "/";
 function addBaseUrl(path_: string): string {
 	const path = path_.startsWith("/") ? path_ : `/${path_}`;
 	const base = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
+
 	return `${base}${path}`;
 }
 
