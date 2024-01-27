@@ -49,12 +49,12 @@ void Promise.all([
 	<div>
 		<Snackbar :message="snackbarMessage" @close="snackbarMessage = ''" />
 		<NavDrawerWrapper class="mt-3 flex w-full flex-col gap-7 px-6 lg:mt-0 lg:pl-0 lg:pr-3">
+			<div class="text-5xl font-bold">You might want to read</div>
 			<swiper-container
 				class="w-full overflow-hidden rounded-3xl"
 				:style="{ height: `${store.recommendsContainerHeight}px` }"
-				:autoplay-delay="5000"
-				:autoplay-disable-on-interaction="false"
 			>
+				<!-- :autoplay-delay="5000" -->
 				<swiper-slide v-for="(title, index) in recommendsItems" :key="title.id">
 					<CardRecommend
 						:is-first-title="index === 0"
