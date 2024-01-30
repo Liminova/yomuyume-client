@@ -17,7 +17,7 @@ function resetEntryBg() {
 }
 
 // NOTE: keep this array in sync with the entries in NavDrawer.vue
-const entryIndexMap: Array<string> = ["/", "/library"];
+const entryIndexMap: Array<string> = ["/", "/library", "/ssim_eval"];
 
 function moveEntryBg(index: number) {
 	return () => {
@@ -86,6 +86,13 @@ function moveEntryBg(index: number) {
 					target="/library"
 					count=""
 					:mouseover="moveEntryBg(1)"
+				/>
+				<NavEntry
+					name="SSIM Evaluation"
+					icon="fa-waves-sine"
+					target="/ssim_eval"
+					count=""
+					:mouseover="moveEntryBg(2)"
 				/>
 			</div>
 			<Toggle :show="globalStore.isNavDrawerLarge">

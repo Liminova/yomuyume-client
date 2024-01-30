@@ -10,6 +10,7 @@ import type {
 	CategoryServerResponse,
 	CategoriesFnResponse,
 } from "./api/index";
+import type { SsimEvalServerResponse, SsimEvalTitleServerResponse } from "./api/utils";
 
 export {
 	auth as authApi,
@@ -26,4 +27,6 @@ export type {
 	CategoryItemServerResponse,
 	CategoryServerResponse,
 	CategoriesFnResponse,
+	SsimEvalServerResponse,
+	SsimEvalTitleServerResponse,
 };
