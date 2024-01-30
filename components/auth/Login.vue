@@ -33,6 +33,7 @@ async function login(): Promise<void> {
 	}
 
 	globalStore.token = token;
+	localStorage.setItem("token", token);
 	loginState.value = State.Loaded;
 
 	const serverAddr = new URL("/", globalStore.instanceAddr).toString();

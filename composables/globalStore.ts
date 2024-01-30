@@ -13,14 +13,7 @@ function vibrate(): undefined {
 const globalStore = reactive({
 	isNavDrawerLarge: true,
 	isTopBarVisible: true,
-	token: (() => {
-		const cookie: Array<[string, string]> = document.cookie
-			.split("; ")
-			.map((x) => x.split("=") as [string, string]);
-		const token = cookie.find(([key]) => key === "token")?.[1];
-
-		return token ?? "";
-	})(),
+	token: localStorage.getItem("token") ?? "",
 	instanceAddr: localStorage.getItem("instance-address") ?? "http://localhost:3000",
 });
 
