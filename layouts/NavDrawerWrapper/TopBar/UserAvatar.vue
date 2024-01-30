@@ -21,14 +21,14 @@ async function logout() {
 			}"
 		>
 			<div class="elevation-3 mt-8 flex flex-col gap-3 rounded-2xl p-5">
-				<nuxt-link to="/settings">
+				<!-- <nuxt-link to="/settings">
 					<div
 						class="whitespace-nowrap text-[--md-sys-color-on-surface-variant] hover:text-[--md-sys-color-on-surface] dark:hover:text-[--md-sys-color-primary-fixed]"
 						:style="{ transition: 'color 200ms cubic-bezier(0.4, 0, 0.2, 1)' }"
 					>
 						Settings
 					</div>
-				</nuxt-link>
+				</nuxt-link> -->
 				<button
 					class="whitespace-nowrap text-[--md-sys-color-on-surface-variant] hover:text-[--md-sys-color-on-surface] dark:hover:text-[--md-sys-color-primary-fixed]"
 					:style="{ transition: 'color 200ms cubic-bezier(0.4, 0, 0.2, 1)' }"
