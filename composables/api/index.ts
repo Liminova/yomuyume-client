@@ -55,7 +55,7 @@ type FilterItemServerResponse = {
 	id: string;
 	title: string;
 	author?: string;
-	categories_id: string;
+	category_id: string;
 	release_date?: string;
 	favorite_count?: number;
 	page_count: number;
