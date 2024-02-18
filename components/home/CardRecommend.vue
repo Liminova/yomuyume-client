@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import "@material/web/chips/assist-chip.js";
-import { homeStore } from "./homeStore";
+import { homeStore } from "./utils";
 import type { FilterItemServerResponse, TitleServerResponse } from "~/composables/api";
 import ImagePoly from "~/components/ImagePoly.vue";
 import { fileApiUrl, indexApi, utilsApi } from "~/composables/api";
@@ -25,21 +25,29 @@ const cover = {
 const store = homeStore();
 const fullTitle: Ref<TitleServerResponse> = ref({}) as Ref<TitleServerResponse>;
 const titleTagNames = ref<Array<string>>([]);
-const tagIdToNameMap = ref<Array<[number, string]>>([]);
+const tagList = ref<Array<[number, string]>>([]);
 
 void (async () => {
-	tagIdToNameMap.value = (await utilsApi.tags()).tags;
-	const { data, message, status } = await indexApi.title(props.previewTitle.id);
+	const tagResp = await utilsApi.tags();
 
-	if (status === "error" || !data) {
-		store.snackbarMessage = message ?? "";
+	if (tagResp.data === undefined) {
+		store.snackbarMessage = tagResp.message ?? "";
 		return;
 	}
 
-	fullTitle.value = data;
+	tagList.value = tagResp.data;
 
-	titleTagNames.value = data.tag_ids.map((tagId) => {
-		const tagName = tagIdToNameMap.value.find((tag) => tag[0] === tagId);
+	const resp = await indexApi.title(props.previewTitle.id);
+
+	if (resp.data === undefined) {
+		store.snackbarMessage = resp.message ?? "";
+		return;
+	}
+
+	fullTitle.value = resp.data;
+
+	titleTagNames.value = resp.data.tag_ids.map((tagId) => {
+		const tagName = tagList.value.find((tag) => tag[0] === tagId);
 
 		return tagName ? tagName[1] : "";
 	});
@@ -113,11 +121,11 @@ void (async () => {
 			</div>
 
 			<div
-				v-if="fullTitle.desc"
+				v-if="fullTitle.description"
 				class="truncate-5 sm:truncate-8 z-[1] overflow-hidden"
 				data-theme="dark"
 			>
-				{{ fullTitle.desc }}
+				{{ fullTitle.description }}
 			</div>
 		</div>
 	</nuxt-link>

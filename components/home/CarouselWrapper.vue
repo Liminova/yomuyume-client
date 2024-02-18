@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { homeStore } from "./homeStore";
+import { homeStore } from "./utils";
+import { swiperBreakpoints } from "~/composables/swiperBreakPoint";
 
 const store = homeStore();
 
