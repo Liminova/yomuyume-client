@@ -6,9 +6,16 @@ enum AuthScreen {
 	ResetPassword = "resetPassword",
 }
 
+enum State {
+	Idle = "Idle",
+	Loading = "Loading",
+	Loaded = "Loaded",
+	Error = "Error",
+}
+
 const authStore = reactive({
-	screen: AuthScreen.Login,
+	screen: AuthScreen.Idle,
 	snackbarMessage: "",
 });
 
-export { AuthScreen, authStore };
+export { AuthScreen, authStore, State };

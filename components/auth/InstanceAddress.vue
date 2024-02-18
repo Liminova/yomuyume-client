@@ -2,81 +2,53 @@
 import "@material/web/textfield/outlined-text-field.js";
 import "@material/web/progress/linear-progress.js";
 import "@material/web/button/filled-tonal-button.js";
-import { authStore, AuthScreen } from "./authStore";
-import State from "~/composables/enumResponseState";
+import { authStore, AuthScreen, State } from "./utils";
+import pDebounce from "p-debounce";
+import isValidUrl from "~/composables/isValidUrl";
 
 const serverVersion = ref("");
 const fetchServerState = ref(State.Idle);
-const hideServerAddrChange = ref(false);
+const instanceAddr = ref("");
 
-async function fetchInstanceInfo(_instanceAddr = globalStore.instanceAddr) {
-	authStore.screen = AuthScreen.Idle;
-
-	if (_instanceAddr === "") {
-		fetchServerState.value = State.Idle;
-		return Promise.resolve();
-	}
-
+async function instanceAddrChange(newAddr: string) {
 	fetchServerState.value = State.Loading;
 
-	const result = await utilsApi.status();
+	const response = await utilsApi.status(newAddr);
 
-	if (result.status === "error") {
+	if (response.data === undefined) {
+		authStore.snackbarMessage = response.message ?? "";
 		fetchServerState.value = State.Error;
-		return Promise.reject(new Error(""));
-	}
-
-	if (result.data.password_less !== undefined && result.data.password_less) {
-		authStore.screen = AuthScreen.Passwordless;
-	} else {
-		authStore.screen = AuthScreen.Login;
+		return;
 	}
 
 	fetchServerState.value = State.Loaded;
-	serverVersion.value = result.data.version;
-	hideServerAddrChange.value = true;
-	return Promise.resolve();
+	authStore.screen = AuthScreen.Login;
+
+	globalStore.instanceAddr = instanceAddr.value;
+	localStorage.setItem("instance-address", instanceAddr.value);
+
+	serverVersion.value = response.data.version;
 }
 
-function instanceAddrChanged(_instanceAddr: string = globalStore.instanceAddr) {
-	globalStore.instanceAddr = _instanceAddr;
-	fetchServerState.value = State.Loading;
-	fetchInstanceInfo(_instanceAddr)
-		.then(() => {
-			localStorage.setItem("instance-address", _instanceAddr);
-		})
-		.catch(() => (fetchServerState.value = State.Error));
-}
+const debounceFn = pDebounce(instanceAddrChange, 1000);
 
-if (window.location.hostname !== "localhost") {
-	instanceAddrChanged(`https://${window.location.hostname}`);
-}
+watch(instanceAddr, async () => {
+	fetchServerState.value = State.Idle;
+	authStore.screen = AuthScreen.Idle;
 
-const instanceAddrLocal = localStorage.getItem("instance-address");
+	serverVersion.value = "";
 
-if (instanceAddrLocal !== null) {
-	instanceAddrChanged(instanceAddrLocal);
-}
+	globalStore.instanceAddr = "";
+	localStorage.removeItem("instance-address");
 
-fetchInstanceInfo().catch(() => {
-	fetchServerState.value = State.Error;
+	if (isValidUrl(instanceAddr.value)) {
+		await debounceFn(instanceAddr.value);
+	}
 });
 
-async function check() {
-	const { status } = await useFetch("/api/user/check", {
-		method: "GET",
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Bearer ${globalStore.token}`,
-		},
-	});
-
-	if (status.value === "success") {
-		await navigateTo("/auth");
-	}
-}
-
-void check();
+onMounted(() => {
+	instanceAddr.value = globalStore.instanceAddr;
+});
 </script>
 
 <template>
@@ -84,30 +56,9 @@ void check();
 		<div>{{ serverVersion }}</div>
 	</Toggle>
 
-	<Toggle :show="!hideServerAddrChange">
-		<!-- Input + Check instance addr -->
-		<md-outlined-text-field
-			v-model="globalStore.instanceAddr"
-			label="Instance address"
-			class="mb-3 w-full"
-			@keydown.enter="instanceAddrChanged()"
-		/>
-		<Toggle :show="fetchServerState !== State.Loaded">
-			<md-filled-tonal-button
-				class="mb-3 w-full"
-				:disabled="fetchServerState === State.Loaded"
-				@click="instanceAddrChanged()"
-			>
-				Check
-			</md-filled-tonal-button>
-		</Toggle>
+	<md-outlined-text-field v-model="instanceAddr" label="Instance address" class="mb-3 w-full" />
 
-		<!-- Visualize states -->
-		<Toggle :show="fetchServerState === State.Loading">
-			<md-linear-progress indeterminate class="mb-3 w-full" />
-		</Toggle>
-		<Toggle :show="fetchServerState === State.Error">
-			<div class="mb-3 text-center">Error: Failed to fetch server info</div>
-		</Toggle>
+	<Toggle :show="fetchServerState === State.Loading">
+		<md-linear-progress indeterminate class="mb-3 w-full" />
 	</Toggle>
 </template>

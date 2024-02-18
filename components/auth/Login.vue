@@ -3,8 +3,7 @@ import "@material/web/progress/linear-progress.js";
 import "@material/web/button/filled-tonal-button.js";
 import "@material/web/textfield/outlined-text-field.js";
 import "@material/web/button/text-button.js";
-import { authStore, AuthScreen } from "./authStore";
-import State from "~/composables/enumResponseState";
+import { authStore, AuthScreen, State } from "./utils";
 
 const username = ref("");
 const password = ref("");
@@ -21,13 +20,13 @@ async function login(): Promise<void> {
 
 	loginState.value = State.Loading;
 
-	const { status, token, message } = await authApi.login({
+	const { token, message } = await authApi.login({
 		login: username.value,
 		password: password.value,
 	});
 
-	if (status === "error") {
-		authStore.snackbarMessage = message;
+	if (token === undefined) {
+		authStore.snackbarMessage = message ?? "";
 		loginState.value = State.Error;
 		return;
 	}

@@ -3,8 +3,7 @@ import "@material/web/progress/linear-progress.js";
 import "@material/web/button/filled-tonal-button.js";
 import "@material/web/textfield/outlined-text-field.js";
 import "@material/web/button/text-button.js";
-import { AuthScreen, authStore } from "./authStore";
-import State from "~/composables/enumResponseState";
+import { AuthScreen, authStore, State } from "./utils";
 import isStrongPassword from "~/composables/isStrongPassword";
 import isValidEmail from "~/composables/isValidEmail";
 
@@ -41,13 +40,13 @@ async function register() {
 	}
 
 	// server-side
-	const { status, message } = await authApi.register({
+	const { ok, message } = await authApi.register({
 		username: username.value,
 		email: email.value,
 		password: password.value,
 	});
 
-	if (status === "error") {
+	if (!ok) {
 		authStore.snackbarMessage = message;
 		registerState.value = State.Error;
 		return;

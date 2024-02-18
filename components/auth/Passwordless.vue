@@ -2,8 +2,7 @@
 import "@material/web/progress/linear-progress.js";
 import "@material/web/button/filled-tonal-button.js";
 import "@material/web/textfield/outlined-text-field.js";
-import { AuthScreen, authStore } from "./authStore";
-import State from "~/composables/enumResponseState";
+import { AuthScreen, authStore, State } from "./utils";
 
 const email = ref("");
 const sendCodeState = ref(State.Idle);
