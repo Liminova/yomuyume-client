@@ -5,7 +5,6 @@ import type { MyImage } from "~/composables/types";
 const props = defineProps({
 	author: { type: String, required: true },
 	cover: { type: Object as () => MyImage, required: true },
-	coverHeight: { type: Number, required: true },
 	progress: { type: Number, default: 0 },
 	title: { type: String, required: true },
 	titleId: { type: String, required: true },
@@ -19,10 +18,7 @@ const props = defineProps({
 		<div class="img-cover group relative w-full overflow-hidden rounded-xl">
 			<ImagePoly
 				:image="props.cover"
-				:style="{
-					height: coverHeight + 'px',
-					transition: 'height 0.5s ease',
-				}"
+				class="aspect-[3/4]"
 				image-class="rounded-xl h-full object-cover"
 			/>
 			<div
