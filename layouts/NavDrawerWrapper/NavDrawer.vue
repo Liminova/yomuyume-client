@@ -87,13 +87,13 @@ function moveEntryBg(index: number) {
 					count=""
 					:mouseover="moveEntryBg(1)"
 				/>
-				<NavEntry
+				<!-- <NavEntry
 					name="SSIM Evaluation"
 					icon="fa-waves-sine"
 					target="/ssim_eval"
 					count=""
 					:mouseover="moveEntryBg(2)"
-				/>
+				/> -->
 			</div>
 			<Toggle :show="globalStore.isNavDrawerLarge">
 				<DividerBar />

@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import changeTheme from "~/composables/changeTheme";
 import Theme from "~/composables/enums/Theme";
-import changeTheme from "~/composables/functions/changeTheme";
 import "@material/web/ripple/ripple.js";
 
 const theme = ref(Theme.AUTO);
