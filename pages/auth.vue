@@ -5,9 +5,9 @@ import LoginMode from "~/components/auth/Login.vue";
 import PasswordlessMode from "~/components/auth/Passwordless.vue";
 import RegisterMode from "~/components/auth/Register.vue";
 import ResetPassword from "~/components/auth/ResetPassword.vue";
-import { AuthScreen, authStore } from "~/components/auth/authStore";
+import { AuthScreen, authStore } from "~/components/auth/utils";
+import changeTheme from "~/composables/changeTheme";
 import Theme from "~/composables/enums/Theme";
-import changeTheme from "~/composables/functions/changeTheme";
 
 changeTheme(Theme.AUTO);
 

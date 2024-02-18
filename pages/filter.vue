@@ -11,7 +11,7 @@ import {
 	FilterSortOrder,
 	FilterType,
 } from "~/components/filter/FilterType";
-import imageAutoResizer from "~/composables/functions/imageAutoResizer";
+import { getSwiperBreakpoint } from "~/composables/swiperBreakPoint";
 import NavDrawerWrapper from "~/layouts/NavDrawerWrapper.vue";
 
 // Key: category id, Value: category name
@@ -19,10 +19,10 @@ const categories = ref<Record<string, string>>({});
 const snackbarMessage = ref("");
 
 void (async () => {
-	const { data, message, status } = await indexApi.categories();
+	const { data, message } = await indexApi.categories();
 
-	if (status === "error") {
-		snackbarMessage.value = message;
+	if (data === undefined) {
+		snackbarMessage.value = message ?? "";
 		return;
 	}
 
@@ -34,11 +34,8 @@ void (async () => {
 // For the result grid styling =================================================
 
 const imageContainerRef = ref<HTMLElement | null>(null);
-const imageHeight = ref(200);
-const setImageHeight = (newVal: number) => (imageHeight.value = newVal);
 const imagePerRow = ref(5);
-const setImagePerRow = (newVal: number) => (imagePerRow.value = newVal);
-const gapPixel = ref(16);
+const spaceBetween = ref(16);
 
 // Results =====================================================================
 
@@ -58,9 +55,20 @@ function renderMoreResult() {
 	}
 }
 
+const observer = new ResizeObserver(() => {
+	const breakPoint = getSwiperBreakpoint();
+
+	imagePerRow.value = breakPoint.slidesPerView;
+	spaceBetween.value = breakPoint.spaceBetween;
+});
+
 onMounted(() => {
-	imageAutoResizer(imageContainerRef, setImageHeight, setImagePerRow, gapPixel.value, 3, 4);
 	window.addEventListener("scroll", debounce(renderMoreResult, 50));
+	if (imageContainerRef.value === null) {
+		return;
+	}
+
+	observer.observe(imageContainerRef.value);
 });
 
 // Chips variables =============================================================
@@ -83,7 +91,7 @@ function chipCategoryHandler(eventTarget: HTMLElement) {
 }
 
 watchEffect(async () => {
-	const { data, message, status } = await indexApi.filter({
+	const { data, message } = await indexApi.filter({
 		keywords: keywords.value
 			.split(" ")
 			.map((keyword) => keyword.trim())
@@ -97,8 +105,8 @@ watchEffect(async () => {
 		sort_order: sortOrder.value,
 	});
 
-	if (status === "error") {
-		snackbarMessage.value = message;
+	if (data === undefined) {
+		snackbarMessage.value = message ?? "";
 		return;
 	}
 
@@ -173,7 +181,7 @@ document.title = "Yomuyume - Filter";
 				class="grid"
 				:style="{
 					gridTemplateColumns: `repeat(${imagePerRow}, 1fr)`,
-					gap: `${gapPixel}px`,
+					gap: `${spaceBetween}px`,
 				}"
 			>
 				<nuxt-link
@@ -190,7 +198,6 @@ document.title = "Yomuyume - Filter";
 							blurhash: title.blurhash,
 							format: title.format,
 						}"
-						:cover-height="imageHeight"
 						:progress="title.page_read ? title.page_read / title.page_count : 0"
 						:title="title.title"
 						:title-id="title.id"

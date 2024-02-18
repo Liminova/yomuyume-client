@@ -20,9 +20,9 @@ const bookmarks = ref(0);
 
 // Fetching all infos
 void (async () => {
-	const { data, status } = await indexApi.title(id);
+	const { data } = await indexApi.title(id);
 
-	if (status === "error" || !data) {
+	if (data === undefined) {
 		await navigateTo("/404");
 		return;
 	}
@@ -36,29 +36,27 @@ void (async () => {
 })();
 
 async function toggleFavorite() {
-	const { message, status } = await userApi.favorite(id, isFavorite.value ? "DELETE" : "PUT");
+	const { message, ok } = await userApi.favorite(id, isFavorite.value ? "DELETE" : "PUT");
 
-	if (status === "error") {
-		snackbarMessage.value = message;
+	snackbarMessage.value = message;
+	if (!ok) {
 		return;
 	}
 
-	favorites.value = favorites.value + (isFavorite.value ? -1 : 1);
 	isFavorite.value = !isFavorite.value;
-	snackbarMessage.value = isFavorite.value ? "Added to favorites" : "Removed from favorites";
+	favorites.value = favorites.value + (isFavorite.value ? -1 : 1);
 }
 
 async function toggleBookmark() {
-	const { message, status } = await userApi.bookmark(id, isBookmark.value ? "DELETE" : "PUT");
+	const { message, ok } = await userApi.bookmark(id, isBookmark.value ? "DELETE" : "PUT");
 
-	if (status === "error") {
-		snackbarMessage.value = message;
+	snackbarMessage.value = message;
+	if (!ok) {
 		return;
 	}
 
 	bookmarks.value = bookmarks.value + (isBookmark.value ? -1 : 1);
 	isBookmark.value = !isBookmark.value;
-	snackbarMessage.value = isBookmark.value ? "Added to bookmarks" : "Removed from bookmarks";
 }
 
 const currentPageIndex = ref(0);
@@ -82,9 +80,9 @@ const pageObservers = new IntersectionObserver(
 );
 
 async function saveProgress(currentPageIndex: number) {
-	const { status, message } = await userApi.progress(id, currentPageIndex);
+	const { ok, message } = await userApi.progress(id, currentPageIndex);
 
-	if (status === "error") {
+	if (!ok) {
 		snackbarMessage.value = message;
 	}
 }
@@ -116,7 +114,9 @@ function handleImageLoad(pageId: string) {
 				<!-- Basic infos -->
 				<div class="mb-7 px-7 lg:px-0">
 					<div class="text-6xl font-semibold">{{ title.title }}</div>
-					<div v-if="title.desc" class="mt-7 text-justify">{{ title.desc }}</div>
+					<div v-if="title.description" class="mt-7 text-justify">
+						{{ title.description }}
+					</div>
 				</div>
 
 				<!-- Like and fav buttons -->

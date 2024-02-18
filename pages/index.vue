@@ -2,9 +2,7 @@
 import { register } from "swiper/element/bundle";
 import CardRecommend from "~/components/home/CardRecommend.vue";
 import CarouselWrapper from "~/components/home/CarouselWrapper.vue";
-import HomeTitle from "~/components/home/HomeTitle.vue";
-import { homeStore } from "~/components/home/homeStore";
-import imageAutoResizer from "~/composables/functions/imageAutoResizer";
+import { homeStore } from "~/components/home/utils";
 import NavDrawerWrapper from "~/layouts/NavDrawerWrapper.vue";
 
 document.title = "Yomuyume - Home";
@@ -12,15 +10,7 @@ document.title = "Yomuyume - Home";
 register();
 
 const store = homeStore();
-const carouselContainerRef = ref<HTMLElement | null>(null);
 const snackbarMessage = ref("");
-const empty = () => {
-	/** */
-};
-
-onMounted(() => {
-	imageAutoResizer(carouselContainerRef, store.setCoverHeight, empty, store.gapPixel, 3, 4);
-});
 
 const recommendsItems: Ref<Array<FilterItemServerResponse>> = ref([]);
 const recentlyUpdatedItems: Ref<Array<FilterItemServerResponse>> = ref([]);
@@ -38,17 +28,17 @@ void Promise.all([
 	indexApi.filter({ keywords: [""], limit: 10, sort_by: "add date", sort_order: "descending" }),
 	indexApi.filter({ keywords: [""], limit: 10, is_finished: true }),
 ]).then(([recommends, recentlyUpdated, newlyAdded, completedStories]) => {
-	recommendsItems.value = recommends.data;
-	recentlyUpdatedItems.value = recentlyUpdated.data;
-	newlyAddedItems.value = newlyAdded.data;
-	completedStoriesItems.value = completedStories.data;
+	recommendsItems.value = recommends.data ?? [];
+	recentlyUpdatedItems.value = recentlyUpdated.data ?? [];
+	newlyAddedItems.value = newlyAdded.data ?? [];
+	completedStoriesItems.value = completedStories.data ?? [];
 });
 </script>
 
 <template>
 	<div>
 		<Snackbar :message="snackbarMessage" @close="snackbarMessage = ''" />
-		<NavDrawerWrapper class="mt-3 flex w-full flex-col gap-7 px-6 lg:mt-0 lg:pl-0 lg:pr-3">
+		<NavDrawerWrapper class="mb-7 mt-3 flex w-full flex-col gap-7 px-6 lg:mt-0 lg:pl-0 lg:pr-3">
 			<div class="text-5xl font-bold">You might want to read</div>
 			<swiper-container
 				class="w-full overflow-hidden rounded-3xl"
@@ -64,7 +54,11 @@ void Promise.all([
 				</swiper-slide>
 			</swiper-container>
 
-			<HomeTitle>Recently updated</HomeTitle>
+			<div
+				class="w-fit origin-left text-4xl font-bold transition-transform hover:scale-[1.02]"
+			>
+				Recently updated
+			</div>
 			<CarouselWrapper>
 				<swiper-slide v-for="title in recentlyUpdatedItems" :key="title.id">
 					<ItemCard
@@ -77,14 +71,18 @@ void Promise.all([
 							blurhash: title.blurhash,
 							format: title.format,
 						}"
-						:cover-height="store.coverHeight"
 						:progress="title.page_read ? title.page_read / title.page_count : 0"
 						:title-id="title.id"
 						:title="title.title"
 					/>
 				</swiper-slide>
 			</CarouselWrapper>
-			<HomeTitle>Newly added</HomeTitle>
+
+			<div
+				class="w-fit origin-left text-4xl font-bold transition-transform hover:scale-[1.02]"
+			>
+				Newly added
+			</div>
 			<CarouselWrapper>
 				<swiper-slide v-for="title in newlyAddedItems" :key="title.id">
 					<ItemCard
@@ -104,7 +102,12 @@ void Promise.all([
 					/>
 				</swiper-slide>
 			</CarouselWrapper>
-			<HomeTitle>Completed stories</HomeTitle>
+
+			<div
+				class="w-fit origin-left text-4xl font-bold transition-transform hover:scale-[1.02]"
+			>
+				Completed stories
+			</div>
 			<CarouselWrapper>
 				<swiper-slide v-for="title in completedStoriesItems" :key="title.id">
 					<ItemCard
@@ -124,8 +127,6 @@ void Promise.all([
 					/>
 				</swiper-slide>
 			</CarouselWrapper>
-
-			<div ref="carouselContainerRef" class="w-full"></div>
 		</NavDrawerWrapper>
 	</div>
 </template>

@@ -6,14 +6,14 @@ const titles = ref([]) as Ref<Array<SsimEvalTitleServerResponse>>;
 const snackbarMessage: Ref<string> = ref("");
 
 void (async () => {
-	const { data, status, message } = await utilsApi.ssimEval();
+	const { data, message } = await utilsApi.ssimEval();
 
-	if (status === "error") {
-		snackbarMessage.value = message;
+	if (data === undefined) {
+		snackbarMessage.value = message ?? "";
 		return;
 	}
 
-	titles.value = [data.titleA, data.titleB];
+	titles.value = [data.title_a, data.title_b];
 })();
 </script>
 
