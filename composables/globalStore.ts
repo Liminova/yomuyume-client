@@ -1,5 +1,3 @@
-import type { BreakpointRecord } from "./types";
-
 function vibrate(): undefined {
 	const isBrowserSafari = /^((?!chrome|android).)*safari/iu.test(navigator.userAgent);
 
@@ -14,28 +12,7 @@ const globalStore = reactive({
 	isNavDrawerLarge: true,
 	isTopBarVisible: true,
 	token: localStorage.getItem("token") ?? "",
-	instanceAddr: localStorage.getItem("instance-address") ?? "http://localhost:3000",
+	instanceAddr: localStorage.getItem("instance-address") ?? "/",
 });
 
-const swiperBreakpoints: BreakpointRecord = {
-	0: {
-		slidesPerView: 2,
-	},
-	768: {
-		slidesPerView: 3,
-	},
-	1024: {
-		slidesPerView: 4,
-	},
-	1280: {
-		slidesPerView: 5,
-	},
-	1536: {
-		slidesPerView: 6,
-	},
-	1792: {
-		slidesPerView: 7,
-	},
-};
-
-export { globalStore, swiperBreakpoints, vibrate };
+export { globalStore, vibrate };

@@ -1,57 +1,43 @@
-import type { GenericServerResponse } from "../types";
-import type { AsyncDataRequestStatus } from "nuxt/dist/app/composables/asyncData";
+import newRoute from "./newRoute";
 
-type CategoryItemServerResponse = {
+type CategoryItemSrvResponse = {
 	id: string;
 	name: string;
 	description?: string;
 };
 
-type CategoryServerResponse = {
-	data: Array<CategoryItemServerResponse>;
+type CategorySrvResponse = {
+	data?: Array<CategoryItemSrvResponse>;
+	message?: string;
 };
 
-type CategoriesFnResponse = {
-	status: AsyncDataRequestStatus;
-	message: string;
-	data: Array<{
-		id: string;
-		name: string;
-		description?: string;
-	}>;
-};
+type CategoriesFnResponse = CategorySrvResponse;
 
 async function categories(): Promise<CategoriesFnResponse> {
-	const { data, status, error } = await useFetch("/api/index/categories", {
-		baseURL: globalStore.instanceAddr,
-		method: "GET",
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Bearer ${globalStore.token}`,
-		},
-	});
+	let res: Response;
 
-	if (status.value === "error") {
-		const data_ = error.value?.data as GenericServerResponse;
-
-		return {
-			status: status.value,
-			message: data_.message ?? "Failed to fetch categories, server doesn't give any reason.",
-			data: [],
-		};
+	try {
+		res = await fetch(newRoute("/api/index/categories"), {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${globalStore.token}`,
+			},
+		});
+	} catch (e) {
+		return { message: (e as { message: string }).message };
 	}
 
-	const data_ = data.value as CategoryServerResponse;
+	try {
+		const data = (await res.json()) as CategorySrvResponse;
 
-	return {
-		status: status.value,
-		message: "",
-		data: data_.data,
-	};
+		return { data: res.ok ? data.data : undefined, message: data.message ?? "" };
+	} catch {
+		return { message: "Can't parse server response" };
+	}
 }
 
-/** For what the server returns */
-type FilterItemServerResponse = {
+type FilterItemSrvResponse = {
 	id: string;
 	title: string;
 	author?: string;
@@ -67,15 +53,12 @@ type FilterItemServerResponse = {
 	format: string;
 };
 
-type FilterServerResponse = {
-	data: Array<FilterItemServerResponse>;
+type FilterSrvResponse = {
+	data?: Array<FilterItemSrvResponse>;
+	message?: string;
 };
 
-type FilterFnResponse = {
-	status: AsyncDataRequestStatus;
-	message: string;
-	data: Array<FilterItemServerResponse>;
-};
+type FilterFnResponse = FilterSrvResponse;
 
 async function filter(body: {
 	keywords?: Array<string>;
@@ -91,51 +74,35 @@ async function filter(body: {
 	sort_by?: string;
 	sort_order?: string;
 }): Promise<FilterFnResponse> {
-	const { data, status, error } = await useFetch("/api/index/filter", {
-		baseURL: globalStore.instanceAddr,
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Bearer ${globalStore.token}`,
-		},
-		body,
-	});
+	let res: Response;
 
-	if (status.value === "error") {
-		const data_ = error.value?.data as GenericServerResponse;
-
-		return {
-			status: status.value,
-			message:
-				data_.message ?? "Failed to send filter request, server doesn't give any reason.",
-			data: [],
-		};
+	try {
+		res = await fetch(newRoute("/api/index/filter"), {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${globalStore.token}`,
+			},
+			body: JSON.stringify(body),
+		});
+	} catch (e) {
+		return { message: (e as { message: string }).message };
 	}
 
-	const data_ = data.value as FilterServerResponse | undefined;
+	try {
+		const data = (await res.json()) as FilterSrvResponse;
 
-	return {
-		status: status.value,
-		message: "",
-		data: (() => {
-			if (data_) {
-				return data_.data;
-			}
-
-			return [];
-		})(),
-	};
+		return { data: res.ok ? data.data : undefined, message: data.message ?? "" };
+	} catch {
+		return { message: "Can't parse server response" };
+	}
 }
 
-/** What the server returns */
 type TitleServerResponse = {
-	message?: string;
-	description?: string; // Error description
-
 	category_id: string;
 	title: string;
 	author?: string;
-	desc?: string;
+	description?: string;
 	release?: string;
 	thumbnail: {
 		blurhash: string;
@@ -156,47 +123,45 @@ type TitleServerResponse = {
 	page_read?: number;
 	date_added: string;
 	date_updated: string;
+
+	message?: string;
 };
 
 /** What the below fn returns */
 type TitleFnResponse = {
-	status: AsyncDataRequestStatus;
-	message?: string;
 	data?: TitleServerResponse;
+	message?: string;
 };
 
 async function title(id: string): Promise<TitleFnResponse> {
-	const { data, status, error } = await useFetch(`/api/index/title/${id}`, {
-		baseURL: globalStore.instanceAddr,
-		method: "GET",
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Bearer ${globalStore.token}`,
-		},
-	});
+	let res: Response;
 
-	if (status.value === "error") {
-		const data_ = error.value?.data as GenericServerResponse;
-
-		return {
-			status: status.value,
-			message: data_.message ?? "Failed to fetch title, server doesn't give any reason.",
-		};
+	try {
+		res = await fetch(newRoute(`/api/index/title/${id}`), {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${globalStore.token}`,
+			},
+		});
+	} catch (e) {
+		return { message: (e as { message: string }).message };
 	}
 
-	const data_ = data.value as TitleServerResponse;
+	try {
+		const data = (await res.json()) as TitleServerResponse;
 
-	return {
-		status: status.value,
-		data: data_,
-	};
+		return { data: res.ok ? data : undefined, message: data.message ?? "" };
+	} catch {
+		return { message: "Can't parse server response" };
+	}
 }
 
 export default { categories, filter, title };
 export type {
-	FilterItemServerResponse,
+	FilterItemSrvResponse as FilterItemServerResponse,
 	TitleServerResponse,
-	CategoryItemServerResponse,
-	CategoryServerResponse,
+	CategoryItemSrvResponse as CategoryItemServerResponse,
+	CategorySrvResponse as CategoryServerResponse,
 	CategoriesFnResponse,
 };

@@ -1,4 +1,4 @@
-import Theme from "../enums/Theme";
+import Theme from "./enums/Theme";
 
 function getSystemPreference() {
 	if (window.matchMedia("(prefers-color-scheme: light)").matches) {

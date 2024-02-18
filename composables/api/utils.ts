@@ -1,150 +1,113 @@
-import type { AsyncDataRequestStatus } from "nuxt/dist/app/composables/asyncData";
+import newRoute from "./newRoute";
 
-type StatusServerResponse = {
+type StatusSrvResponse = {
 	server_time: string;
 	version: string;
 	echo?: string;
-	password_less?: boolean;
-};
 
+	message?: string;
+};
 type StatusFnResponse = {
-	data: StatusServerResponse;
-	status: AsyncDataRequestStatus;
+	data?: StatusSrvResponse;
+	message?: string;
 };
+async function status(endpoint: string): Promise<StatusFnResponse> {
+	let res: Response;
 
-async function status(): Promise<StatusFnResponse> {
-	const { data, status } = await useFetch("/api/utils/status", {
-		baseURL: globalStore.instanceAddr,
-		method: "GET",
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Bearer ${globalStore.token}`,
-		},
-	});
+	try {
+		res = await fetch(new URL("/api/utils/status", endpoint).toString(), {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+	} catch (e) {
+		return { message: (e as { message: string }).message };
+	}
 
-	return {
-		data: data.value as StatusServerResponse,
-		status: status.value,
-	};
+	try {
+		const data = (await res.json()) as StatusSrvResponse;
+
+		return { data: res.ok ? data : undefined, message: data.message ?? "" };
+	} catch {
+		return { message: "Can't parse server response" };
+	}
 }
 
 type TagsServerResponse = {
-	tags: Array<[number, string]>;
+	data?: Array<[number, string]>;
+	message?: string;
 };
-
-type TagsFnResponse = {
-	tags: Array<[number, string]>;
-	message: string;
-};
+type TagsFnResponse = TagsServerResponse;
 
 async function tags(): Promise<TagsFnResponse> {
-	const { data, status, error } = await useFetch("/api/utils/tags", {
-		baseURL: globalStore.instanceAddr,
-		method: "GET",
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Bearer ${globalStore.token}`,
-		},
-	});
+	let res: Response;
 
-	if (status.value === "error") {
-		const data_ = error.value?.data as GenericServerResponse;
-
-		return {
-			tags: [],
-			message: data_.message ?? "Failed to fetch tags, server doesn't give any reason.",
-		};
+	try {
+		res = await fetch(newRoute("/api/utils/tags"), {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${globalStore.token}`,
+			},
+		});
+	} catch (e) {
+		return { message: (e as { message: string }).message };
 	}
 
-	const data_ = data.value as TagsServerResponse;
+	try {
+		const data = (await res.json()) as TagsServerResponse;
 
-	return { tags: data_.tags, message: "" };
+		return { data: res.ok ? data.data : undefined, message: data.message ?? "" };
+	} catch {
+		return { message: "Can't parse server response" };
+	}
 }
 
 type SsimEvalTitleServerResponse = {
 	id: string;
-
 	title: string;
 	desc: string;
 	tags: Array<number>;
-
 	blurhash: string;
 	width: number;
 	height: number;
 	format: string;
 };
-
 type SsimEvalServerResponse = {
 	title_a: SsimEvalTitleServerResponse;
 	title_b: SsimEvalTitleServerResponse;
 	ssim: number;
-	description: string;
+	message?: string;
 };
-
 type SsimEvalFnResponse = {
-	status: AsyncDataRequestStatus;
-	data: {
-		titleA: SsimEvalTitleServerResponse;
-		titleB: SsimEvalTitleServerResponse;
-		ssim: number;
-	};
-	message: string;
+	data?: SsimEvalServerResponse;
+	message?: string;
 };
 
 // Return 2 random titles and their ssim
 async function ssimEval(): Promise<SsimEvalFnResponse> {
-	const { data, status, error } = await useFetch("/api/utils/ssim_eval", {
-		baseURL: globalStore.instanceAddr,
-		method: "GET",
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Bearer ${globalStore.token}`,
-		},
-	});
+	let res: Response;
 
-	if (status.value === "error") {
-		const data_ = error.value?.data as GenericServerResponse;
-
-		return {
-			data: {
-				titleA: {
-					id: "",
-					title: "",
-					desc: "",
-					tags: [],
-					blurhash: "",
-					width: 0,
-					height: 0,
-					format: "",
-				},
-				titleB: {
-					id: "",
-					title: "",
-					desc: "",
-					tags: [],
-					blurhash: "",
-					width: 0,
-					height: 0,
-					format: "",
-				},
-				ssim: 0,
+	try {
+		res = await fetch(newRoute("/api/utils/ssim_eval"), {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${globalStore.token}`,
 			},
-			status: status.value,
-			message: data_.message ?? "Failed to fetch ssim eval, server doesn't give any reason.",
-		};
+		});
+	} catch (e) {
+		return { message: (e as { message: string }).message };
 	}
 
-	const data_ = data.value as SsimEvalServerResponse;
+	try {
+		const data = (await res.json()) as SsimEvalServerResponse;
 
-	return {
-		data: {
-			titleA: data_.title_a,
-			titleB: data_.title_b,
-			ssim: data_.ssim,
-		},
-		status: status.value,
-		message: "",
-	};
+		return { data: res.ok ? data : undefined, message: data.message ?? "" };
+	} catch {
+		return { message: "Can't parse server response" };
+	}
 }
 
 export default { status, tags, ssimEval };

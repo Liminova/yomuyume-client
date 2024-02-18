@@ -1,190 +1,67 @@
-import type { AsyncDataRequestStatus } from "nuxt/dist/app/composables/asyncData";
+import newRoute from "./newRoute";
 
-type LognServerResponse = {
-	token: string;
+type LoginServerResponse = {
+	token?: string;
+	message?: string;
 };
 
-type LoginFnResponse = {
-	status: AsyncDataRequestStatus;
-	token: string;
-	message: string;
-};
+type LoginFnResponse = LoginServerResponse;
 
 async function login(body: { login: string; password: string }): Promise<LoginFnResponse> {
-	const { data, status, error } = await useFetch("/api/auth/login", {
-		baseURL: globalStore.instanceAddr,
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body,
-	});
+	let res: Response;
 
-	if (status.value === "error") {
-		const data_ = error.value?.data as GenericServerResponse;
-
-		return {
-			status: "error",
-			token: "",
-			message: data_.message ?? "Login failed, server doesn't give any reason.",
-		};
+	try {
+		res = await fetch(newRoute("/api/auth/login"), {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(body),
+		});
+	} catch (e) {
+		return { message: (e as { message: string }).message };
 	}
 
-	const data_ = data.value as LognServerResponse;
+	try {
+		const data = (await res.json()) as LoginServerResponse;
 
-	return {
-		status: "success",
-		token: data_.token,
-		message: "",
-	};
+		return { token: res.ok ? data.token : undefined, message: data.message ?? "" };
+	} catch {
+		return { message: "Can't parse server response" };
+	}
 }
 
 async function register(body: {
 	username: string;
 	email: string;
 	password: string;
-}): Promise<{ status: AsyncDataRequestStatus; message: string }> {
-	const { status, error } = await useFetch("/api/auth/register", {
-		baseURL: globalStore.instanceAddr,
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body,
-	});
+}): Promise<GenericSrvResponse> {
+	let res: Response;
 
-	if (status.value === "error") {
-		const data_ = error.value?.data as GenericServerResponse;
-
-		return {
-			status: status.value,
-			message: data_.message ?? "Registration failed, server doesn't give any reason.",
-		};
+	try {
+		res = await fetch(newRoute("/api/auth/register"), {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(body),
+		});
+	} catch (e) {
+		return { message: (e as { message: string }).message, ok: false };
 	}
 
-	return { status: status.value, message: "" };
-}
+	const message = "Can't parse server response";
 
-async function resetPassword(email: string): Promise<string> {
-	const { status, error } = await useFetch(`/api/auth/reset/${email}`, {
-		baseURL: globalStore.instanceAddr,
-		method: "GET",
-		headers: {
-			"Content-Type": "application/json",
-		},
-	});
+	try {
+		const data = (await res.json()) as GenericSrvResponse;
 
-	if (status.value === "error") {
-		const data_ = error.value?.data as GenericServerResponse;
-
-		return data_.message ?? "Send email failed, server doesn't give any reason.";
+		return { message: data.message, ok: res.ok };
+	} catch {
+		return { message, ok: false };
 	}
-
-	return "Verification email sent";
-}
-
-async function confirmReset(password: string, token: string): Promise<string> {
-	const { status, error } = await useFetch(`/api/auth/reset`, {
-		baseURL: globalStore.instanceAddr,
-		method: "POST",
-		headers: {
-			Authorization: `Bearer ${token}`,
-			"Content-Type": "application/json",
-		},
-		body: { password },
-	});
-
-	if (status.value === "error") {
-		const data_ = error.value?.data as GenericServerResponse;
-
-		return data_.message ?? "Reset password failed, server doesn't give any reason.";
-	}
-
-	return "Password reset successfully";
-}
-
-async function deleteAccount(email: string): Promise<string> {
-	const { status, error } = await useFetch(`/api/auth/delete/${email}`, {
-		baseURL: globalStore.instanceAddr,
-		method: "DELETE",
-		headers: {
-			"Content-Type": "application/json",
-		},
-	});
-
-	if (status.value === "error") {
-		const data_ = error.value?.data as GenericServerResponse;
-
-		return data_.message ?? "Send email failed, server doesn't give any reason.";
-	}
-
-	return "Confirmation email sent";
-}
-
-async function confirmDelete(token: string): Promise<string> {
-	const { status, error } = await useFetch(`/api/auth/delete`, {
-		baseURL: globalStore.instanceAddr,
-		method: "POST",
-		headers: {
-			Authorization: `Bearer ${token}`,
-			"Content-Type": "application/json",
-		},
-	});
-
-	if (status.value === "error") {
-		const data_ = error.value?.data as GenericServerResponse;
-
-		return data_.message ?? "Delete account failed, server doesn't give any reason.";
-	}
-
-	return "Account deleted";
-}
-
-async function verifyAccount() {
-	const { status, error } = await useFetch(`/api/auth/verify`, {
-		baseURL: globalStore.instanceAddr,
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Bearer ${globalStore.token}`,
-		},
-	});
-
-	if (status.value === "error") {
-		const data_ = error.value?.data as GenericServerResponse;
-
-		return data_.message ?? "Verification failed, server doesn't give any reason.";
-	}
-
-	return "Confirmation email sent";
-}
-
-async function confirmVerification(token: string): Promise<string> {
-	const { status, error } = await useFetch(`/api/auth/verify`, {
-		baseURL: globalStore.instanceAddr,
-		method: "POST",
-		headers: {
-			Authorization: `Bearer ${token}`,
-			"Content-Type": "application/json",
-		},
-	});
-
-	if (status.value === "error") {
-		const data_ = error.value?.data as GenericServerResponse;
-
-		return data_.message ?? "Verification failed, server doesn't give any reason.";
-	}
-
-	return "Account verified";
 }
 
 export default {
 	login,
 	register,
-	resetPassword,
-	verifyAccount,
-	confirmVerification,
-	confirmReset,
-	deleteAccount,
-	confirmDelete,
 };
