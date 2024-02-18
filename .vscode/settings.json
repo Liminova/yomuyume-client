@@ -3,7 +3,7 @@
 		".vscode/css_custom_data.json"
 	],
 	"typescript.tsdk": "node_modules/typescript/lib",
-	"editor.formatOnSave": false,
+	"editor.formatOnSave": true,
 	"editor.codeActionsOnSave": {
 		"source.fixAll": true
 	},
